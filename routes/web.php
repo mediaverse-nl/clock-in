@@ -20,6 +20,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-//Route::get('/clocked', 'ClockedController@index')->name('clocked.index');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware(['checkForUser', 'auth']);
 
 Route::post('/clocked', 'ClockedController@check')->name('clocked.check')->middleware('checkForUser');

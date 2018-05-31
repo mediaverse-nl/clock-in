@@ -42,7 +42,7 @@ class ClockedController extends Controller
             $inHours = number_format($workedTime / 60);
 
             $leftMin = $workedTime - ($inHours * 60);
-            
+
             if ($leftMin < 60){
                 $workedMin = $leftMin;
             }else{
