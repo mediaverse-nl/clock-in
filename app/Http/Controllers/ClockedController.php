@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Clocked;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class ClockedController extends Controller
 {
@@ -34,27 +36,34 @@ class ClockedController extends Controller
      */
     public function check(Request $request)
     {
-        $isClockedIn = $this->clocked->clockedIn();
+//        2F B3 7E 02
+        $check = User::where('id', '=', Input::get('user_id'))->exists();
 
-        if ($isClockedIn){
-            $workedTime = $this->update($request);
+        if($check){
+            $isClockedIn = $this->clocked->clockedIn();
 
-            $inHours = number_format($workedTime / 60);
+            if ($isClockedIn){
+                $workedTime = $this->update($request);
 
-            $leftMin = $workedTime - ($inHours * 60);
+                $inHours = number_format($workedTime / 60);
 
-            if ($leftMin < 60){
-                $workedMin = $leftMin;
-            }else{
-                $workedMin = 0;
+                $leftMin = $workedTime - ($inHours * 60);
+
+                if ($leftMin < 60){
+                    $workedMin = $leftMin;
+                }else{
+                    $workedMin = 0;
+                }
+
+                return 'clocked out, u worked for hours '. $inHours.' min '.$workedMin;
             }
 
-            return 'clocked out, u worked for hours '. $inHours.' min '.$workedMin;
+            $this->store($request);
+
+            return 'clocked in';
+        }else{
+            return 'do not exist';
         }
-
-        $this->store($request);
-
-        return 'clocked in';
     }
 
     /**

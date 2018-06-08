@@ -19,6 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/test', function (){
+    return 'ok';
+});
+
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware(['checkForUser', 'auth']);
 
