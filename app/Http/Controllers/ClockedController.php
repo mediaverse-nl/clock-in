@@ -37,8 +37,8 @@ class ClockedController extends Controller
     public function check(Request $request)
     {
 //        2F B3 7E 02
-        $check = User::where('id', '=', Input::get('user_id'))->exists();
-
+        $check = User::where('id', '=', Input::get('card'))->exists();
+        return Input::get('card');
         if($check){
             $isClockedIn = $this->clocked->clockedIn();
 
@@ -55,14 +55,14 @@ class ClockedController extends Controller
                     $workedMin = 0;
                 }
 
-                return 'clocked out, u worked for hours '. $inHours.' min '.$workedMin;
+                return 'h'. $inHours.'min'.$workedMin;
             }
 
             $this->store($request);
 
-            return 'clocked in';
+            return 201;
         }else{
-            return 'do not exist';
+            return 404;
         }
     }
 
