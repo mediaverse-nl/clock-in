@@ -6,7 +6,7 @@ use App\Clocked;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Input;
 
 class ClockedController extends Controller
 {
@@ -36,13 +36,17 @@ class ClockedController extends Controller
      */
     public function check(Request $request)
     {
+        $card = $request->get('card');
 //        2F B3 7E 02
-        $check = User::where('id', '=', Input::get('card'))->exists();
-        return Input::get('card');
-        if($check){
+        $check = $this->clocked->getUserFromCard($card);
+//        return 'asdas'. Input::get('card'). 'sdasd';
+
+        if($check != 404){
             $isClockedIn = $this->clocked->clockedIn();
 
+//            return dd($isClockedIn);
             if ($isClockedIn){
+//                return 'true';
                 $workedTime = $this->update($request);
 
                 $inHours = number_format($workedTime / 60);
@@ -56,14 +60,13 @@ class ClockedController extends Controller
                 }
 
                 return 'h'. $inHours.'min'.$workedMin;
+            }else{
+                $this->store($request);
+
+                return 201;
             }
-
-            $this->store($request);
-
-            return 201;
-        }else{
-            return 404;
         }
+        return 404;
     }
 
     /**

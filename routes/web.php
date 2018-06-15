@@ -19,11 +19,22 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/test', function (){
-    return 'ok';
+Route::prefix('dashboard')->middleware(['auth'])->group(function () {
+    Route::get('/payroll', 'PayrollController@index')->name('payroll.index');
+    Route::get('/payroll/{id}', 'PayrollController@show')->name('payroll.show');
+    Route::get('/payroll/{id}/edit', 'PayrollController@edit')->name('payroll.edit');
+
+    Route::get('/card', 'CardController@index')->name('card.index');
+
+    Route::resource('user', 'UserController');
+    //add card
+    //add account
+    //check account
+    //
 });
 
 
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware(['checkForUser', 'auth']);
 
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware(['checkForUser', 'auth']);
 Route::post('/clocked', 'ClockedController@check')->name('clocked.check')->middleware('checkForUser');
+

@@ -5,11 +5,18 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Input;
-use MongoDB\Driver\Query;
 
 class Clocked extends Model
 {
     protected $table = 'clocked';
+
+    /**
+     * Get the user that owns the phone.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 
     public function clockedIn()
     {
@@ -26,10 +33,24 @@ class Clocked extends Model
         if (Auth()->check()){
             $userId = Auth()->id();
         }else{
-            $userId = Input::get('user_id');
+            $userId = $this->getUserFromCard(Input::get('card'));
         }
 
         return $userId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUserFromCard($card)
+    {
+        $card = Card::where('value', 'like', '%'.$card.'%')->first();
+
+        if($card !== null){
+            return $card->user->id;
+        }
+
+        return 404;
     }
 
     public function newestEntry()
@@ -45,7 +66,7 @@ class Clocked extends Model
         $query->where('user_id', '=', $this->currentUser());
     }
 
-    public function scopeThisMonth($query, $subMonth = 2)
+    public function scopeThisMonth($query, $subMonth = 0)
     {
         $query->whereBetween('started_at', [
             Carbon::now()->startOfMonth()->subMonth($subMonth),

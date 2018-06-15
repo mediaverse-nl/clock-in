@@ -15,7 +15,7 @@ class CheckForUser
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user_id || Auth()->check())
+        if ($request->card || Auth()->check())
         {
             return $next($request);
         }
