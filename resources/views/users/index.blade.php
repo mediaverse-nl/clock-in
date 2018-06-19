@@ -3,6 +3,10 @@
 @section('content')
 
     @component('components.table', ['title' => 'Users'])
+        @slot('btn')
+            <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">Gebruiker aanmaken</a>
+        @endslot
+
         @slot('head')
             <th>id</th>
             <th>name</th>

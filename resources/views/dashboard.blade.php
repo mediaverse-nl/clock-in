@@ -1,43 +1,35 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
+@section('content')
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Dashboard
+            </div>
+            <div class="panel-body">
 
-        <!-- Styles -->
-        <style>
+                @foreach(DB::table("clocked")
+                    ->select("*" ,DB::raw("(SUM(worked_min)) as total_min"))
+                    ->orderBy('created_at')
+                    ->groupBy(DB::raw("WEEK(created_at)"))
+                    ->get()->toArray() as $item)
 
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
+                    {{var_dump($item)}}
+                    <br>
+                    <br>
+                @endforeach
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-
+                this month
                 {!! $checked->sum('worked_min') !!}
-
 
             </div>
         </div>
-    </body>
-</html>
+    </div>
+
+
+@endsection
+
+@push('js')
+
+@endpush

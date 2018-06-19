@@ -10,12 +10,40 @@ class Clocked extends Model
 {
     protected $table = 'clocked';
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'started_at'
+    ];
     /**
      * Get the user that owns the phone.
      */
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function diffInTime()
+    {
+        $to = Carbon::parse($this->started_at);
+        $from = Carbon::parse($this->stopped_at);
+
+        $seconds = $to->diffInSeconds($from);
+        $minutes = $to->diffInMinutes($from);
+        $hours = $to->diffInHours($from);
+        $days = $to->diffInDays($from);
+
+        if($days !== 0){
+            $hours = $hours - (24 * $days);
+            return $days.' days '.$hours.' hours';
+        }elseif ($hours !== 0){
+            $minutes = $minutes - (60 * $hours);
+            return $hours.' hours '.$minutes.' min';
+        }elseif ($minutes !== 0){
+            return $minutes.' min';
+        }else{
+            return $seconds.' sec';
+        }
     }
 
     public function clockedIn()
@@ -44,7 +72,9 @@ class Clocked extends Model
      */
     public function getUserFromCard($card)
     {
-        $card = Card::where('value', 'like', '%'.$card.'%')->first();
+        $card = Card::where('value', 'like', '%'.$card.'%')
+            ->where('user_id', '!=', null)
+            ->first();
 
         if($card !== null){
             return $card->user->id;

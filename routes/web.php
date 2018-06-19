@@ -19,12 +19,18 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('dashboard')->middleware(['auth'])->group(function () {
+Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function () {
+
+    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
     Route::get('/payroll', 'PayrollController@index')->name('payroll.index');
     Route::get('/payroll/{id}', 'PayrollController@show')->name('payroll.show');
     Route::get('/payroll/{id}/edit', 'PayrollController@edit')->name('payroll.edit');
 
     Route::get('/card', 'CardController@index')->name('card.index');
+    Route::get('/card/{id}', 'CardController@show')->name('card.show');
+    Route::get('/card/{id}/edit', 'CardController@edit')->name('card.edit');
+    Route::patch('/card/{id?}', 'CardController@update')->name('card.update');
 
     Route::resource('user', 'UserController');
     //add card
@@ -35,6 +41,6 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
 
 
 
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware(['checkForUser', 'auth']);
+//Route::get('/dashboard', 'DashboardController@index')->middleware(['checkForUser', 'auth']);
 Route::post('/clocked', 'ClockedController@check')->name('clocked.check')->middleware('checkForUser');
 

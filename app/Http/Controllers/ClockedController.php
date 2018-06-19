@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Card;
 use App\Clocked;
 use App\User;
 use Carbon\Carbon;
@@ -11,11 +12,13 @@ use Input;
 class ClockedController extends Controller
 {
     protected $clocked;
+    protected $card;
     protected $timeNow;
 
-    public function __construct(Clocked $clocked)
+    public function __construct(Clocked $clocked, Card $card)
     {
         $this->clocked = $clocked;
+        $this->card = $card;
         $this->timeNow = Carbon::now();
     }
 
@@ -36,36 +39,38 @@ class ClockedController extends Controller
      */
     public function check(Request $request)
     {
-        $card = $request->get('card');
-//        2F B3 7E 02
-        $check = $this->clocked->getUserFromCard($card);
-//        return 'asdas'. Input::get('card'). 'sdasd';
+        $card_id = $request->get('card');
+        $check = $this->clocked->getUserFromCard($card_id);
 
         if($check != 404){
             $isClockedIn = $this->clocked->clockedIn();
 
-//            return dd($isClockedIn);
             if ($isClockedIn){
-//                return 'true';
-                $workedTime = $this->update($request);
+                $this->update($request);
 
-                $inHours = number_format($workedTime / 60);
-
-                $leftMin = $workedTime - ($inHours * 60);
-
-                if ($leftMin < 60){
-                    $workedMin = $leftMin;
-                }else{
-                    $workedMin = 0;
-                }
-
-                return 'h'. $inHours.'min'.$workedMin;
+                return 200;
             }else{
                 $this->store($request);
 
                 return 201;
             }
         }
+
+        $thisCard = $this->card->where('value', '=', $card_id);
+
+        if ($thisCard->count() == 0){
+            $card = $this->card;
+            $card->value = $card_id;
+            $card->save();
+        }elseif ($thisCard->where('user_id', '=', null)->exists()){
+            $card = $this->card->where('value', '=', $card_id)->first();
+            $card->delete();
+
+            $card = $this->card;
+            $card->value = $card_id;
+            $card->save();
+        }
+
         return 404;
     }
 

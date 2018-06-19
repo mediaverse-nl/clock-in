@@ -1,6 +1,10 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         {{$title}}
+
+        @if(!empty($btn))
+            {{$btn}}
+        @endif
     </div>
     <div class="panel-body">
         <table id="data-table" class="display">
@@ -10,7 +14,7 @@
             </tr>
             </thead>
             <tbody>
-            {{$body}}
+                {{$body}}
             </tbody>
         </table>
     </div>

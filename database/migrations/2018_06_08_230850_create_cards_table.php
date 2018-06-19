@@ -15,9 +15,10 @@ class CreateCardsTable extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->nullable()->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('value');
+            $table->unique('value');
             $table->timestamps();
         });
 

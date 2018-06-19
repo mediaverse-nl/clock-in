@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
 use App\Clocked;
+
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
@@ -12,7 +14,6 @@ class DashboardController extends Controller
     {
         $this->clocked = $clocked;
     }
-
 
     /**
      * Display a listing of the resource.

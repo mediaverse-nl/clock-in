@@ -44,15 +44,19 @@
                 <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-alerts">
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small">4 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
+
+                @foreach($notificationClocked as $clock)
+                    <li>
+                        <a href="#">
+                            <div>
+                                <i class="fa fa-stopwatch fa-fw"></i> {{$clock->started_at->format('d-m-Y')}}
+                                <span class="pull-right text-muted small">Worked for: {{$clock->diffInTime()}}</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="divider"></li>
+                @endforeach
 
                 <li>
                     <a class="text-center" href="#">
@@ -95,31 +99,21 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav in" id="side-menu">
                 <li>
-                    <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a href="{{route('dashboard')}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard </a>
+                </li>
+                <li>
+                    <a href="{{route('card.index')}}"><i class="fa fa-dashboard fa-fw"></i> Card</a>
                 </li>
                 <li>
                     <a href="{{route('user.index')}}"><i class="fa fa-dashboard fa-fw"></i> Users</a>
                 </li>
-                <li>
+                <li class="disabled">
                     <a href="#"><i class="fa fa-dashboard fa-fw"></i> Payroll</a>
                 </li>
-                <li>
+                <li class="disabled">
                     <a href="#"><i class="fa fa-dashboard fa-fw"></i> Calendar</a>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level collapse">
-                        <li>
-                            <a href="flot.html">Flot Charts</a>
-                        </li>
-                        <li>
-                            <a href="morris.html">Morris.js Charts</a>
-                        </li>
-                    </ul>
-                    <!-- /.nav-second-level -->
-                </li>
+
             </ul>
         </div>
         <!-- /.sidebar-collapse -->

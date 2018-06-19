@@ -1,16 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
+use App\Card;
+use App\Http\Requests\CardUpdateRequest;
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class UserController extends Controller
+class CardController extends Controller
 {
+    protected $card;
     protected $user;
 
-    public function __construct(User $user)
+    public function __construct(Card $card, User $user)
     {
+        $this->card = $card;
         $this->user = $user;
     }
 
@@ -21,19 +26,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->user->get();
+        $cards = $this->card->get();
 
-        return view('users.index')->with('users', $users);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('card.index')->with('cards', $cards);
     }
 
     /**
@@ -55,9 +50,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->user->findOrFail($id);
+        $card = $this->card->findOrFail($id);
 
-        return view('users.show')->with('user', $user);
+        return view('card.show')->with('card', $card);
     }
 
     /**
@@ -68,9 +63,12 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = $this->user->findOrFail($id);
+        $card = $this->card->findOrFail($id);
+        $user = $this->user->get();
 
-        return view('users.show')->with('user', $user);
+        return view('card.edit')
+            ->with('user', $user)
+            ->with('card', $card);
     }
 
     /**
@@ -80,9 +78,22 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CardUpdateRequest $request, $id = null)
     {
-        //
+        if (empty($id)){
+            $card = $this->card->findOrFail($request->id);
+        }else{
+            $card = $this->card->findOrFail($id);
+        }
+
+        $card->user_id = $request->user_id;
+        $card->save();
+
+        if (empty($id)){
+            redirect()->back();
+        }
+
+        return redirect()->route('card.index');
     }
 
     /**
