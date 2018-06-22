@@ -43,7 +43,15 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
 
     Route::get('test', function (){
         $users = User::select('id', 'name', 'email', 'created_at')->get();
+
         Excel::create('users', function($excel) use($users) {
+            $excel->setTitle('My awesome report 2016');
+            // Chain the setters
+            $excel->setCreator('Me')->setCompany('Our Code World');
+
+            $excel->setDescription('A demonstration to change the file properties');
+
+
             $excel->sheet('Sheet 1', function($sheet) use($users) {
                 $sheet->fromArray($users->take(5));
             });
