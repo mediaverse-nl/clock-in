@@ -11,6 +11,8 @@
 |
 */
 
+use App\User;
+
 Route::get('/', function () {
     return redirect()->route('login');
 })->middleware('auth');
@@ -31,12 +33,26 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     Route::get('/card/{id}', 'CardController@show')->name('card.show');
     Route::get('/card/{id}/edit', 'CardController@edit')->name('card.edit');
     Route::patch('/card/{id?}', 'CardController@update')->name('card.update');
+    Route::delete('/card/{id?}', 'CardController@destroy')->name('card.destroy');
 
     Route::resource('user', 'UserController');
     //add card
     //add account
     //check account
     //
+
+    Route::get('test', function (){
+        $users = User::select('id', 'name', 'email', 'created_at')->get();
+        Excel::create('users', function($excel) use($users) {
+            $excel->sheet('Sheet 1', function($sheet) use($users) {
+                $sheet->fromArray($users->take(5));
+            });
+            $excel->sheet('Sheet 2', function($sheet) use($users) {
+                $sheet->fromArray($users->take(2));
+            });
+        })->export('xls');
+
+    });
 });
 
 

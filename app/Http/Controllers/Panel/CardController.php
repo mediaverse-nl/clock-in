@@ -90,7 +90,7 @@ class CardController extends Controller
         $card->save();
 
         if (empty($id)){
-            redirect()->back();
+            return redirect()->back();
         }
 
         return redirect()->route('card.index');
@@ -104,6 +104,9 @@ class CardController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $card = $this->card->findOrFail($id);
+        $card->delete();
+
+        return redirect()->back();
     }
 }
