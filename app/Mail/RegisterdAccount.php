@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,14 +12,18 @@ class RegisterdAccount extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $user;
+    public $password;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user, $password)
     {
-        //
+        $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -28,6 +33,12 @@ class RegisterdAccount extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this
+            ->from(env('MAIL_NOREPLY'))
+            ->subject('Account registration')
+            ->markdown('emails.user.registered')
+            ->with('user', $this->user)
+            ->with('password', $this->password)
+            ->with('email', $this->user->email);
     }
 }

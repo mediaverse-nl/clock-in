@@ -36,6 +36,10 @@ class User extends Authenticatable
         $this->notify(new MailResetPasswordToken($token));
     }
 
+    public function calendar()
+    {
+        return $this->hasMany('App\Calendar');
+    }
 
     public function cards()
     {

@@ -17,9 +17,15 @@ Route::get('/', function () {
     return redirect()->route('login');
 })->middleware('auth');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::get('password/change', 'Auth\ChangePasswordController@showChangePasswordForm')->name('password.change.form');
+Route::post('password/change', 'Auth\ChangePasswordController@changePassword')->name('password.postChangePassword');
 
 Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function () {
 
@@ -36,6 +42,7 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     Route::delete('/card/{id?}', 'CardController@destroy')->name('card.destroy');
 
     Route::resource('user', 'UserController');
+    Route::resource('calendar', 'CalendarController');
     //add card
     //add account
     //check account

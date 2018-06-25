@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Card;
+use App\Http\Requests\UserCreateRequest;
+use App\Mail\RegisterdAccount;
 use App\User;
 use Illuminate\Http\Request;
 
 use  App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -47,19 +51,23 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserCreateRequest $request)
     {
-        $hashed_random_password = Hash::make(str_random(8));
+        $random_password = str_random(8);
 
         $user = $this->user;
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $hashed_random_password;
+        $user->password = Hash::make($random_password);
 
         $user->save();
 
-        return redirect()->route('user.index');
+        Mail::to($user->email)->send(new RegisterdAccount($user, $random_password));
+
+        return redirect()
+            ->route('user.index')
+            ->with('success', 'Email has been sent to the user');
     }
 
     /**

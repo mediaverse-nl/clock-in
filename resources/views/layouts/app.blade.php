@@ -21,10 +21,55 @@
 
     <link href="//cdn.datatables.net/1.10.17/css/jquery.dataTables.min.css" rel="stylesheet">
 
-
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
 
     @stack('css')
+
+    <style>
+        body{
+            background: #FFFFFF !important;
+            padding-top: 50px;
+        }
+        .navbar-brand{ color: #FFFFFF !important;}
+        .main-menu-default > li,
+        .main-menu-default a{
+            color: #FFFFFF !important;
+        }
+        .main-menu-default .dropdown-toggle:hover,
+        .main-menu-default > .dropdown.open a,
+        .main-menu-default > .dropdown li{
+            color: #333 !important;
+        }
+        .navbar-default .sidebar a,
+        .navbar-default .sidebar li{
+            color: #333 !important;
+        }
+        .navbar.navbar-default.navbar-fixed-top{
+            background-color: #3F51B5 !important;
+            border: none !important;
+            box-shadow: 0 1px 8px rgba(0,0,0,.3);
+        }
+        .bar-menu{
+            background: #FFFFFF !important;
+        }
+        .bar-menu a{
+            color: #333333 !important;
+        }
+        #page-wrapper{
+            background-color: #FAFAFA;
+        }
+
+        /*panel*/
+        .panel{
+            border-radius: 0px !important;
+        }
+        .panel > .panel-heading{
+            background-color: #FFFFFF;
+            padding: 15px;
+        }
+
+
+    </style>
 
 </head>
 <body class="app">

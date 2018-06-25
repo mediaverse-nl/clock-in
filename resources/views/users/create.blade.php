@@ -15,12 +15,12 @@
                     <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
                         {!! Form::label('name', 'User Name') !!}
                         {!! Form::text('name', null, ['class' => 'form-control']) !!}
-                        @include('components.input-error-msg', ['name' => 'id'])
+                        @include('components.input-error-msg', ['name' => 'name'])
                     </div>
                     <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
                         {!! Form::label('email', 'E-Mail Address') !!}
                         {!! Form::email('email', null, ['class' => 'form-control']) !!}
-                        @include('components.input-error-msg', ['name' => 'id'])
+                        @include('components.input-error-msg', ['name' => 'email'])
                     </div>
 
                     <small id="emailHelp" class="form-text text-muted">

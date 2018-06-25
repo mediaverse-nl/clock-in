@@ -1,9 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="row">
+        <div class="col-md-12 dash-board">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <div class="col-md-3">
+                        <h1>worked <small style="color: #FFFFFF">(this month)</small></h1>
+                        <span>{{number_format($user->payrollThisMonth() / 60)}}</span>
+                    </div>
+                    <div class="col-md-3">
+                        <h1>Active</h1>
+                        <span></span>
+                    </div>
+                    <div class="col-md-3">
+                        <h1>Periode</h1>
+                        <span>{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}}</span> /
+                        <span>{{Carbon\Carbon::now()->EndOfMonth()->format('d-m-Y')}}</span>
+                    </div>
+                    <div class="col-md-3">
+                        <h1>Salaris</h1>
+                        <span>€ {{$user->payrollThisMonth() * 0.06 }}</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Uren log
@@ -18,6 +45,34 @@
 
                 </div>
             </div>
+        </div>
+
+        <div class="col-md-6">
+            @component('components.table', ['title' => 'Clocked'])
+                @slot('btn')
+                    <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">Toevoegen</a>
+                @endslot
+
+                @slot('head')
+                    <th>worked <small>(min)</small></th>
+                    <th>started_at</th>
+                    <th>stopped_at</th>
+                    <th>options</th>
+                @endslot
+
+                @slot('body')
+                    @foreach($user->clocked as $clocked)
+                        <tr>
+                            <td>{{$clocked->worked_min}}</td>
+                            <td>{{$clocked->started_at}}</td>
+                            <td>{{$clocked->stopped_at}}</td>
+                            <td>
+                                <a href="{{route('user.edit', $user->id)}}" class="btn btn-warning btn-xs">edit</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endslot
+            @endcomponent
         </div>
 
         <div class="col-md-4">
@@ -93,7 +148,7 @@
                 data: data,
                 xkey: 'y',
                 ykeys: ['a', 'b'],
-                labels: ['Total Income', 'Total Outcome'],
+                labels: ['Werk', 'Pauze'],
                 fillOpacity: 0.6,
                 yLabelFormat: function (y) { return y.toString() + ' uur'; },
                 xLabelMargin: 10,
@@ -119,6 +174,17 @@
         #stacked,
         #pie-chart{
             /*min-height: 250px;*/
+        }
+        .dash-board{
+            padding: 0px !important;
+            margin-top: -25px;
+            color: #FFFFFF;
+        }
+        .dash-board > .panel{
+            border: 0px !important;
+            border-radius: 0px !important;
+            height: 200px;
+            background: #3F51B5;
         }
     </style>
 @endpush
