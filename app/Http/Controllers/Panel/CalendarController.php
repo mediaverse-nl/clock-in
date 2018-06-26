@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Calendar;
+use App\Http\Requests\CalendarStoreRequest;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,49 +27,45 @@ class CalendarController extends Controller
      */
     public function index()
     {
-//        $calendar = $this->calendar->get();
+        $calendar = $this->calendar->get();
 
         $users = $this->user->get();
+
         $events = [];
 
-        $events[] = \Calendar::event(
-            'Event One', //event title
-            false, //full day event?
-            Carbon::now(), //start time (you can also use Carbon instead of DateTime)
-            Carbon::now(), //end time (you can also use Carbon instead of DateTime)
-            0 //optionally, you can specify an event ID
-        );
+        foreach ($calendar as $cal){
+            $events[] = \Calendar::event(
+                $cal->title, //event title
+                $cal->full_day, //full day event?
+                $cal->start, //start time (you can also use Carbon instead of DateTime)
+                $cal->stop, //end time (you can also use Carbon instead of DateTime)
+                $cal->id, //optionally, you can specify an event ID
+                [
+                    'url' => route('calendar.edit', $cal->id),
+                    'textColor' => $cal->textColor(), //'#0A0A0A'
+                    'color' => $cal->backgroundColor(), //'#444444'
+                ]
+            );
+        }
 
-//        $events[] = Calendar::event(
-//            "Valentine's Day", //event title
-//            true, //full day event?
-//            new \DateTime('2015-02-14'), //start time (you can also use Carbon instead of DateTime)
-//            new \DateTime('2015-02-14'), //end time (you can also use Carbon instead of DateTime)
-//            'stringEventId' //optionally, you can specify an event ID
-//        );
-
-//        $eloquentEvent = EventModel::first(); //EventModel implements MaddHatter\LaravelFullcalendar\Event
-
-        $calendar = \Calendar::addEvents($events) //add an array with addEvents
+        $render = \Calendar::addEvents($events) //add an array with addEvents
             ->setOptions([ //set fullcalendar options
-                'firstDay' => 1
+            'FirstDay' => 1,
+            'contentheight' => 850,
+            'editable' => false,
+            'allDay' => false,
+            'aspectRatio' => 1.5,
+            'slotLabelFormat' => 'HH:mm:ss',
+            'timeFormat' => 'HH:mm',
+            'color' => '#73e600',
             ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
     //            'viewRender' => 'function() {alert("Callbacks!");}'
             ]);
 
         return view('calendar.index')
             ->with('calendar', $calendar)
+            ->with('render', $render)//eventTitle
             ->with('users', $users);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -77,9 +74,21 @@ class CalendarController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CalendarStoreRequest $request)
     {
-        //
+        $calendar = $this->calendar;
+
+        $calendar->user_id = $request->user;
+        $calendar->title = $request->title;
+        $calendar->description = $request->description;
+        $calendar->full_day = $request->full_day == null ? 0:1;
+        $calendar->private = $request->private;
+        $calendar->start = $request->start;
+        $calendar->stop = $request->stop;
+
+        $calendar->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -101,7 +110,14 @@ class CalendarController extends Controller
      */
     public function edit($id)
     {
-        //
+        $calendar = $this->calendar->findOrFail($id);
+
+        $users = $this->user->get();
+
+        return view('calendar.edit')
+            ->with('calendar', $calendar)
+            ->with('users', $users);
+
     }
 
     /**
@@ -111,9 +127,21 @@ class CalendarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CalendarStoreRequest $request, $id)
     {
-        //
+        $calendar = $this->calendar->findOrFail($id);
+
+        $calendar->user_id = $request->user;
+        $calendar->title = $request->title;
+        $calendar->description = $request->description;
+        $calendar->full_day = $request->full_day;
+        $calendar->private = $request->private;
+        $calendar->start = $request->start;
+        $calendar->stop = $request->stop;
+
+        $calendar->save();
+
+        return redirect()->route('calendar.index');
     }
 
     /**
@@ -124,6 +152,8 @@ class CalendarController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $calendar = $this->calendar->findOrFail($id);
+        $calendar->delete();
+        return redirect()->route('calendar.index');
     }
 }

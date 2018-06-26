@@ -9,12 +9,11 @@
                     Card
                 </div>
                 <div class="panel-body">
-
                     {!! Form::model($card, ['route' => ['card.update', $card->id], 'method' => 'patch']) !!}
 
                         <div class="form-group">
                             {!! Form::label('value', 'Card Id') !!}
-                            {!! Form::text('value', null, ['class' => 'form-control', 'disabled']) !!}
+                            {!! Form::text('value', $card->value, ['class' => 'form-control', 'disabled']) !!}
                             <small id="emailHelp" class="form-text text-muted">
                                 Card Id cant be changed clock in with a new card to register it.
                             </small>
@@ -37,7 +36,6 @@
         </div>
 
     </div>
-
 
 @endsection
 

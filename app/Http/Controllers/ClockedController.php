@@ -7,6 +7,7 @@ use App\Clocked;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Input;
 
 class ClockedController extends Controller
@@ -23,16 +24,6 @@ class ClockedController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view()->with();
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -46,11 +37,11 @@ class ClockedController extends Controller
             $isClockedIn = $this->clocked->clockedIn();
 
             if ($isClockedIn){
-                $this->update($request);
+                $this->updateEntry($request);
 
                 return 200;
             }else{
-                $this->store($request);
+                $this->storeEntry($request);
 
                 return 201;
             }
@@ -95,7 +86,8 @@ class ClockedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+
+    public function updateEntry(Request $request)
     {
         $entry = $this->clocked->newestEntry();
 

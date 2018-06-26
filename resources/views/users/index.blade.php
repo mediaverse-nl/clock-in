@@ -4,7 +4,7 @@
 
     @component('components.table', ['title' => 'Users'])
         @slot('btn')
-            <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">Gebruiker aanmaken</a>
+            <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">Aanmaken</a>
         @endslot
 
         @slot('head')
@@ -25,8 +25,8 @@
                     <td>h{{number_format($user->payrollThisMonth() / 60)}}</td>
                     <td>{{$user->isClockedIn()}}</td>
                     <td>
-                        <a href="{{route('user.edit', $user->id)}}" class="btn btn-default btn-xs">edit</a>
-                        <a href="{{route('user.show', $user->id)}}" class="btn btn-default btn-xs">show</a>
+                        <a href="{{route('user.edit', $user->id)}}" class="btn btn-warning btn-xs">edit</a>
+                        <a href="{{route('user.show', $user->id)}}" class="btn btn-success btn-xs">show</a>
                     </td>
                 </tr>
             @endforeach

@@ -113,7 +113,7 @@
                 <li class="disabled">
                     <a href="#"><i class="fa fa-dashboard fa-fw"></i> Payroll</a>
                 </li>
-                <li class="disabled">
+                <li class="">
                     <a href="{{route('calendar.index')}}"><i class="fa fa-dashboard fa-fw"></i> Calendar</a>
                 </li>
 

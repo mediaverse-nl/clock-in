@@ -24,8 +24,8 @@ class CardUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'  => 'required',
-            'user_id'  => 'required|numeric',
+//            'id'  => 'required',
+            'user_id'  => 'numeric|nullable',
         ];
     }
 }

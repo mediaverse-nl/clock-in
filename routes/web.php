@@ -43,6 +43,12 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
 
     Route::resource('user', 'UserController');
     Route::resource('calendar', 'CalendarController');
+
+    Route::get('/clocked', 'ClockedController@index')->name('clocked.index');
+    Route::get('/clocked/{id}/edit', 'ClockedController@edit')->name('clocked.edit');
+    Route::patch('/clocked/{id}/stop', 'ClockedController@stopTimer')->name('clocked.stopTimer');
+    Route::patch('/clocked/{id}/start', 'ClockedController@startTimer')->name('clocked.startTimer');
+    Route::patch('/clocked/{id}/update', 'ClockedController@update')->name('clocked.update');
     //add card
     //add account
     //check account

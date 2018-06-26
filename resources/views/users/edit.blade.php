@@ -67,7 +67,17 @@
                             <td>{{$clocked->started_at}}</td>
                             <td>{{$clocked->stopped_at}}</td>
                             <td>
-                                <a href="{{route('user.edit', $user->id)}}" class="btn btn-warning btn-xs">edit</a>
+                                <a href="{{route('clocked.edit', $user->id)}}" class="btn btn-warning btn-xs">edit</a>
+                                @if($clocked->active == 1)
+                                    <a href="#"
+                                       class="btn btn-xs btn-danger"
+                                       orm="delete-{{$clocked->id}}"
+                                       onclick="if(confirm('Press a button!')){$('#del-{{$clocked->id}}').submit();};">stop</a>
+                                    {{Form::open(['method'  => 'patch', 'route' => ['clocked.stopTimer', $clocked->id], 'id' => 'del-'.$clocked->id])}}
+                                    {{Form::close()}}
+                                @else
+                                    <a href="#" class="btn btn-danger disabled btn-xs">stop</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -128,12 +138,27 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Calendar
+                </div>
+                <div class="panel-body">
+                    {!! $render->calendar() !!}
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
 @endsection
 
 @push('js')
+    {!! $render->script() !!}
+
     <script>
         var data = [
                 { y: 'ma', a: 50, b: 90},
