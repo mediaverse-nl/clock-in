@@ -71,7 +71,7 @@ class ClockedController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeEntry(Request $request)
     {
         $clocked = $this->clocked;
         $clocked->started_at = $this->timeNow->toDateTimeString();

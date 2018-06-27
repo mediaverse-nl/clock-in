@@ -33,7 +33,7 @@
 
                             <div class="form-group {{ $errors->has('user') ? 'has-error' : ''}}">
                                 {!! Form::label('user', 'User') !!}
-                                {!! Form::select('user', $users->pluck('name', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select user --']) !!}
+                                {!! Form::select('user', $users->pluck('name', 'id'), $calendar->user_id, ['class' => 'form-control', 'placeholder' => '-- select user --']) !!}
                                 @include('components.input-error-msg', ['name' => 'user'])
                             </div>
 

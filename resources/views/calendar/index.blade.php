@@ -76,7 +76,7 @@
                     </div>
 
 
-                    {!! Form::submit('Add', ['class' => 'btn']) !!}
+                    {!! Form::submit('Toevoegen', ['class' => 'btn btn-primary']) !!}
 
                     {!! Form::close() !!}
 

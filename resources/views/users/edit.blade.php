@@ -8,20 +8,19 @@
 
                     <div class="col-md-3">
                         <h1>worked <small style="color: #FFFFFF">(this month)</small></h1>
-                        <span>{{number_format($user->payrollThisMonth() / 60)}}</span>
+                        <span class="h3">{{ $worked }}</span>
                     </div>
                     <div class="col-md-3">
-                        <h1>Active</h1>
-                        <span></span>
+                        <h1>Active </h1>
+                        <span class="h3">{{$user->clocked()->where('active', '=', 1)->exists() == 1 ? 'online' : 'offline' }}</span>
                     </div>
                     <div class="col-md-3">
                         <h1>Periode</h1>
-                        <span>{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}}</span> /
-                        <span>{{Carbon\Carbon::now()->EndOfMonth()->format('d-m-Y')}}</span>
+                        <span class="h3">{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}} / {{Carbon\Carbon::now()->endOfMonth()->format('d-m-Y')}}</span>
                     </div>
                     <div class="col-md-3">
                         <h1>Salaris</h1>
-                        <span>€ {{$user->payrollThisMonth() * 0.06 }}</span>
+                        <span class="h3">€ {{$user->payrollThisMonth() * 0.17 }} - (bruto)</span>
                     </div>
 
                 </div>

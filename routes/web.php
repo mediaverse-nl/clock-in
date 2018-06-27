@@ -52,7 +52,6 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     //add card
     //add account
     //check account
-    //
 
     Route::get('test', function (){
         $users = User::select('id', 'name', 'email', 'created_at')->get();
@@ -64,7 +63,6 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
 
             $excel->setDescription('A demonstration to change the file properties');
 
-
             $excel->sheet('Sheet 1', function($sheet) use($users) {
                 $sheet->fromArray($users->take(5));
             });
@@ -75,7 +73,6 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
 
     });
 });
-
 
 
 //Route::get('/dashboard', 'DashboardController@index')->middleware(['checkForUser', 'auth']);

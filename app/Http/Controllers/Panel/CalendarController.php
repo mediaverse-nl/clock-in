@@ -82,7 +82,7 @@ class CalendarController extends Controller
         $calendar->title = $request->title;
         $calendar->description = $request->description;
         $calendar->full_day = $request->full_day == null ? 0:1;
-        $calendar->private = $request->private;
+        $calendar->private = $request->private == null ? 0:1;
         $calendar->start = $request->start;
         $calendar->stop = $request->stop;
 
