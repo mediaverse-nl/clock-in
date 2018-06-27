@@ -4,24 +4,24 @@
     <div class="row">
         <div class="col-md-12 dash-board">
             <div class="panel panel-default">
+                <br>
                 <div class="panel-body">
 
                     <div class="col-md-3">
-                        <h1>worked <small style="color: #FFFFFF">(this month)</small></h1>
-                        <span>{{number_format($user->payrollThisMonth() / 60)}}</span>
+                        <h1><i class="fa fa-wrench"></i> worked <small style="color: #FFFFFF">(this month)</small></h1>
+                        <span>{{$worked}}</span>
                     </div>
                     <div class="col-md-3">
-                        <h1>Active</h1>
-                        <span></span>
+                        <h1><i class="fa fa-heart"></i> Active</h1>
+                        <span>{{$user->clocked()->where('active', '=', '1')->exists() ? 'working' : 'not working'}}</span>
                     </div>
                     <div class="col-md-3">
-                        <h1>Periode</h1>
-                        <span>{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}}</span> /
-                        <span>{{Carbon\Carbon::now()->EndOfMonth()->format('d-m-Y')}}</span>
+                        <h1><i class="fa fa-calendar-alt "></i> Periode</h1>
+                        <span>{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}} \ {{Carbon\Carbon::now()->EndOfMonth()->format('d-m-Y')}}</span>
                     </div>
                     <div class="col-md-3">
-                        <h1>Salaris</h1>
-                        <span>€ {{$user->payrollThisMonth() * 0.06 }}</span>
+                        <h1><i class="fa fa-money-bill"></i> Salaris</h1>
+                        <span>€ {{$user->payrollThisMonth() * 0.17 }}</span>
                     </div>
 
                 </div>
@@ -75,8 +75,8 @@
                                        onclick="if(confirm('Press a button!')){$('#del-{{$clocked->id}}').submit();};">stop</a>
                                     {{Form::open(['method'  => 'patch', 'route' => ['clocked.stopTimer', $clocked->id], 'id' => 'del-'.$clocked->id])}}
                                     {{Form::close()}}
-                                @else
-                                    <a href="#" class="btn btn-danger disabled btn-xs">stop</a>
+                                {{--@else--}}
+                                    {{--<a href="#" class="btn btn-danger disabled btn-xs">stop</a>--}}
                                 @endif
                             </td>
                         </tr>
@@ -85,18 +85,45 @@
             @endcomponent
         </div>
 
-        <div class="col-md-4">
+    </div>
+    <div class="row">
+
+        <div class="col-md-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Gegevens
                 </div>
                 <div class="panel-body">
-                    {!! $user !!}
+                    {!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'patch']) !!}
+
+                    {{--<div class="form-group {{ $errors->has('id') ? 'has-error' : ''}}">--}}
+                        {{--{!! Form::label('card', 'Add Card') !!}--}}
+                        {{--{!! Form::text('id', null, ['class' => 'form-control', 'placeholder' => '']) !!}--}}
+                        {{--@include('components.input-error-msg', ['name' => 'id'])--}}
+                    {{--</div>--}}
+
+                    <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+                        {!! Form::label('name', 'name') !!}
+                        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
+                        @include('components.input-error-msg', ['name' => 'name'])
+                    </div>
+
+                    <div class="form-group {{ $errors->has('email') ? 'has-error' : ''}}">
+                        {!! Form::label('email', 'email') !!}
+                        {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'email']) !!}
+                        @include('components.input-error-msg', ['name' => 'email'])
+                    </div>
+
+
+                    {!! Form::submit('save', ['class' => 'btn btn-warning']) !!}
+
+                    {!! Form::close() !!}
+
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Passen
@@ -128,7 +155,7 @@
                                 @include('components.input-error-msg', ['name' => 'id'])
                             </div>
 
-                            {!! Form::submit('Add', ['class' => 'btn']) !!}
+                            {!! Form::submit('Add', ['class' => 'btn btn-success']) !!}
 
                             {!! Form::close() !!}
 
@@ -139,7 +166,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Calendar
@@ -208,7 +235,7 @@
         .dash-board > .panel{
             border: 0px !important;
             border-radius: 0px !important;
-            height: 200px;
+            min-height: 200px;
             background: #3F51B5;
         }
     </style>

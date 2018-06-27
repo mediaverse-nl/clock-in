@@ -82,6 +82,7 @@
                     <a href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
+                        <i class="fa fa-sign-out-alt fa-fw"></i>
                         Logout
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -99,25 +100,25 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav in" id="side-menu">
                 <li>
-                    <a href="{{route('dashboard')}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard </a>
+                    <a href="{{route('dashboard')}}"><i class="fa fa-tachometer-alt fa-fw"></i> Dashboard </a>
                 </li>
                 <li>
-                    <a href="{{route('dashboard')}}"><i class="fa fa-dashboard fa-fw"></i> Mijn Dashboard </a>
+                    <a href="{{route('auth.dashboard')}}"><i class="fa fa-chart-line fa-fw"></i> Mijn Dashboard </a>
                 </li>
                 <li>
-                    <a href="{{route('card.index')}}"><i class="fa fa-dashboard fa-fw"></i> Card</a>
+                    <a href="{{route('card.index')}}"><i class="fa fa-id-card fa-fw"></i> Card</a>
                 </li>
                 <li>
-                    <a href="{{route('user.index')}}"><i class="fa fa-dashboard fa-fw"></i> Users</a>
+                    <a href="{{route('user.index')}}"><i class="fa fa-users fa-fw"></i> Users</a>
                 </li>
                 <li class="disabled">
-                    <a href="#"><i class="fa fa-dashboard fa-fw"></i> Payroll</a>
+                    <a href="#"><i class="fa fa-hand-holding-usd fa-fw"></i> Payroll</a>
                 </li>
                 <li class="disabled">
-                    <a href="#"><i class="fa fa-dashboard fa-fw"></i> clocked</a>
+                    <a href="#"><i class="fa fa-user-clock fa-fw"></i> clocked</a>
                 </li>
                 <li class="">
-                    <a href="{{route('calendar.index')}}"><i class="fa fa-dashboard fa-fw"></i> Calendar</a>
+                    <a href="{{route('calendar.index')}}"><i class="fa fa-calendar-alt fa-fw"></i> Calendar</a>
                 </li>
 
             </ul>

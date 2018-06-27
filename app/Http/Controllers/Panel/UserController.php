@@ -100,18 +100,18 @@ class UserController extends Controller
         }
 
         $render = \Calendar::addEvents($events) //add an array with addEvents
-            ->setOptions([ //set fullcalendar options
-                'FirstDay' => 1,
-                'contentheight' => 850,
-                'editable' => false,
-                'allDay' => false,
-                'aspectRatio' => 1.5,
-                'slotLabelFormat' => 'HH:mm:ss',
-                'timeFormat' => 'HH:mm',
-                'color' => '#73e600',
-            ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-                //            'viewRender' => 'function() {alert("Callbacks!");}'
-            ]);
+        ->setOptions([ //set fullcalendar options
+            'FirstDay' => 1,
+            'contentheight' => 850,
+            'editable' => false,
+            'allDay' => false,
+            'aspectRatio' => 1.5,
+            'slotLabelFormat' => 'HH:mm:ss',
+            'timeFormat' => 'HH:mm',
+            'color' => '#73e600',
+        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+            //            'viewRender' => 'function() {alert("Callbacks!");}'
+        ]);
 
         return view('users.show')
             ->with('calendar', $calendar)
@@ -130,8 +130,15 @@ class UserController extends Controller
     {
         $user = $this->user->findOrFail($id);
 
+        $workedMin = $user->clocked()->where('active', '=', 0)->sum('worked_min');
         $calendar = $user->calendar()->get();
         $clocked = $user->clocked()->get();
+
+        $hours = number_format(floor($workedMin / 60), 0);
+//        dd($hours);
+        $min = number_format( $workedMin - $hours * 60  );
+
+        $worked_time = 'h'.$hours.' m'.$min;
 
         $events = [];
 
@@ -169,20 +176,21 @@ class UserController extends Controller
         }
 
         $render = \Calendar::addEvents($events) //add an array with addEvents
-            ->setOptions([ //set fullcalendar options
-                'FirstDay' => 1,
-                'contentheight' => 850,
-                'editable' => false,
-                'allDay' => false,
-                'aspectRatio' => 1.5,
-                'slotLabelFormat' => 'HH:mm:ss',
-                'timeFormat' => 'HH:mm',
-                'color' => '#73e600',
-            ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-                //            'viewRender' => 'function() {alert("Callbacks!");}'
-            ]);
+        ->setOptions([ //set fullcalendar options
+            'FirstDay' => 1,
+            'contentheight' => 850,
+            'editable' => false,
+            'allDay' => false,
+            'aspectRatio' => 1.5,
+            'slotLabelFormat' => 'HH:mm:ss',
+            'timeFormat' => 'HH:mm',
+            'color' => '#73e600',
+        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+            //            'viewRender' => 'function() {alert("Callbacks!");}'
+        ]);
 
         return view('users.edit')
+            ->with('worked', $worked_time)
             ->with('cards', $cards)
             ->with('render', $render)//eventTitle
             ->with('user', $user);

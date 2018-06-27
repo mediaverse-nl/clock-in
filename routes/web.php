@@ -30,6 +30,7 @@ Route::post('password/change', 'Auth\ChangePasswordController@changePassword')->
 Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function () {
 
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('/mijn-dashboard', 'DashboardController@show')->name('auth.dashboard');
 
     Route::get('/payroll', 'PayrollController@index')->name('payroll.index');
     Route::get('/payroll/{id}', 'PayrollController@show')->name('payroll.show');
@@ -49,10 +50,6 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     Route::patch('/clocked/{id}/stop', 'ClockedController@stopTimer')->name('clocked.stopTimer');
     Route::patch('/clocked/{id}/start', 'ClockedController@startTimer')->name('clocked.startTimer');
     Route::patch('/clocked/{id}/update', 'ClockedController@update')->name('clocked.update');
-    //add card
-    //add account
-    //check account
-    //
 
     Route::get('test', function (){
         $users = User::select('id', 'name', 'email', 'created_at')->get();
