@@ -27,7 +27,9 @@ class ClockedController extends Controller
      */
     public function index()
     {
-        view('clocked.index');
+        $clocks = $this->clocked->get();
+
+        return view('clocked.index')->with('clocks', $clocks);
     }
 
     /**

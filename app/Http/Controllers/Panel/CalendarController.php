@@ -99,7 +99,13 @@ class CalendarController extends Controller
      */
     public function show($id)
     {
-        //
+        $calendar = $this->calendar->findOrFail($id);
+
+        $users = $this->user->get();
+
+        return view('calendar.edit')
+            ->with('calendar', $calendar)
+            ->with('users', $users);
     }
 
     /**

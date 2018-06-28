@@ -114,8 +114,8 @@
                 <li class="disabled">
                     <a href="#"><i class="fa fa-hand-holding-usd fa-fw"></i> Payroll</a>
                 </li>
-                <li class="disabled">
-                    <a href="#"><i class="fa fa-user-clock fa-fw"></i> clocked</a>
+                <li class="">
+                    <a href="{{route('clocked.index')}}"><i class="fa fa-user-clock fa-fw"></i> clocked</a>
                 </li>
                 <li class="">
                     <a href="{{route('calendar.index')}}"><i class="fa fa-calendar-alt fa-fw"></i> Calendar</a>
