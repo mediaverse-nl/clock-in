@@ -53,6 +53,16 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     Route::patch('/clocked/{id}/update', 'ClockedController@update')->name('clocked.update');
 
 
+
+    Route::get('test2', function (){
+        $user = new User;
+
+        $weeknumber = \Illuminate\Support\Facades\Input::get('weeknumber');
+        $user_id = \Illuminate\Support\Facades\Input::get('user');
+
+        return ($user->barChartThisWeek($weeknumber, $user_id));
+    });
+
     Route::get('test', function (){
         $users = User::select('id', 'name', 'email', 'created_at')->get();
 

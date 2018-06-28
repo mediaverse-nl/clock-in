@@ -2,9 +2,11 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\MailResetPasswordToken;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -70,6 +72,36 @@ class User extends Authenticatable
             ->thisMonth()
             ->sum('worked_min');
 //            ->sum('worked_min');
+    }
+
+    public function barChartThisWeek($weeknumber, $user_id){
+        $user = $this->where('id','=',$user_id)->first();
+        $clocked = new Clocked();
+
+        $dateStart = Carbon::now(); // or $date = new Carbon();
+        $dateStart->setISODate($dateStart->year, $weeknumber); // 2016-10-17 23:59:59.000000
+
+        $dateEnd = Carbon::now(); // or $date = new Carbon();
+        $dateEnd->setISODate($dateStart->year, $weeknumber); // 2016-10-17 23:59:59.000000
+//
+        return DB::table('clocked')
+            ->where('user_id', '=', $user_id)
+            ->where('started_at', '>', $dateStart->startOfWeek())
+            ->where('started_at', '<', $dateEnd->endOfWeek())
+            ->select('*', DB::raw('sum(started_at) as total'))
+            ->groupBy(DB::raw("DAY(started_at)"))
+            ->get();
+
+        return $clocked->groupBy('started_at')->select('*', DB::raw('count(*) as total'));
+
+//        return $user
+//            ->clocked()
+//            ->select('*', DB::raw('sum(worked_min) as worked'))
+////            ->get()
+//            ->groupBy(function($date) {
+//                return Carbon::parse($date->started_at)->format('W');
+//            })->orderby('w')
+//            ;
     }
 
 

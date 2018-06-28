@@ -1,33 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12 dash-board">
-            <div class="panel panel-default">
-                <br>
-                <div class="panel-body">
-
-                    <div class="col-md-3">
-                        <h1><i class="fa fa-wrench"></i> worked <small style="color: #FFFFFF">(this month)</small></h1>
-                        <span>{{$worked}}</span>
-                    </div>
-                    <div class="col-md-3">
-                        <h1><i class="fa fa-heart"></i> Active</h1>
-                        <span>{{$user->clocked()->where('active', '=', '1')->exists() ? 'working' : 'not working'}}</span>
-                    </div>
-                    <div class="col-md-3">
-                        <h1><i class="fa fa-calendar-alt "></i> Periode</h1>
-                        <span>{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}} \ {{Carbon\Carbon::now()->EndOfMonth()->format('d-m-Y')}}</span>
-                    </div>
-                    <div class="col-md-3">
-                        <h1><i class="fa fa-money-bill"></i> Salaris</h1>
-                        <span>€ {{$user->payrollThisMonth() * 0.17 }}</span>
-                    </div>
-
-                </div>
-            </div>
+    @component('components.container-full-width')
+        <div class="col-md-3">
+            <h1><i class="fa fa-wrench"></i> worked <small style="color: #FFFFFF">(this month)</small></h1>
+            <span>{{$worked}}</span>
         </div>
-    </div>
+        <div class="col-md-3">
+            <h1><i class="fa fa-heart"></i> Active</h1>
+            <span>{{$user->clocked()->where('active', '=', '1')->exists() ? 'working' : 'not working'}}</span>
+        </div>
+        <div class="col-md-3">
+            <h1><i class="fa fa-calendar-alt "></i> Periode</h1>
+            <span>{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}} \ {{Carbon\Carbon::now()->EndOfMonth()->format('d-m-Y')}}</span>
+        </div>
+        <div class="col-md-3">
+            <h1><i class="fa fa-money-bill"></i> Salaris</h1>
+            <span>€ {{$user->payrollThisMonth() * 0.17 }}</span>
+        </div>
+    @endcomponent
+
 
     <div class="row">
         <div class="col-md-6">
@@ -227,16 +219,6 @@
     #pie-chart{
         /*min-height: 250px;*/
     }
-    .dash-board{
-        padding: 0px !important;
-        margin-top: -25px;
-        color: #FFFFFF;
-    }
-    .dash-board > .panel{
-        border: 0px !important;
-        border-radius: 0px !important;
-        min-height: 200px;
-        background: #3F51B5;
-    }
+
 </style>
 @endpush

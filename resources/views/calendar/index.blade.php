@@ -2,6 +2,33 @@
 
 @section('content')
 
+    @component('components.container-full-width')
+        <form id="select_date" name="select_date" method="get" action="{{route(Route::getCurrentRoute()->getName())}}">
+            <div class="col-md-3">
+                <h1>Category <small style="color: #FFFFFF"></small></h1>
+                <div class="form-group">
+                    {!! Form::select('category', \App\Calendar::eventTitle(), null, ['class' => 'form-control', 'placeholder' => 'all', 'onchange' => 'this.form.submit()']) !!}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h1>Users</h1>
+                <div class="form-group">
+                    {!! Form::select('user', $users->pluck('name', 'id'), null, ['class' => 'form-control', 'placeholder' => 'all', 'onchange' => 'this.form.submit()']) !!}
+                </div>
+            </div>
+            <div class="col-md-3">
+                {{--<h1>Periode</h1>--}}
+                {{--<span>{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}}</span> /--}}
+                {{--<span>{{Carbon\Carbon::now()->EndOfMonth()->format('d-m-Y')}}</span>--}}
+            </div>
+            <div class="col-md-3">
+                {{--<h1>Salaris</h1>--}}
+                {{--<span>€ {{$user->payrollThisMonth() * 0.06 }}</span>--}}
+            </div>
+        </form>
+    @endcomponent
+
+
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
