@@ -31,33 +31,11 @@
 
     <div class="row">
         <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Uren log
-                </div>
-                <div class="panel-body">
-
-                    <div class="text-center">
-                        <label class="label label-success" style="background: #7A92A3;">Pauze</label>
-                        <label class="label label-success" style="background: #0B62A4;">werk</label>
-                        <div id="bar-chart"></div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
             @component('components.table', ['title' => 'Clocked'])
-                @slot('btn')
-                    <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">Toevoegen</a>
-                @endslot
-
                 @slot('head')
                     <th>worked <small>(min)</small></th>
                     <th>started_at</th>
                     <th>stopped_at</th>
-                    <th>options</th>
                 @endslot
 
                 @slot('body')
@@ -66,41 +44,34 @@
                             <td>{{$clocked->worked_min}}</td>
                             <td>{{$clocked->started_at}}</td>
                             <td>{{$clocked->stopped_at}}</td>
-                            <td>
-                                <a href="{{route('clocked.edit', $user->id)}}" class="btn btn-warning btn-xs">edit</a>
-                                @if($clocked->active == 1)
-                                    <a href="#"
-                                       class="btn btn-xs btn-danger"
-                                       orm="delete-{{$clocked->id}}"
-                                       onclick="if(confirm('Press a button!')){$('#del-{{$clocked->id}}').submit();};">stop</a>
-                                    {{Form::open(['method'  => 'patch', 'route' => ['clocked.stopTimer', $clocked->id], 'id' => 'del-'.$clocked->id])}}
-                                    {{Form::close()}}
-                                    {{--@else--}}
-                                    {{--<a href="#" class="btn btn-danger disabled btn-xs">stop</a>--}}
-                                @endif
-                            </td>
                         </tr>
                     @endforeach
                 @endslot
             @endcomponent
         </div>
 
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Calendar
+                </div>
+                <div class="panel-body">
+                    {!! $render->calendar() !!}
+
+                </div>
+            </div>
+        </div>
+
     </div>
     <div class="row">
 
-        <div class="col-md-3">
+        <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Gegevens
                 </div>
                 <div class="panel-body">
                     {!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'patch']) !!}
-
-                    {{--<div class="form-group {{ $errors->has('id') ? 'has-error' : ''}}">--}}
-                    {{--{!! Form::label('card', 'Add Card') !!}--}}
-                    {{--{!! Form::text('id', null, ['class' => 'form-control', 'placeholder' => '']) !!}--}}
-                    {{--@include('components.input-error-msg', ['name' => 'id'])--}}
-                    {{--</div>--}}
 
                     <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
                         {!! Form::label('name', 'name') !!}
@@ -123,60 +94,24 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+
+        <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Passen
+                    Uren log
                 </div>
                 <div class="panel-body">
 
-                    <label>list of active cards</label>
-                    <ul class="list-group">
-                        @foreach($user->cards as $card)
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{$card->value}}
-                                <a href="{{route('card.edit', $card->id)}}" class="btn btn-warning btn-xs pull-right">edit</a>
-                            </li>
-                        @endforeach
-                    </ul>
-
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-
-                            {!! Form::open(['route' => ['card.update'], 'method' => 'patch']) !!}
-
-                            <div class="form-group {{ $errors->has('id') ? 'has-error' : ''}}">
-                                {!! Form::label('card', 'Add Card') !!}
-                                {!! Form::select('id', $cards->pluck('value', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
-                                {!! Form::hidden('user_id', $user->id) !!}
-                                <small id="emailHelp" class="form-text text-muted">
-                                    Bind this card to the user.
-                                </small>
-                                @include('components.input-error-msg', ['name' => 'id'])
-                            </div>
-
-                            {!! Form::submit('Add', ['class' => 'btn btn-success']) !!}
-
-                            {!! Form::close() !!}
-
-                        </div>
+                    <div class="text-center">
+                        <label class="label label-success" style="background: #7A92A3;">Pauze</label>
+                        <label class="label label-success" style="background: #0B62A4;">werk</label>
+                        <div id="bar-chart"></div>
                     </div>
 
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Calendar
-                </div>
-                <div class="panel-body">
-                    {!! $render->calendar() !!}
-
-                </div>
-            </div>
-        </div>
 
     </div>
 
