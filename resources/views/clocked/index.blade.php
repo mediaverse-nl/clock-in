@@ -9,8 +9,6 @@
 
         @slot('head')
             <th>worked_min</th>
-            {{--<th>name</th>--}}
-            {{--<th>email</th>--}}
             <th>worked</th>
             <th>user</th>
             <th>clock in</th>

@@ -56,11 +56,10 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
 
     Route::get('test2', function (){
         $user = new User;
-
         $weeknumber = \Illuminate\Support\Facades\Input::get('weeknumber');
         $user_id = \Illuminate\Support\Facades\Input::get('user');
 
-        return ($user->barChartThisWeek($weeknumber, $user_id));
+        return $user->barChartThisWeek($weeknumber, $user_id);
     });
 
     Route::get('test', function (){

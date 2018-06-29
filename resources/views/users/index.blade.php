@@ -26,7 +26,6 @@
                     <td>{{$user->isClockedIn()}}</td>
                     <td>
                         <a href="{{route('user.edit', $user->id)}}" class="btn btn-warning btn-xs">edit</a>
-                        <a href="{{route('user.show', $user->id)}}" class="btn btn-success btn-xs">show</a>
                     </td>
                 </tr>
             @endforeach

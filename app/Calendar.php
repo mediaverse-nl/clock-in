@@ -20,6 +20,18 @@ class Calendar extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function scopeWhereTitle($q, $title){
+        if ($title !== null){
+            return $q->where('title', '=', $title);
+        }
+    }
+
+    public function scopeWhereUser($q, $user_id){
+        if ($user_id !== null){
+            return $q->where('user_id', '=', $user_id);
+        }
+    }
+
     public function textColor($color = '#fff')
     {
 //        if($this->title == 'werk'){

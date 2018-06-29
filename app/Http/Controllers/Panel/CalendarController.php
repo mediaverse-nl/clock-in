@@ -8,6 +8,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use \Illuminate\Support\Facades\Input;
 
 class CalendarController extends Controller
 {
@@ -27,7 +28,10 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        $calendar = $this->calendar->get();
+        $category = Input::get('category');
+        $user_id = Input::get('user');
+
+        $calendar = $this->calendar->whereTitle($category)->whereUser($user_id)->get();
 
         $users = $this->user->get();
 

@@ -83,25 +83,43 @@ class User extends Authenticatable
 
         $dateEnd = Carbon::now(); // or $date = new Carbon();
         $dateEnd->setISODate($dateStart->year, $weeknumber); // 2016-10-17 23:59:59.000000
-//
-        return DB::table('clocked')
+
+        $clocked = DB::table('clocked')
             ->where('user_id', '=', $user_id)
             ->where('started_at', '>', $dateStart->startOfWeek())
-            ->where('started_at', '<', $dateEnd->endOfWeek())
-            ->select('*', DB::raw('sum(started_at) as total'))
-            ->groupBy(DB::raw("DAY(started_at)"))
+            ->where('stopped_at', '<', $dateEnd->endOfWeek())
+            ->orderBy('stopped_at','asc')
+            ->orderBy('started_at','desc')
+            ->select(
+//                'started_at',
+//                'stopped_at',
+//                'worked_min',
+                DB::raw('sum(worked_min) as total'),
+                DB::raw("DATE(started_at) as date"),
+                DB::raw("DAYNAME(started_at) as day")
+            )
+            ->groupBy('date')
             ->get();
 
-        return $clocked->groupBy('started_at')->select('*', DB::raw('count(*) as total'));
+        $barChart = [];
+        for ($x = 0; $x <= 7; $x++){
 
-//        return $user
-//            ->clocked()
-//            ->select('*', DB::raw('sum(worked_min) as worked'))
-////            ->get()
-//            ->groupBy(function($date) {
-//                return Carbon::parse($date->started_at)->format('W');
-//            })->orderby('w')
-//            ;
+            $barChart[] = [
+                'day'=> '',
+                'worked'=> '',
+                'brake'=> '',
+            ];
+        }
+
+        return $clocked;
+
+
+
+
+//
+
+
+//        return $clocked->groupBy('started_at')->select('*', DB::raw('count(*) as total'));
     }
 
 

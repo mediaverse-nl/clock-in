@@ -6,19 +6,24 @@ use App\Calendar;
 use App\Card;
 use App\Clocked;
 
+use Carbon\Carbon;
+
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     protected $clocked;
     protected $card;
+    protected $user;
     protected $calendar;
 
-    public function __construct(Clocked $clocked, Card $card, Calendar $calendar)
+    public function __construct(Clocked $clocked, Card $card, Calendar $calendar, User $user)
     {
         $this->clocked = $clocked;
         $this->card = $card;
+        $this->user = $user;
         $this->calendar = $calendar;
     }
 
@@ -29,9 +34,24 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $now = Carbon::now();
         $checked = $this->clocked->thisMonth()->myRecords();
 
-        return view('dashboard')->with('checked', $checked);
+        $clocked = $this->clocked->where('active','=',1)->count();
+        $users = $this->user->get();
+        $calendar = $this->calendar->get();
+        $calendarEvents = $this->calendar
+            ->whereBetween('start', [
+                Carbon::now()->startOfDay(),
+                Carbon::now()->endOfDay()
+            ])->count();
+
+        return view('dashboard')
+            ->with('users', $users)
+            ->with('clocked', $clocked)
+            ->with('calendarEvents', $calendarEvents)
+            ->with('calendar', $calendar)
+            ->with('checked', $checked);
     }
 
     public function show()
