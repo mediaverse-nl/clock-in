@@ -12,6 +12,10 @@ class Calendar extends Model
 
     public $incrementing = true;
 
+    protected $dates = [
+        'start', 'stop'
+    ];
+
     /**
      * Get the user that owns the phone.
      */
@@ -31,6 +35,29 @@ class Calendar extends Model
             return $q->where('user_id', '=', $user_id);
         }
     }
+
+    public function workedFrom()
+    {
+        if($this->title == 'werk'){
+            return $this->user->clocked
+                ->where('started_at', '>=', $this->start)
+                ->sortBy('started_at')
+                ->first()->started_at;
+        }
+    }
+
+    public function workedTo()
+    {
+        if($this->title == 'werk'){
+            return $this
+                ->user
+                ->clocked
+                ->where('stopped_at', '<=', $this->stop)
+                ->sortByDesc('stopped_at')
+                ->first()->stopped_at;
+        }
+    }
+
 
     public function textColor($color = '#fff')
     {

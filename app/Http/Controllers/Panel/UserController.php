@@ -192,6 +192,7 @@ class UserController extends Controller
         return view('users.edit')
             ->with('worked', $worked_time)
             ->with('cards', $cards)
+            ->with('calendar', $calendar)
             ->with('render', $render)//eventTitle
             ->with('user', $user);
     }

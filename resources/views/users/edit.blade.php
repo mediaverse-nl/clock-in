@@ -1,158 +1,151 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12 dash-board">
-            <div class="panel panel-default">
-                <div class="panel-body">
+    @component('components.container-full-width')
+        <div class="col-md-3">
+            <h1><i class="fa fa-wrench"></i> worked <small style="color: #FFFFFF">(this month)</small></h1>
+            <span>{{$worked}}</span>
+        </div>
+        <div class="col-md-3">
+            <h1><i class="fa fa-heart"></i> Active</h1>
+            <span>{{$user->clocked()->where('active', '=', '1')->exists() ? 'working' : 'not working'}}</span>
+        </div>
+        <div class="col-md-3">
+            <h1><i class="fa fa-calendar-alt "></i> Periode</h1>
+            <span>{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}} \ {{Carbon\Carbon::now()->EndOfMonth()->format('d-m-Y')}}</span>
+        </div>
+        <div class="col-md-3">
+            <h1><i class="fa fa-money-bill"></i> Salaris</h1>
+            <span>€ {{$user->payrollThisMonth() * 0.17 }}</span>
+        </div>
+    @endcomponent
 
-                    <div class="col-md-3">
-                        <h1>worked <small style="color: #FFFFFF">(this month)</small></h1>
-                        <span>{{number_format($user->payrollThisMonth() / 60)}}</span>
-                    </div>
-                    <div class="col-md-3">
-                        <h1>Active</h1>
-                        <span></span>
-                    </div>
-                    <div class="col-md-3">
-                        <h1>Periode</h1>
-                        <span>{{Carbon\Carbon::now()->startOfMonth()->format('d-m-Y')}}</span> /
-                        <span>{{Carbon\Carbon::now()->EndOfMonth()->format('d-m-Y')}}</span>
-                    </div>
-                    <div class="col-md-3">
-                        <h1>Salaris</h1>
-                        <span>€ {{$user->payrollThisMonth() * 0.06 }}</span>
-                    </div>
+    <div class="col-md-6">
+        @component('components.table', ['title' => 'Uren log'])
 
-                </div>
+            @slot('head')
+                <th>start</th>
+                <th>stop</th>
+                <th>from</th>
+                <th>to</th>
+            @endslot
+
+            @slot('body')
+                @foreach($calendar as $cal)
+                    <tr>
+                        <td>{{$cal->start}}</td>
+                        <td>{{$cal->stop}}</td>
+                        <td>{{$cal->workedFrom()}}</td>
+                        <td>{{$cal->workedTo()}}</td>
+                    </tr>
+                @endforeach
+            @endslot
+        @endcomponent
+    </div>
+
+    <div class="col-md-6">
+        @component('components.table', ['title' => 'Clocked'])
+            @slot('btn')
+                <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">Toevoegen</a>
+            @endslot
+
+            @slot('head')
+                <th>worked <small>(min)</small></th>
+                <th>started_at</th>
+                <th>stopped_at</th>
+                <th>options</th>
+            @endslot
+
+            @slot('body')
+                @foreach($user->clocked as $clocked)
+                    <tr>
+                        <td>{{$clocked->worked_min}}</td>
+                        <td>{{$clocked->started_at}}</td>
+                        <td>{{$clocked->stopped_at}}</td>
+                        <td>
+                            <a href="{{route('clocked.edit', $user->id)}}" class="btn btn-warning btn-xs">edit</a>
+                            @if($clocked->active == 1)
+                                <a href="#"
+                                   class="btn btn-xs btn-danger"
+                                   orm="delete-{{$clocked->id}}"
+                                   onclick="if(confirm('Press a button!')){$('#del-{{$clocked->id}}').submit();};">stop</a>
+                                {{Form::open(['method'  => 'patch', 'route' => ['clocked.stopTimer', $clocked->id], 'id' => 'del-'.$clocked->id])}}
+                                {{Form::close()}}
+                            @else
+                                <a href="#" class="btn btn-danger disabled btn-xs">stop</a>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            @endslot
+        @endcomponent
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Gegevens
+            </div>
+            <div class="panel-body">
+                {!! $user !!}
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Uren log
-                </div>
-                <div class="panel-body">
-
-                    <div class="text-center">
-                        <label class="label label-success" style="background: #7A92A3;">Pauze</label>
-                        <label class="label label-success" style="background: #0B62A4;">werk</label>
-                        <div id="bar-chart"></div>
-                    </div>
-
-                </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Passen
             </div>
-        </div>
+            <div class="panel-body">
 
-        <div class="col-md-6">
-            @component('components.table', ['title' => 'Clocked'])
-                @slot('btn')
-                    <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">Toevoegen</a>
-                @endslot
-
-                @slot('head')
-                    <th>worked <small>(min)</small></th>
-                    <th>started_at</th>
-                    <th>stopped_at</th>
-                    <th>options</th>
-                @endslot
-
-                @slot('body')
-                    @foreach($user->clocked as $clocked)
-                        <tr>
-                            <td>{{$clocked->worked_min}}</td>
-                            <td>{{$clocked->started_at}}</td>
-                            <td>{{$clocked->stopped_at}}</td>
-                            <td>
-                                <a href="{{route('clocked.edit', $user->id)}}" class="btn btn-warning btn-xs">edit</a>
-                                @if($clocked->active == 1)
-                                    <a href="#"
-                                       class="btn btn-xs btn-danger"
-                                       orm="delete-{{$clocked->id}}"
-                                       onclick="if(confirm('Press a button!')){$('#del-{{$clocked->id}}').submit();};">stop</a>
-                                    {{Form::open(['method'  => 'patch', 'route' => ['clocked.stopTimer', $clocked->id], 'id' => 'del-'.$clocked->id])}}
-                                    {{Form::close()}}
-                                @else
-                                    <a href="#" class="btn btn-danger disabled btn-xs">stop</a>
-                                @endif
-                            </td>
-                        </tr>
+                <label>list of active cards</label>
+                <ul class="list-group">
+                    @foreach($user->cards as $card)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{$card->value}}
+                            <a href="{{route('card.edit', $card->id)}}" class="btn btn-warning btn-xs pull-right">edit</a>
+                        </li>
                     @endforeach
-                @endslot
-            @endcomponent
-        </div>
+                </ul>
 
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Gegevens
-                </div>
-                <div class="panel-body">
-                    {!! $user !!}
-                </div>
-            </div>
-        </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
 
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Passen
-                </div>
-                <div class="panel-body">
+                        {!! Form::open(['route' => ['card.update'], 'method' => 'patch']) !!}
 
-                    <label>list of active cards</label>
-                    <ul class="list-group">
-                        @foreach($user->cards as $card)
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{$card->value}}
-                                <a href="{{route('card.edit', $card->id)}}" class="btn btn-warning btn-xs pull-right">edit</a>
-                            </li>
-                        @endforeach
-                    </ul>
-
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-
-                            {!! Form::open(['route' => ['card.update'], 'method' => 'patch']) !!}
-
-                            <div class="form-group {{ $errors->has('id') ? 'has-error' : ''}}">
-                                {!! Form::label('card', 'Add Card') !!}
-                                {!! Form::select('id', $cards->pluck('value', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
-                                {!! Form::hidden('user_id', $user->id) !!}
-                                <small id="emailHelp" class="form-text text-muted">
-                                    Bind this card to the user.
-                                </small>
-                                @include('components.input-error-msg', ['name' => 'id'])
-                            </div>
-
-                            {!! Form::submit('Add', ['class' => 'btn']) !!}
-
-                            {!! Form::close() !!}
-
+                        <div class="form-group {{ $errors->has('id') ? 'has-error' : ''}}">
+                            {!! Form::label('card', 'Add Card') !!}
+                            {!! Form::select('id', $cards->pluck('value', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
+                            {!! Form::hidden('user_id', $user->id) !!}
+                            <small id="emailHelp" class="form-text text-muted">
+                                Bind this card to the user.
+                            </small>
+                            @include('components.input-error-msg', ['name' => 'id'])
                         </div>
+
+                        {!! Form::submit('Add', ['class' => 'btn']) !!}
+
+                        {!! Form::close() !!}
+
                     </div>
-
                 </div>
+
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Calendar
-                </div>
-                <div class="panel-body">
-                    {!! $render->calendar() !!}
-
-                </div>
-            </div>
-        </div>
-
     </div>
 
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Calendar
+            </div>
+            <div class="panel-body">
+                {!! $render->calendar() !!}
+
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -199,17 +192,6 @@
         #stacked,
         #pie-chart{
             /*min-height: 250px;*/
-        }
-        .dash-board{
-            padding: 0px !important;
-            margin-top: -25px;
-            color: #FFFFFF;
-        }
-        .dash-board > .panel{
-            border: 0px !important;
-            border-radius: 0px !important;
-            height: 200px;
-            background: #3F51B5;
         }
     </style>
 @endpush

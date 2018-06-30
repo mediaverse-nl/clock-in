@@ -7,7 +7,7 @@
         @endif
     </div>
     <div class="panel-body">
-        <table id="data-table" class="display">
+        <table id="data-table-{{str_replace(' ', '-', $title)}}" class="table table-striped table-compact">
             <thead>
             <tr>
                 {{$head}}
@@ -23,7 +23,7 @@
 @push('js')
     <script>
         $(document).ready( function () {
-            $('#data-table').DataTable();
+            $('#data-table-{{str_replace(' ', '-', $title)}}').DataTable();
         } );
     </script>
 @endpush

@@ -37,9 +37,14 @@ class DashboardController extends Controller
         $now = Carbon::now();
         $checked = $this->clocked->thisMonth()->myRecords();
 
-        $clocked = $this->clocked->where('active','=',1)->count();
+        $clockedIn = $this->clocked
+            ->where('active','=',1)
+            ->count();
+
         $users = $this->user->get();
+
         $calendar = $this->calendar->get();
+
         $calendarEvents = $this->calendar
             ->whereBetween('start', [
                 Carbon::now()->startOfDay(),
@@ -48,7 +53,7 @@ class DashboardController extends Controller
 
         return view('dashboard')
             ->with('users', $users)
-            ->with('clocked', $clocked)
+            ->with('clockedIn', $clockedIn)
             ->with('calendarEvents', $calendarEvents)
             ->with('calendar', $calendar)
             ->with('checked', $checked);
