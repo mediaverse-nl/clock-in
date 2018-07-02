@@ -41,8 +41,8 @@ class CalendarController extends Controller
             $events[] = \Calendar::event(
                 $cal->title, //event title
                 $cal->full_day, //full day event?
-                $cal->start, //start time (you can also use Carbon instead of DateTime)
-                $cal->stop, //end time (you can also use Carbon instead of DateTime)
+                $cal->start->format('Y-m-d H:i'), //start time (you can also use Carbon instead of DateTime)
+                $cal->stop ? $cal->stop->format('Y-m-d H:i') : null, //end time (you can also use Carbon instead of DateTime)
                 $cal->id, //optionally, you can specify an event ID
                 [
                     'url' => route('calendar.edit', $cal->id),
@@ -80,6 +80,8 @@ class CalendarController extends Controller
      */
     public function store(CalendarStoreRequest $request)
     {
+        $carbon = new Carbon();
+
         $calendar = $this->calendar;
 
         $calendar->user_id = $request->user;
@@ -87,8 +89,8 @@ class CalendarController extends Controller
         $calendar->description = $request->description;
         $calendar->full_day = $request->full_day == null ? 0:1;
         $calendar->private = $request->private == null ? 0:1;
-        $calendar->start = $request->start;
-        $calendar->stop = $request->stop;
+        $calendar->start = $carbon->parse($request->start);
+        $calendar->stop = $carbon->parse($request->stop);
 
         $calendar->save();
 
@@ -139,15 +141,17 @@ class CalendarController extends Controller
      */
     public function update(CalendarStoreRequest $request, $id)
     {
+        $carbon = new Carbon();
+
         $calendar = $this->calendar->findOrFail($id);
 
         $calendar->user_id = $request->user;
         $calendar->title = $request->title;
         $calendar->description = $request->description;
-        $calendar->full_day = $request->full_day;
-        $calendar->private = $request->private;
-        $calendar->start = $request->start;
-        $calendar->stop = $request->stop;
+        $calendar->full_day = $request->full_day == null ? 0:1;
+        $calendar->private = $request->private == null ? 0:1;
+        $calendar->start = $carbon->parse($request->start);
+        $calendar->stop = $carbon->parse($request->stop);
 
         $calendar->save();
 

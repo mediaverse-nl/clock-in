@@ -10,11 +10,17 @@ class Calendar extends Model
 
     protected $primaryKey = "id";
 
-    public $incrementing = true;
 
     protected $dates = [
-        'start', 'stop'
+        'start',
+        'stop',
+        'created_at',
+        'updated_at'
     ];
+
+    protected $dateFormat = 'Y-m-d H:i:s';
+
+    public $incrementing = true;
 
     /**
      * Get the user that owns the phone.
@@ -39,22 +45,26 @@ class Calendar extends Model
     public function workedFrom()
     {
         if($this->title == 'werk'){
-            return $this->user->clocked
-                ->where('started_at', '>=', $this->start)
-                ->sortBy('started_at')
-                ->first()->started_at;
+            return $this->user->clocked()
+//                ->whereDay('started_at', '=', $this->start->format('Y-m-d'))
+                ->whereDate('started_at', '=', $this->start->format('Y-m-d'))
+
+                //                ->sortBy('started_at')
+                ->get();
         }
     }
 
     public function workedTo()
     {
         if($this->title == 'werk'){
+//            dd($this->stop->format('Y-m-d'));
             return $this
                 ->user
-                ->clocked
-                ->where('stopped_at', '<=', $this->stop)
-                ->sortByDesc('stopped_at')
-                ->first()->stopped_at;
+                ->clocked()
+                ->whereDate('stopped_at', '=', '2018-06-30')
+//                ->sortByDesc('stopped_at')
+//                ->orderBy('stopped_at')
+                ->first();
         }
     }
 

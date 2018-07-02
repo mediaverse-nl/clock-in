@@ -41,7 +41,12 @@
         <!-- /.dropdown -->
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                <i class="fa fa-bell fa-fw"></i>
+                <span class="indicator text-warning d-none d-lg-block">
+                  <i class="fa fa-fw fa-circle"></i>
+                </span>
+                <i class="fa fa-caret-down"></i>
+
             </a>
             <ul class="dropdown-menu dropdown-alerts" style="padding-top: 10px;">
                 @foreach($notificationClocked as $clock)

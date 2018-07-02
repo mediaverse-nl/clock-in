@@ -112,9 +112,10 @@
 
         $('#datetimepicker6').datetimepicker({
             disabledDates: [
-                new Date(2018, 11 - 1, 21),
-                "6/30/2018 00:53"
-            ],            useCurrent: false, //Important! See issue #1075
+//                new Date(2018, 11 - 1, 21),
+//                "6/30/2018 00:53"
+            ],
+            useCurrent: false, //Important! See issue #1075
             inline: true,
             sideBySide: true,
             format : 'YYYY-MM-DD HH:mm'

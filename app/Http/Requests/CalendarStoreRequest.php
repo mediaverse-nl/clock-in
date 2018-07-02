@@ -29,8 +29,8 @@ class CalendarStoreRequest extends FormRequest
             'user' => 'required_if:title,==,werk,==,vrij',
             'full_day' => 'required_if:title,==,feestdag',
             'private' => 'required_if:title,==,werk|required_with:user',
-            'start' => 'required',
-            'stop' => 'nullable|required_if:title,==,werk,==,afspraak',
+            'start' => 'required|date',
+            'stop' => 'nullable|required_if:title,==,werk,==,afspraak|date|after_or_equal:start',
         ];
     }
 }

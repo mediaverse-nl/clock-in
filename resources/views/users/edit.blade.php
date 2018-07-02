@@ -33,10 +33,13 @@
             @slot('body')
                 @foreach($calendar as $cal)
                     <tr>
-                        <td>{{$cal->start}}</td>
-                        <td>{{$cal->stop}}</td>
-                        <td>{{$cal->workedFrom()}}</td>
-                        <td>{{$cal->workedTo()}}</td>
+                        <td>{{$cal->start->format('Y-m-d H:i')}}</td>
+                        <td>{{$cal->stop->format('Y-m-d H:i')}}</td>
+                        <td>
+                            {{--{{$cal->stop}}--}}
+                            {{$cal->workedFrom()}}
+                        </td>
+                        <td>{{ Carbon\Carbon::parse($cal->workedTo())->format('Y-m-d H:i')}}</td>
                     </tr>
                 @endforeach
             @endslot
