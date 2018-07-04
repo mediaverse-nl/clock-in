@@ -29,91 +29,84 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            @component('components.table', ['title' => 'Clocked'])
-                @slot('head')
-                    <th>worked <small>(min)</small></th>
-                    <th>started_at</th>
-                    <th>stopped_at</th>
-                @endslot
+    <div class="col-md-6">
+        @component('components.table', ['title' => 'Clocked'])
+            @slot('head')
+                <th>worked <small>(min)</small></th>
+                <th>started_at</th>
+                <th>stopped_at</th>
+            @endslot
 
-                @slot('body')
-                    @foreach($user->clocked as $clocked)
-                        <tr>
-                            <td>{{$clocked->worked_min}}</td>
-                            <td>{{$clocked->started_at}}</td>
-                            <td>{{$clocked->stopped_at}}</td>
-                        </tr>
-                    @endforeach
-                @endslot
-            @endcomponent
-        </div>
-
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Calendar
-                </div>
-                <div class="panel-body">
-                    {!! $render->calendar() !!}
-
-                </div>
-            </div>
-        </div>
-
+            @slot('body')
+                @foreach($user->clocked as $clocked)
+                    <tr>
+                        <td>{{$clocked->worked_min}}</td>
+                        <td>{{$clocked->started_at}}</td>
+                        <td>{{$clocked->stopped_at}}</td>
+                    </tr>
+                @endforeach
+            @endslot
+        @endcomponent
     </div>
-    <div class="row">
 
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Gegevens
-                </div>
-                <div class="panel-body">
-                    {!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'patch']) !!}
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Calendar
+            </div>
+            <div class="panel-body">
+                {!! $render->calendar() !!}
 
-                    <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-                        {!! Form::label('name', 'name') !!}
-                        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
-                        @include('components.input-error-msg', ['name' => 'name'])
-                    </div>
-
-                    <div class="form-group {{ $errors->has('email') ? 'has-error' : ''}}">
-                        {!! Form::label('email', 'email') !!}
-                        {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'email']) !!}
-                        @include('components.input-error-msg', ['name' => 'email'])
-                    </div>
-
-
-                    {!! Form::submit('save', ['class' => 'btn btn-warning']) !!}
-
-                    {!! Form::close() !!}
-
-                </div>
             </div>
         </div>
-
-
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Uren log
-                </div>
-                <div class="panel-body">
-
-                    <div class="text-center">
-                        <label class="label label-success" style="background: #7A92A3;">Pauze</label>
-                        <label class="label label-success" style="background: #0B62A4;">werk</label>
-                        <div id="bar-chart"></div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
     </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Gegevens
+            </div>
+            <div class="panel-body">
+                {!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'patch']) !!}
+
+                <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+                    {!! Form::label('name', 'name') !!}
+                    {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
+                    @include('components.input-error-msg', ['name' => 'name'])
+                </div>
+
+                <div class="form-group {{ $errors->has('email') ? 'has-error' : ''}}">
+                    {!! Form::label('email', 'email') !!}
+                    {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'email']) !!}
+                    @include('components.input-error-msg', ['name' => 'email'])
+                </div>
+
+
+                {!! Form::submit('save', ['class' => 'btn btn-warning']) !!}
+
+                {!! Form::close() !!}
+
+            </div>
+        </div>
+    </div>
+
+
+    {{--<div class="col-md-6">--}}
+        {{--<div class="panel panel-default">--}}
+            {{--<div class="panel-heading">--}}
+                {{--Uren log--}}
+            {{--</div>--}}
+            {{--<div class="panel-body">--}}
+
+                {{--<div class="text-center">--}}
+                    {{--<label class="label label-success" style="background: #7A92A3;">Pauze</label>--}}
+                    {{--<label class="label label-success" style="background: #0B62A4;">werk</label>--}}
+                    {{--<div id="bar-chart"></div>--}}
+                {{--</div>--}}
+
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 
 
 @endsection

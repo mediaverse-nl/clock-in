@@ -26,7 +26,7 @@ class CalendarStoreRequest extends FormRequest
         return [
             'title' => 'required|max:100',
             'description' => 'nullable|max:200',
-            'user' => 'required_if:title,==,werk,==,vrij',
+            'user' => 'required_if:title,==,werk,==,vrij|required_with:private',
             'full_day' => 'required_if:title,==,feestdag',
             'private' => 'required_if:title,==,werk|required_with:user',
             'start' => 'required|date',
