@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Calendar;
 use App\Card;
 use App\Http\Requests\UserCreateRequest;
 use App\Mail\RegisterdAccount;
@@ -17,11 +18,13 @@ class UserController extends Controller
 {
     protected $user;
     protected $card;
+    protected $calendar;
 
-    public function __construct(User $user, Card $card)
+    public function __construct(User $user, Card $card, Calendar $calendar)
     {
         $this->user = $user;
         $this->card = $card;
+        $this->calendar = $calendar;
     }
 
     /**
@@ -131,65 +134,17 @@ class UserController extends Controller
     {
         $user = $this->user->findOrFail($id);
 
-        $workedMin = $user->clocked()->where('active', '=', 0)->sum('worked_min');
         $calendar = $user->calendar()->get();
         $clocked = $user->clocked()->get();
+        $cards = $this->card->where('user_id', '=', null)->get();
+        $worked_time = $user->workingTime();
 
-        $hours = number_format(floor($workedMin / 60), 0);
-//        dd($hours);
-        $min = number_format( $workedMin - $hours * 60  );
+        $events = array_merge(
+            $this->calendar->calendarEvents($calendar),
+            $this->calendar->calendarClocked($clocked)
+        );
 
-        $worked_time = 'h'.$hours.' m'.$min;
-
-        $events = [];
-
-        $cards = $this->card
-            ->where('user_id', '=', null)
-            ->get();
-
-        foreach ($calendar as $cal){
-            $events[] = \Calendar::event(
-                '- '.$cal->title, //event title
-                $cal->full_day, //full day event?
-                $cal->start, //start time (you can also use Carbon instead of DateTime)
-                $cal->stop, //end time (you can also use Carbon instead of DateTime)
-                $cal->id, //optionally, you can specify an event ID
-                [
-                    'url' => route('calendar.edit', $cal->id),
-                    'textColor' => $cal->textColor(), //'#0A0A0A'
-                    'color' => $cal->backgroundColor(), //'#444444'
-                ]
-            );
-        }
-
-        foreach ($clocked as $clock){
-            $events[] = \Calendar::event(
-                '- '. Carbon::parse($clock->stopped_at)->format('H:i'), //event title
-                false, //full day event?
-                Carbon::parse($clock->started_at), //start time (you can also use Carbon instead of DateTime)
-                Carbon::parse($clock->stopped_at),  //end time (you can also use Carbon instead of DateTime)
-                null, //optionally, you can specify an event ID
-                [
-                    'url' => route('clocked.edit', $clock->id),
-                    'textColor' => $cal->textColor(), //'#0A0A0A'
-                    'color' => $cal->backgroundColor(), //'#444444'
-                ]
-            );
-        }
-
-        $render = \Calendar::addEvents($events) //add an array with addEvents
-        ->setOptions([ //set fullcalendar options
-            'FirstDay' => 1,
-            'contentheight' => 850,
-            'editable' => false,
-            'allDay' => false,
-            'aspectRatio' => 1.5,
-            'slotLabelFormat' => 'HH:mm:ss',
-            'timeFormat' => 'HH:mm',
-            'color' => '#73e600',
-        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            //            'viewRender' => 'function() {alert("Callbacks!");}'
-        ]);
+        $render = $this->calendar->renderCalendar($events);
 
         return view('users.edit')
             ->with('worked', $worked_time)
@@ -207,17 +162,6 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
     {
         //
     }

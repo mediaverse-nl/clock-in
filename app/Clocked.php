@@ -13,7 +13,8 @@ class Clocked extends Model
     protected $dates = [
         'created_at',
         'updated_at',
-        'started_at'
+        'started_at',
+        'stopped_at'
     ];
     /**
      * Get the user that owns the phone.
@@ -66,6 +67,7 @@ class Clocked extends Model
 
         return $userId;
     }
+
 
     /**
      * @return bool

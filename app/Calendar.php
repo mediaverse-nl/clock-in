@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Calendar extends Model
 {
@@ -110,6 +111,70 @@ class Calendar extends Model
         }
         return false;
     }
+
+    public function calendarClocked($clocked)
+    {
+        $events = [];
+
+        if(!empty($clocked)){
+            foreach ($clocked as $clock){
+                $events[] = \Calendar::event(
+                    '- '. Carbon::parse($clock->stopped_at)->format('H:i'), //event title
+                    false, //full day event?
+                    Carbon::parse($clock->started_at), //start time (you can also use Carbon instead of DateTime)
+                    Carbon::parse($clock->stopped_at),  //end time (you can also use Carbon instead of DateTime)
+                    null, //optionally, you can specify an event ID
+                    [
+                        'url' => route('clocked.edit', $clock->id),
+                        'textColor' => '#fff', //''
+                        'color' => '#444444', //''
+                    ]
+                );
+            }
+        }
+        return $events;
+    }
+
+    public function calendarEvents($calendar)
+    {
+        $events = [];
+
+        if(!empty($calendar)){
+            foreach ($calendar as $cal){
+                $events[] = \Calendar::event(
+                    '- '.$cal->title, //event title
+                    $cal->full_day, //full day event?
+                    Carbon::parse($cal->start), //start time (you can also use Carbon instead of DateTime)
+                    Carbon::parse($cal->stop), //end time (you can also use Carbon instead of DateTime)
+                    $cal->id, //optionally, you can specify an event ID
+                    [
+                        'url' => route('calendar.edit', $cal->id),
+                        'textColor' => $cal->textColor(), //'#0A0A0A'
+                        'color' => $cal->backgroundColor(), //'#444444'
+                    ]
+                );
+            }
+        }
+        return $events;
+    }
+
+    public function renderCalendar($events){
+
+        return \Calendar::addEvents($events) //add an array with addEvents
+            ->setOptions([ //set fullcalendar options
+                'FirstDay' => 1,
+                'contentheight' => 850,
+                'editable' => false,
+                'allDay' => false,
+                'aspectRatio' => 1.5,
+                'slotLabelFormat' => 'HH:mm:ss',
+                'timeFormat' => 'HH:mm',
+                'color' => '#73e600',
+            ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+                //            'viewRender' => 'function() {alert("Callbacks!");}'
+            ]);
+    }
+
 
     public static function eventTitle()
     {

@@ -79,10 +79,11 @@ class ClockedController extends Controller
 
     public function update(Request $request, $id)
     {
+//        dd($id);
         $entry = $this->clocked->findOrFail($id);
 
-        $entry->started_at = $request->started_at;
-        $entry->stopped_at = $request->stopped_at;
+        $entry->started_at = Carbon::parse($request->started_at);
+        $entry->stopped_at = Carbon::parse($request->stopped_at);
         $entry->worked_min = Carbon::parse($request->stopped_at)->diffInMinutes($request->started_at);
 
         $entry->save();

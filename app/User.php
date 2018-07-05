@@ -53,6 +53,19 @@ class User extends Authenticatable
         return $this->hasMany('App\Clocked');
     }
 
+    public function workingTime()
+    {
+        $workedMin = $this->clocked()->where('active', '=', 0)->sum('worked_min');
+        $hours = number_format(floor($workedMin / 60), 0);
+        $min = number_format( $workedMin - $hours * 60  );
+
+        if ($min <= 9){
+            $min = '0'.$min;
+        }
+
+        return $hours.':'.$min;
+    }
+
     public function isClockedIn()
     {
        $status = $this->clocked()
