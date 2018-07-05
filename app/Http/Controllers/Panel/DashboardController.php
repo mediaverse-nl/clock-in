@@ -101,21 +101,22 @@ class DashboardController extends Controller
                 $cal->stop, //end time (you can also use Carbon instead of DateTime)
                 $cal->id, //optionally, you can specify an event ID
                 [
-                    'url' => route('calendar.edit', $cal->id),
+                    'url' => route('calendar.show', $cal->id),
                     'textColor' => $cal->textColor(), //'#0A0A0A'
                     'color' => $cal->backgroundColor(), //'#444444'
                 ]
             );
         }
-        foreach ($clocked as $clock){
+
+        foreach ($clocked->sortBy('started_at') as $clock){
             $events[] = \Calendar::event(
-                '- in', //event title
+                '- '. Carbon::parse($clock->stopped_at)->format('H:i'), //event title
                 false, //full day event?
-                $clock->start, //start time (you can also use Carbon instead of DateTime)
-                $clock->stop, //end time (you can also use Carbon instead of DateTime)
-                $clock->id, //optionally, you can specify an event ID
+                Carbon::parse($clock->started_at), //start time (you can also use Carbon instead of DateTime)
+                Carbon::parse($clock->stopped_at),
+                'calendar-'.$clock->id, //optionally, you can specify an event ID
                 [
-                    'url' => route('clocked.edit', $clock->id),
+//                    'url' => route('clocked.show', $clock->id),
                     'textColor' => '#fff', //'#0A0A0A'
                     'color' => '#0A0A0A', //''
                 ]

@@ -6,6 +6,7 @@ use App\Card;
 use App\Http\Requests\UserCreateRequest;
 use App\Mail\RegisterdAccount;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use  App\Http\Controllers\Controller;
@@ -160,17 +161,18 @@ class UserController extends Controller
                 ]
             );
         }
+
         foreach ($clocked as $clock){
             $events[] = \Calendar::event(
-                '- in', //event title
+                '- '. Carbon::parse($clock->stopped_at)->format('H:i'), //event title
                 false, //full day event?
-                $clock->start, //start time (you can also use Carbon instead of DateTime)
-                $clock->stop, //end time (you can also use Carbon instead of DateTime)
-                $clock->id, //optionally, you can specify an event ID
+                Carbon::parse($clock->started_at), //start time (you can also use Carbon instead of DateTime)
+                Carbon::parse($clock->stopped_at),  //end time (you can also use Carbon instead of DateTime)
+                null, //optionally, you can specify an event ID
                 [
                     'url' => route('clocked.edit', $clock->id),
-                    'textColor' => '#fff', //'#0A0A0A'
-                    'color' => '#0A0A0A', //''
+                    'textColor' => $cal->textColor(), //'#0A0A0A'
+                    'color' => $cal->backgroundColor(), //'#444444'
                 ]
             );
         }

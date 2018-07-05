@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Card
+                    Clocked Time
                 </div>
                 <div class="panel-body">
                     {!! Form::model($clocked, ['route' => ['clocked.update', $clocked->id], 'method' => 'patch']) !!}
@@ -15,22 +15,22 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('started_at', 'started_at') !!}
-                                {!! Form::text('started_at', $clocked->started_at, ['class' => 'form-control', 'disabled']) !!}
+                                {!! Form::text('time-z', $clocked->started_at, ['class' => 'form-control', 'disabled']) !!}
                             </div>
                             <div class="form-group">
                                 {!! Form::label('stopped_at', 'stopped_at') !!}
                                 <div class="datetimepicker6">
-                                    {!! Form::text('stopped_at', $clocked->stopped_at, ['class' => 'form-control', 'disabled']) !!}
+                                    {!! Form::text('time-y', $clocked->stopped_at, ['class' => 'form-control', 'disabled']) !!}
                                 </div>
                             </div>
                             <div class="form-group">
                                 {!! Form::label('worked_min', 'worked_min') !!}
-                                {!! Form::text('worked_min', $clocked->worked_min, ['class' => 'form-control', 'disabled']) !!}
+                                {!! Form::text('time-x', $clocked->worked_min, ['class' => 'form-control', 'disabled']) !!}
                             </div>
 
                             <div class="form-group">
                                 {!! Form::label('active', 'active') !!}
-                                {!! Form::checkbox('active', $clocked->active, ['class' => 'form-control', 'disabled']) !!}
+                                {!! Form::checkbox('active', null, ['class' => 'form-control', 'disabled']) !!}
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -61,8 +61,8 @@
                         </div>
                     </div>
 
-                    {!! Form::submit('Update', ['class' => 'btn']) !!}
-
+                    {!! Form::submit('Opslaan', ['class' => 'btn btn-success']) !!}
+                    <a href="{{route('clocked.index')}}" class="btn btn-primary">back</a>
                     {!! Form::close() !!}
 
                 </div>

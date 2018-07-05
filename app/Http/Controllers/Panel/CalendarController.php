@@ -109,7 +109,7 @@ class CalendarController extends Controller
 
         $users = $this->user->get();
 
-        return view('calendar.edit')
+        return view('calendar.show')
             ->with('calendar', $calendar)
             ->with('users', $users);
     }

@@ -20,136 +20,184 @@
         </div>
     @endcomponent
 
-    <div class="col-md-6">
-        @component('components.table', ['title' => 'Uren log'])
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Calendar
+                    </div>
+                    <div class="panel-body">
+                        {!! $render->calendar() !!}
 
-            @slot('head')
-                <th>start</th>
-                <th>stop</th>
-                <th>from</th>
-                <th>to</th>
-            @endslot
-
-            @slot('body')
-                @foreach($calendar as $cal)
-                    <tr>
-                        <td>{{$cal->start->format('Y-m-d H:i')}}</td>
-                        <td>{{$cal->stop->format('Y-m-d H:i')}}</td>
-                        <td>
-                            {{--{{$cal->stop}}--}}
-                            {{$cal->workedFrom()}}
-                        </td>
-                        <td>{{ Carbon\Carbon::parse($cal->workedTo())->format('Y-m-d H:i')}}</td>
-                    </tr>
-                @endforeach
-            @endslot
-        @endcomponent
-    </div>
-
-    <div class="col-md-6">
-        @component('components.table', ['title' => 'Clocked'])
-            @slot('btn')
-                <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">Toevoegen</a>
-            @endslot
-
-            @slot('head')
-                <th>worked <small>(min)</small></th>
-                <th>started_at</th>
-                <th>stopped_at</th>
-                <th>options</th>
-            @endslot
-
-            @slot('body')
-                @foreach($user->clocked as $clocked)
-                    <tr>
-                        <td>{{$clocked->worked_min}}</td>
-                        <td>{{$clocked->started_at}}</td>
-                        <td>{{$clocked->stopped_at}}</td>
-                        <td>
-                            <a href="{{route('clocked.edit', $user->id)}}" class="btn btn-warning btn-xs">edit</a>
-                            @if($clocked->active == 1)
-                                <a href="#"
-                                   class="btn btn-xs btn-danger"
-                                   orm="delete-{{$clocked->id}}"
-                                   onclick="if(confirm('Press a button!')){$('#del-{{$clocked->id}}').submit();};">stop</a>
-                                {{Form::open(['method'  => 'patch', 'route' => ['clocked.stopTimer', $clocked->id], 'id' => 'del-'.$clocked->id])}}
-                                {{Form::close()}}
-                            @else
-                                <a href="#" class="btn btn-danger disabled btn-xs">stop</a>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            @endslot
-        @endcomponent
-    </div>
-
-    <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Gegevens
+                    </div>
+                </div>
             </div>
-            <div class="panel-body">
-                {!! $user !!}
+
+            <div class="col-md-6">
+                @component('components.table', ['title' => 'Clocked'])
+                    @slot('btn')
+                        <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">
+                            <i class="fa fa-plus fa-fw"></i>
+                        </a>
+                    @endslot
+
+                    @slot('head')
+                        <th>started_at</th>
+                        <th>stopped_at</th>
+                        <th>worked <small>(min)</small></th>
+                        <th class="no-sort">options</th>
+                    @endslot
+
+                    @slot('body')
+                        @foreach($user->clocked as $clocked)
+                            <tr>
+                                <td>{{$clocked->started_at}}</td>
+                                <td>{{$clocked->stopped_at}}</td>
+                                <td>{{$clocked->worked_min}}</td>
+                                <td>
+                                    @component('components.dropdown-btn')
+                                        <li>
+                                            <a href="{{route('clocked.edit', $clocked->id)}}">
+                                                <i class="fa fa-edit fa-fw"></i>
+                                                edit
+                                            </a>
+                                        </li>
+                                        <li class="{{$clocked->active == 1 ? : 'disabled'}}">
+                                            @if($clocked->active == 1)
+                                                <a href="#"
+                                                   class="btn btn-xs btn-danger"
+                                                   orm="delete-{{$clocked->id}}"
+                                                   onclick="if(confirm('Weet je zeker dat je dit wilt doen?')){$('#del-{{$clocked->id}}').submit();};">
+                                                    <i class="fa fa-stop-circle fa-fw"></i> stop
+                                                </a>
+                                                {{Form::open(['method'  => 'patch', 'route' => ['clocked.stopTimer', $clocked->id], 'id' => 'del-'.$clocked->id])}}
+
+                                                {{Form::close()}}
+                                            @else
+                                                <a href="#" class="disabled"><i class="fa fa-stop-circle fa-fw"></i> stop</a>
+                                            @endif
+                                        </li>
+                                    @endcomponent
+
+
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endslot
+                @endcomponent
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Passen
-            </div>
-            <div class="panel-body">
+    <div class="col-md-12">
 
-                <label>list of active cards</label>
-                <ul class="list-group">
-                    @foreach($user->cards as $card)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{$card->value}}
-                            <a href="{{route('card.edit', $card->id)}}" class="btn btn-warning btn-xs pull-right">edit</a>
-                        </li>
-                    @endforeach
-                </ul>
+        <div class="row">
 
+            <div class="col-md-3">
                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Gegevens
+                    </div>
                     <div class="panel-body">
 
-                        {!! Form::open(['route' => ['card.update'], 'method' => 'patch']) !!}
+                        {!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'patch']) !!}
 
-                        <div class="form-group {{ $errors->has('id') ? 'has-error' : ''}}">
-                            {!! Form::label('card', 'Add Card') !!}
-                            {!! Form::select('id', $cards->pluck('value', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
-                            {!! Form::hidden('user_id', $user->id) !!}
-                            <small id="emailHelp" class="form-text text-muted">
-                                Bind this card to the user.
-                            </small>
-                            @include('components.input-error-msg', ['name' => 'id'])
-                        </div>
-
-                        {!! Form::submit('Add', ['class' => 'btn']) !!}
+                            <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+                                {!! Form::label('name', 'User Name') !!}
+                                {!! Form::text('name', null, ['class' => 'form-control', 'disabled']) !!}
+                                @include('components.input-error-msg', ['name' => 'name'])
+                            </div>
+                            <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+                                {!! Form::label('email', 'E-Mail Address') !!}
+                                {!! Form::email('email', null, ['class' => 'form-control', 'disabled']) !!}
+                                @include('components.input-error-msg', ['name' => 'email'])
+                            </div>
 
                         {!! Form::close() !!}
 
                     </div>
                 </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Passen
+                    </div>
+                    <div class="panel-body">
+
+                        <label>list of active cards</label>
+                        <ul class="list-group">
+                            @foreach($user->cards as $card)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{$card->created_at}}
+                                    <a href="{{route('card.edit', $card->id)}}" class="btn btn-warning btn-xs pull-right">                                                <i class="fa fa-edit fa-fw"></i>
+                                    </a>
+                                </li>
+                            @endforeach
+                            @if($user->cards->count() == 0)
+                                Geen kaart gevond.
+                            @endif
+                        </ul>
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+
+                                {!! Form::open(['route' => ['card.update'], 'method' => 'patch']) !!}
+
+                                <div class="form-group {{ $errors->has('id') ? 'has-error' : ''}}">
+                                    {!! Form::label('card', 'Add Card') !!}
+                                    {!! Form::select('id', $cards->pluck('created_at', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
+                                    {!! Form::hidden('user_id', $user->id) !!}
+                                    <small id="emailHelp" class="form-text text-muted">
+                                        Bind een kaart aan de gebruiker.
+                                    </small>
+                                    @include('components.input-error-msg', ['name' => 'id'])
+                                </div>
+
+                                {!! Form::submit('Opslaan', ['class' => 'btn btn-success']) !!}
+
+                                {!! Form::close() !!}
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
+
+
+        {{--<div class="col-md-6">--}}
+            {{--@component('components.table', ['title' => 'Uren log'])--}}
+
+                {{--@slot('head')--}}
+                    {{--<th>start</th>--}}
+                    {{--<th>stop</th>--}}
+                    {{--<th>from</th>--}}
+                    {{--<th>to</th>--}}
+                {{--@endslot--}}
+
+                {{--@slot('body')--}}
+                    {{--@foreach($calendar as $cal)--}}
+                        {{--<tr>--}}
+                            {{--<td>{{$cal->start->format('Y-m-d H:i')}}</td>--}}
+                            {{--<td>{{$cal->stop->format('Y-m-d H:i')}}</td>--}}
+                            {{--<td>--}}
+                                {{--{{$cal->stop}}--}}
+                                {{--{{$cal->workedFrom()}}--}}
+                            {{--</td>--}}
+                            {{--<td>{{ Carbon\Carbon::parse($cal->workedTo())->format('Y-m-d H:i')}}</td>--}}
+                        {{--</tr>--}}
+                    {{--@endforeach--}}
+                {{--@endslot--}}
+            {{--@endcomponent--}}
+        {{--</div>--}}
+
         </div>
     </div>
-
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Calendar
-            </div>
-            <div class="panel-body">
-                {!! $render->calendar() !!}
-
-            </div>
-        </div>
-    </div>
-
 @endsection
 
 @push('js')

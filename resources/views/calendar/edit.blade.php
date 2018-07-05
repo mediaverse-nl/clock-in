@@ -8,11 +8,15 @@
                 <div class="panel-heading">
                     <span>Calendar Event</span>
                     <div class="pull-right">
-                        {!! Form::model($calendar, ['route' => ['calendar.destroy', $calendar->id], 'method' => 'delete']) !!}
+                        <a href="#"
+                           class="btn btn-xs btn-danger"
+                           orm="delete-{{$calendar->id}}"
+                           onclick="if(confirm('Weet je zeker dat je dit wilt doen?')){$('#del-{{$calendar->id}}').submit();};">
+                            <i class="fa fa-trash fa-fw"></i>
+                        </a>
+                        {{Form::open(['method'  => 'patch', 'route' => ['calendar.destroy', $calendar->id], 'id' => 'del-'.$calendar->id])}}
 
-                        {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
-
-                        {!! Form::close() !!}
+                        {{Form::close()}}
                     </div>
 
                 </div>

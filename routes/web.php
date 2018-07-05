@@ -72,12 +72,49 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
 
             $excel->setDescription('A demonstration to change the file properties');
 
-            $excel->sheet('Sheet 1', function($sheet) use($users) {
-                $sheet->fromArray($users->take(5));
-            });
-            $excel->sheet('Sheet 2', function($sheet) use($users) {
-                $sheet->fromArray($users->take(2));
-            });
+
+            $start_row = 2;
+
+            $row = $start_row;
+
+            foreach ($users as $user)
+            {
+                $excel->sheet($user->name, function($sheet) use($user, $row)
+                {
+                    $clocked = $user->clocked()->thisMonth()->get();
+
+                    $sheet->setCellValue('A1', 'start');
+                    $sheet->setCellValue('B1', 'stop');
+                    $sheet->setCellValue('C1', 'totaal gewerkte min');
+
+                    $sheet->setCellValue('D1', $clocked->sum('worked_min'));
+
+                    $sheet->fromArray(
+                        array_except($user->toArray(),
+                            ['id', 'clocked', 'created_at', 'updated_at']
+                        ),
+                        null,
+                        'G3',
+                        false,
+                        false
+                    );
+
+                    foreach ($clocked as $clock)
+                    {
+                        $sheet->row($row, array_except($clock->toArray(),
+                            ['created_at', 'updated_at', 'user_id', 'active', 'id']
+                        ));
+
+                        $row++;
+                    }
+                });
+                $row = $start_row;
+            }
+
+
+//            $excel->sheet('Sheet 2', function($sheet) use($users) {
+//                $sheet->fromArray($users->take(2));
+//            });
         })->export('xls');
 
     });

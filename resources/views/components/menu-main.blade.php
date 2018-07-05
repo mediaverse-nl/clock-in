@@ -42,7 +42,8 @@
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-bell fa-fw"></i>
-                <span class="indicator text-warning d-none d-lg-block">
+
+                <span class="indicator text-{{Auth::user()->isClockedIn() ? 'success' : 'danger'}} d-none d-lg-block">
                   <i class="fa fa-fw fa-circle"></i>
                 </span>
                 <i class="fa fa-caret-down"></i>
@@ -57,10 +58,15 @@
                                 {{\Carbon\Carbon::parse($clock->started_at)->diffForHumans(\Carbon\Carbon::now(), true, true, 3)}}
                                 <span class="pull-right text-muted small">{{$clock->diffInTime()}}</span>
                             </div>
+
+
                         </a>
                     </li>
-
-                    <li class="divider"></li>
+                    @if(!$loop->last)
+                        <li class="divider"></li>
+                    @else
+                        <br />
+                    @endif
                 @endforeach
 
                 {{--<li>--}}
@@ -80,7 +86,7 @@
             <ul class="dropdown-menu dropdown-user">
                 {{--<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>--}}
                 {{--</li>--}}
-                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Change Password</a>
+                <li><a href="#"><i class="fa fa-cog fa-fw"></i> Change Password</a>
                 </li>
                 <li class="divider"></li>
                 <li>
@@ -105,25 +111,43 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav in" id="side-menu">
                 <li>
-                    <a href="{{route('dashboard')}}"><i class="fa fa-tachometer-alt fa-fw"></i> Dashboard </a>
+                    <a href="{{route('dashboard')}}" class="{{\Request::is('panel/dashboard*') ? 'active' : '' }}">
+                        <i class="fa fa-tachometer-alt fa-fw"></i>
+                        Dashboard
+                    </a>
                 </li>
                 <li>
-                    <a href="{{route('auth.dashboard')}}"><i class="fa fa-chart-line fa-fw"></i> Mijn Dashboard </a>
+                    <a href="{{route('auth.dashboard')}}" class="{{\Request::is('panel/mijn-dashboard*') ? 'active' : '' }}">
+                        <i class="fa fa-chart-line fa-fw"></i>
+                        Mijn Dashboard
+                    </a>
                 </li>
                 <li>
-                    <a href="{{route('card.index')}}"><i class="fa fa-id-card fa-fw"></i> Card</a>
+                    <a href="{{route('card.index')}}" class="{{\Request::is('panel/card*') ? 'active' : ''  }}">
+                        <i class="fa fa-id-card fa-fw"></i>
+                        Card
+                    </a>
                 </li>
-                <li>
-                    <a href="{{route('user.index')}}"><i class="fa fa-users fa-fw"></i> Users</a>
+                <li >
+                    <a href="{{route('user.index')}}" class="{{\Request::is('panel/user*') ? 'active' : ''  }}">
+                        <i class="fa fa-users fa-fw"></i>
+                        Users
+                    </a>
                 </li>
                 <li class="disabled">
-                    <a href="#"><i class="fa fa-hand-holding-usd fa-fw"></i> Payroll</a>
+                    <a><i class="fa fa-hand-holding-usd fa-fw"></i> Payroll</a>
                 </li>
                 <li class="">
-                    <a href="{{route('clocked.index')}}"><i class="fa fa-user-clock fa-fw"></i> clocked</a>
+                    <a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">
+                        <i class="fa fa-user-clock fa-fw"></i>
+                        clocked
+                    </a>
                 </li>
                 <li class="">
-                    <a href="{{route('calendar.index')}}"><i class="fa fa-calendar-alt fa-fw"></i> Calendar</a>
+                    <a href="{{route('calendar.index')}}" class="{{\Request::is('panel/calendar*') ? 'active' : ''  }}">
+                        <i class="fa fa-calendar-alt fa-fw"></i>
+                        Calendar
+                    </a>
                 </li>
 
             </ul>
