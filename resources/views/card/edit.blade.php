@@ -40,6 +40,11 @@
                     </div>
 
                     <div class="form-group">
+                        {!! Form::label('created_at', 'Registered at') !!}
+                        {!! Form::text('created_at', null, ['class' => 'form-control', 'disabled']) !!}
+                    </div>
+
+                    <div class="form-group">
                         {!! Form::label('user_id', 'User') !!}
                         {!! Form::select('user_id', $user->pluck('name', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
                         <small id="emailHelp" class="form-text text-muted">

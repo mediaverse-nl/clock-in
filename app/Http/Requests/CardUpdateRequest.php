@@ -25,7 +25,7 @@ class CardUpdateRequest extends FormRequest
     {
 //        TODO CHECK IF NEW CARD CAN STILL BE ADDED BY CLOCKING IN
         return [
-            'id'  => 'required|required_with:user_id',
+            'value'  => 'required',
             'user_id'  => 'numeric|nullable',
         ];
     }

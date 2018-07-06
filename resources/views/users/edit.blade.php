@@ -66,7 +66,6 @@
                                         <li class="{{$clocked->active == 1 ? : 'disabled'}}">
                                             @if($clocked->active == 1)
                                                 <a href="#"
-                                                   class="btn btn-xs btn-danger"
                                                    orm="delete-{{$clocked->id}}"
                                                    onclick="if(confirm('Weet je zeker dat je dit wilt doen?')){$('#del-{{$clocked->id}}').submit();};">
                                                     <i class="fa fa-stop-circle fa-fw"></i> stop
@@ -144,19 +143,21 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
 
-                                {!! Form::open(['route' => ['card.update'], 'method' => 'patch']) !!}
+                                {!! var_dump($errors) !!}
+                                {!! Form::model($card, ['route' => ['card.update'], 'method' => 'patch']) !!}
 
-                                <div class="form-group {{ $errors->has('id') ? 'has-error' : ''}}">
-                                    {!! Form::label('card', 'Add Card') !!}
-                                    {!! Form::select('id', $cards->pluck('created_at', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
-                                    {!! Form::hidden('user_id', $user->id) !!}
-                                    <small id="emailHelp" class="form-text text-muted">
-                                        Bind een kaart aan de gebruiker.
-                                    </small>
-                                    @include('components.input-error-msg', ['name' => 'id'])
-                                </div>
+                                    <div class="form-group {{ $errors->has('value') ? 'has-error' : ''}}">
+                                        {!! Form::label('value', 'Add Card') !!}
+                                        {!! Form::select('value', $user->pluck('name', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
+                                        {!! Form::hidden('user_id', $user->id) !!}
+                                        {!! Form::hidden('user_id',  $card->id) !!}
+                                        <small id="emailHelp" class="form-text text-muted">
+                                            Bind een kaart aan de gebruiker.
+                                        </small>
+                                        @include('components.input-error-msg', ['name' => 'id'])
+                                    </div>
 
-                                {!! Form::submit('Opslaan', ['class' => 'btn btn-success']) !!}
+                                    {!! Form::submit('Opslaan', ['class' => 'btn btn-success']) !!}
 
                                 {!! Form::close() !!}
 

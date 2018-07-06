@@ -6,11 +6,12 @@ use App\Calendar;
 use App\Card;
 use App\Http\Requests\UserCreateRequest;
 use App\Mail\RegisterdAccount;
+use App\Role;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-use  App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -18,12 +19,14 @@ class UserController extends Controller
 {
     protected $user;
     protected $card;
+    protected $role;
     protected $calendar;
 
-    public function __construct(User $user, Card $card, Calendar $calendar)
+    public function __construct(User $user, Card $card, Calendar $calendar, Role $role)
     {
         $this->user = $user;
         $this->card = $card;
+        $this->role = $role;
         $this->calendar = $calendar;
     }
 
@@ -75,56 +78,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $user = $this->user->findOrFail($id);
-
-        $calendar = $user->calendar;
-
-        $events = [];
-
-        foreach ($calendar as $cal){
-            $events[] = \Calendar::event(
-                $cal->title, //event title
-                $cal->full_day, //full day event?
-                $cal->start, //start time (you can also use Carbon instead of DateTime)
-                $cal->stop, //end time (you can also use Carbon instead of DateTime)
-                $cal->id, //optionally, you can specify an event ID
-                [
-                    'url' => route('calendar.edit', $cal->id),
-                    'textColor' => $cal->textColor(), //'#0A0A0A'
-                    'color' => $cal->backgroundColor(), //'#444444'
-                ]
-            );
-        }
-
-        $render = \Calendar::addEvents($events) //add an array with addEvents
-        ->setOptions([ //set fullcalendar options
-            'FirstDay' => 1,
-            'contentheight' => 850,
-            'editable' => false,
-            'allDay' => false,
-            'aspectRatio' => 1.5,
-            'slotLabelFormat' => 'HH:mm:ss',
-            'timeFormat' => 'HH:mm',
-            'color' => '#73e600',
-        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            //            'viewRender' => 'function() {alert("Callbacks!");}'
-        ]);
-
-        return view('users.show')
-            ->with('calendar', $calendar)
-            ->with('render', $render)//eventTitle
-            ->with('user', $user);
-
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -133,9 +86,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = $this->user->findOrFail($id);
-
         $calendar = $user->calendar()->get();
         $clocked = $user->clocked()->get();
+        $role = $this->role->get();
+        $roles = $user->userRoles()->get();
         $cards = $this->card->where('user_id', '=', null)->get();
         $worked_time = $user->workingTime();
 
@@ -149,6 +103,8 @@ class UserController extends Controller
         return view('users.edit')
             ->with('worked', $worked_time)
             ->with('cards', $cards)
+            ->with('role', $role)
+            ->with('roles', $roles)
             ->with('calendar', $calendar)
             ->with('render', $render)//eventTitle
             ->with('user', $user);

@@ -9,6 +9,7 @@
                 <th>id</th>
                 <th>card</th>
                 <th>gebruiker</th>
+                <th>geregistreerd</th>
                 <th class="no-sort">options</th>
             @endslot
 
@@ -18,6 +19,7 @@
                         <td>{{$card->id}}</td>
                         <td>{{$card->value}}</td>
                         <td>{{$card->user_id !== null ? $card->user->name : 'geen'}}</td>
+                        <td>{{$card->created_at}}</td>
                         <td>
                             @component('components.dropdown-btn')
                                 <li>
@@ -29,7 +31,7 @@
                                 <li class="{{$card->user_id == null ? : 'disabled'}}">
                                     @if($card->user_id == null)
                                         <a form="delete-{{$card->id}}"
-                                           onclick="if(confirm('Press a button!')){$('#delete-{{$card->id}}').submit();};">
+                                           onclick="if(confirm('Are you sure you want to delete this item?')){$('#delete-{{$card->id}}').submit();};">
                                             <i class="fa fa-trash fa-fw"></i>
                                             delete
                                         </a>

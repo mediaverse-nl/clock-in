@@ -82,8 +82,10 @@ class CardController extends Controller
     {
         if (empty($id)){
             $card = $this->card->findOrFail($request->id);
-        }else{
+        }elseif ($id != null){
             $card = $this->card->findOrFail($id);
+        }else{
+            abort(403);
         }
 
         $card->user_id = $request->user_id;
@@ -107,6 +109,6 @@ class CardController extends Controller
         $card = $this->card->findOrFail($id);
         $card->delete();
 
-        return redirect()->back();
+        return redirect()->route('card.index');
     }
 }

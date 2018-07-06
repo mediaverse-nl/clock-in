@@ -35,36 +35,11 @@ class CalendarController extends Controller
 
         $users = $this->user->get();
 
-        $events = [];
+        $events = array_merge(
+            $this->calendar->calendarEvents($calendar)
+        );
 
-        foreach ($calendar as $cal){
-            $events[] = \Calendar::event(
-                $cal->title, //event title
-                $cal->full_day, //full day event?
-                $cal->start->format('Y-m-d H:i'), //start time (you can also use Carbon instead of DateTime)
-                $cal->stop ? $cal->stop->format('Y-m-d H:i') : null, //end time (you can also use Carbon instead of DateTime)
-                $cal->id, //optionally, you can specify an event ID
-                [
-                    'url' => route('calendar.edit', $cal->id),
-                    'textColor' => $cal->textColor(), //'#0A0A0A'
-                    'color' => $cal->backgroundColor(), //'#444444'
-                ]
-            );
-        }
-
-        $render = \Calendar::addEvents($events) //add an array with addEvents
-            ->setOptions([ //set fullcalendar options
-            'FirstDay' => 1,
-            'contentheight' => 850,
-            'editable' => false,
-            'allDay' => false,
-            'aspectRatio' => 1.5,
-            'slotLabelFormat' => 'HH:mm:ss',
-            'timeFormat' => 'HH:mm',
-            'color' => '#73e600',
-            ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-    //            'viewRender' => 'function() {alert("Callbacks!");}'
-            ]);
+        $render = $this->calendar->renderCalendar($events);
 
         return view('calendar.index')
             ->with('calendar', $calendar)
