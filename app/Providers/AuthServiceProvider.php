@@ -14,6 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Product' => 'App\Policies\RolePolicy',
     ];
 
     /**
@@ -25,6 +26,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('permission', function ($user, ...$permission) {
+            if ($user->hasAccess($permission)) {
+                return true;
+            }
+        });
     }
 }

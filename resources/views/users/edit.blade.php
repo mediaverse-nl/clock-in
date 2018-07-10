@@ -102,16 +102,31 @@
 
                         {!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'patch']) !!}
 
-                            <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-                                {!! Form::label('name', 'User Name') !!}
-                                {!! Form::text('name', null, ['class' => 'form-control', 'disabled']) !!}
-                                @include('components.input-error-msg', ['name' => 'name'])
-                            </div>
-                            <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-                                {!! Form::label('email', 'E-Mail Address') !!}
-                                {!! Form::email('email', null, ['class' => 'form-control', 'disabled']) !!}
-                                @include('components.input-error-msg', ['name' => 'email'])
-                            </div>
+                        <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+                            {!! Form::label('name', 'User Name') !!}
+                            {!! Form::text('name', null, ['class' => 'form-control', 'disabled']) !!}
+                            @include('components.input-error-msg', ['name' => 'name'])
+                        </div>
+                        <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+                            {!! Form::label('email', 'E-Mail Address') !!}
+                            {!! Form::email('email', null, ['class' => 'form-control', 'disabled']) !!}
+                            @include('components.input-error-msg', ['name' => 'email'])
+                        </div>
+
+                        <div class="form-group">
+                            @foreach($roles as $role)
+                                {!! Form::checkbox('roles[]',
+                                    $role->id,
+                                    in_array($role->id, $user->userRoles()->pluck('role_id')->toArray()),
+                                    ['id' => $role->value]) !!}
+                                {!! Form::label($role->value, $role->value) !!}
+                            @endforeach
+
+                            @include('components.input-error-msg', ['name' => 'email'])
+                        </div>
+
+                        {!! Form::submit('Opslaan', ['class' => 'btn btn-success']) !!}
+
 
                         {!! Form::close() !!}
 
@@ -143,21 +158,19 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
 
-                                {!! var_dump($errors) !!}
-                                {!! Form::model($card, ['route' => ['card.update'], 'method' => 'patch']) !!}
+                                {!! Form::open(['route' => ['user.update.card'], 'method' => 'patch']) !!}
 
-                                    <div class="form-group {{ $errors->has('value') ? 'has-error' : ''}}">
-                                        {!! Form::label('value', 'Add Card') !!}
-                                        {!! Form::select('value', $user->pluck('name', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
-                                        {!! Form::hidden('user_id', $user->id) !!}
-                                        {!! Form::hidden('user_id',  $card->id) !!}
-                                        <small id="emailHelp" class="form-text text-muted">
-                                            Bind een kaart aan de gebruiker.
-                                        </small>
-                                        @include('components.input-error-msg', ['name' => 'id'])
-                                    </div>
+                                <div class="form-group {{ $errors->has('card') ? 'has-error' : ''}}">
+                                    {!! Form::label('card', 'Kaart toevoegen') !!}
+                                    {!! Form::select('card', $cards->pluck('created_at', 'id'), null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
+                                    {!! Form::hidden('user_id', $user->id) !!}
+                                    <small id="emailHelp" class="form-text text-muted">
+                                        Bind een kaart aan de gebruiker.
+                                    </small>
+                                    @include('components.input-error-msg', ['name' => 'card'])
+                                </div>
 
-                                    {!! Form::submit('Opslaan', ['class' => 'btn btn-success']) !!}
+                                {!! Form::submit('Opslaan', ['class' => 'btn btn-success']) !!}
 
                                 {!! Form::close() !!}
 
@@ -170,80 +183,93 @@
 
             </div>
 
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        ----
+                    </div>
+                    <div class="panel-body">
 
-        {{--<div class="col-md-6">--}}
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            {{--<div class="col-md-6">--}}
             {{--@component('components.table', ['title' => 'Uren log'])--}}
 
-                {{--@slot('head')--}}
-                    {{--<th>start</th>--}}
-                    {{--<th>stop</th>--}}
-                    {{--<th>from</th>--}}
-                    {{--<th>to</th>--}}
-                {{--@endslot--}}
+            {{--@slot('head')--}}
+            {{--<th>start</th>--}}
+            {{--<th>stop</th>--}}
+            {{--<th>from</th>--}}
+            {{--<th>to</th>--}}
+            {{--@endslot--}}
 
-                {{--@slot('body')--}}
-                    {{--@foreach($calendar as $cal)--}}
-                        {{--<tr>--}}
-                            {{--<td>{{$cal->start->format('Y-m-d H:i')}}</td>--}}
-                            {{--<td>{{$cal->stop->format('Y-m-d H:i')}}</td>--}}
-                            {{--<td>--}}
-                                {{--{{$cal->stop}}--}}
-                                {{--{{$cal->workedFrom()}}--}}
-                            {{--</td>--}}
-                            {{--<td>{{ Carbon\Carbon::parse($cal->workedTo())->format('Y-m-d H:i')}}</td>--}}
-                        {{--</tr>--}}
-                    {{--@endforeach--}}
-                {{--@endslot--}}
+            {{--@slot('body')--}}
+            {{--@foreach($calendar as $cal)--}}
+            {{--<tr>--}}
+            {{--<td>{{$cal->start->format('Y-m-d H:i')}}</td>--}}
+            {{--<td>{{$cal->stop->format('Y-m-d H:i')}}</td>--}}
+            {{--<td>--}}
+            {{--{{$cal->stop}}--}}
+            {{--{{$cal->workedFrom()}}--}}
+            {{--</td>--}}
+            {{--<td>{{ Carbon\Carbon::parse($cal->workedTo())->format('Y-m-d H:i')}}</td>--}}
+            {{--</tr>--}}
+            {{--@endforeach--}}
+            {{--@endslot--}}
             {{--@endcomponent--}}
-        {{--</div>--}}
+            {{--</div>--}}
 
         </div>
     </div>
 @endsection
 
 @push('js')
-    {!! $render->script() !!}
+{!! $render->script() !!}
 
-    <script>
-        var data = [
-                { y: 'ma', a: 50, b: 90},
-                { y: 'di', a: 65,  b: 75},
-                { y: 'wo', a: 50,  b: 50},
-                { y: 'do', a: 75,  b: 60},
-                { y: 'vr', a: 80,  b: 65},
-                { y: 'za', a: 90,  b: 70},
-                { y: 'zo', a: 100, b: 75}
-            ],
-            config = {
-                data: data,
-                xkey: 'y',
-                ykeys: ['a', 'b'],
-                labels: ['Werk', 'Pauze'],
-                fillOpacity: 0.6,
-                yLabelFormat: function (y) { return y.toString() + ' uur'; },
-                xLabelMargin: 10,
+<script>
+    var data = [
+            { y: 'ma', a: 50, b: 90},
+            { y: 'di', a: 65,  b: 75},
+            { y: 'wo', a: 50,  b: 50},
+            { y: 'do', a: 75,  b: 60},
+            { y: 'vr', a: 80,  b: 65},
+            { y: 'za', a: 90,  b: 70},
+            { y: 'zo', a: 100, b: 75}
+        ],
+        config = {
+            data: data,
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Werk', 'Pauze'],
+            fillOpacity: 0.6,
+            yLabelFormat: function (y) { return y.toString() + ' uur'; },
+            xLabelMargin: 10,
 //                xLabelAngle: 45,
-                hideHover: 'auto',
-                behaveLikeLine: true,
-                resize: true,
-                pointFillColors:['#ffffff'],
-                pointStrokeColors: ['black'],
-                lineColors:['gray','red']
-            };
-        config.element = 'bar-chart';
-        config.stacked = true;
-        Morris.Bar(config);
-    </script>
+            hideHover: 'auto',
+            behaveLikeLine: true,
+            resize: true,
+            pointFillColors:['#ffffff'],
+            pointStrokeColors: ['black'],
+            lineColors:['gray','red']
+        };
+    config.element = 'bar-chart';
+    config.stacked = true;
+    Morris.Bar(config);
+</script>
 @endpush
 
 @push('css')
-    <style>
-        #area-chart,
-        #line-chart,
-        #bar-chart,
-        #stacked,
-        #pie-chart{
-            /*min-height: 250px;*/
-        }
-    </style>
+<style>
+    #area-chart,
+    #line-chart,
+    #bar-chart,
+    #stacked,
+    #pie-chart{
+        /*min-height: 250px;*/
+    }
+</style>
 @endpush

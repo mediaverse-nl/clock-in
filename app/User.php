@@ -58,6 +58,15 @@ class User extends Authenticatable
         return $this->hasMany('App\UserRole');
     }
 
+    public function hasAccess($permissions)
+    {
+        foreach ($this->userRoles as $role) {
+            if(in_array($role->role->value, $permissions)) {
+                return true;
+            }
+        }
+    }
+
     public function workingTime()
     {
         $workedMin = $this->clocked()->where('active', '=', 0)->sum('worked_min');

@@ -88,8 +88,8 @@ class UserController extends Controller
         $user = $this->user->findOrFail($id);
         $calendar = $user->calendar()->get();
         $clocked = $user->clocked()->get();
-        $role = $this->role->get();
-        $roles = $user->userRoles()->get();
+        $roles = $this->role->get();
+        $role = $user->userRoles()->get();
         $cards = $this->card->where('user_id', '=', null)->get();
         $worked_time = $user->workingTime();
 
@@ -119,7 +119,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = $this->user->findOrFail($id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        $user->save();
+
+        if (!empty($request->roles))
+        {
+            $user->userRoles()->delete();
+
+            foreach ($request->roles as $role){
+                $user->userRoles()->insert(['user_id' => $id, 'role_id' => $role]);
+            }
+        }
+
+        return redirect()
+            ->route('user.edit', $id);
     }
 
 }

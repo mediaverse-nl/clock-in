@@ -111,45 +111,46 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav in" id="side-menu">
                 <li>
-                    <a href="{{route('dashboard')}}" class="{{\Request::is('panel/dashboard*') ? 'active' : '' }}">
-                        <i class="fa fa-tachometer-alt fa-fw"></i>
-                        Dashboard
-                    </a>
-                </li>
-                <li>
                     <a href="{{route('auth.dashboard')}}" class="{{\Request::is('panel/mijn-dashboard*') ? 'active' : '' }}">
                         <i class="fa fa-chart-line fa-fw"></i>
                         Mijn Dashboard
                     </a>
                 </li>
-                <li>
-                    <a href="{{route('card.index')}}" class="{{\Request::is('panel/card*') ? 'active' : ''  }}">
-                        <i class="fa fa-id-card fa-fw"></i>
-                        Card
-                    </a>
-                </li>
-                <li >
-                    <a href="{{route('user.index')}}" class="{{\Request::is('panel/user*') ? 'active' : ''  }}">
-                        <i class="fa fa-users fa-fw"></i>
-                        Users
-                    </a>
-                </li>
-                <li class="disabled">
-                    <a><i class="fa fa-hand-holding-usd fa-fw"></i> Payroll</a>
-                </li>
-                <li class="">
-                    <a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">
-                        <i class="fa fa-user-clock fa-fw"></i>
-                        clocked
-                    </a>
-                </li>
-                <li class="">
-                    <a href="{{route('calendar.index')}}" class="{{\Request::is('panel/calendar*') ? 'active' : ''  }}">
-                        <i class="fa fa-calendar-alt fa-fw"></i>
-                        Calendar
-                    </a>
-                </li>
-
+                @can('permission', ['admin'])
+                    <li>
+                        <a href="{{route('dashboard')}}" class="{{\Request::is('panel/dashboard*') ? 'active' : '' }}">
+                            <i class="fa fa-tachometer-alt fa-fw"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('card.index')}}" class="{{\Request::is('panel/card*') ? 'active' : ''  }}">
+                            <i class="fa fa-id-card fa-fw"></i>
+                            Card
+                        </a>
+                    </li>
+                    <li >
+                        <a href="{{route('user.index')}}" class="{{\Request::is('panel/user*') ? 'active' : ''  }}">
+                            <i class="fa fa-users fa-fw"></i>
+                            Users
+                        </a>
+                    </li>
+                    {{--<li class="disabled">--}}
+                        {{--<a><i class="fa fa-hand-holding-usd fa-fw"></i> Payroll</a>--}}
+                    {{--</li>--}}
+                    <li class="">
+                        <a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">
+                            <i class="fa fa-user-clock fa-fw"></i>
+                            clocked
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{{route('calendar.index')}}" class="{{\Request::is('panel/calendar*') ? 'active' : ''  }}">
+                            <i class="fa fa-calendar-alt fa-fw"></i>
+                            Calendar
+                        </a>
+                    </li>
+                @endcan
             </ul>
         </div>
         <!-- /.sidebar-collapse -->

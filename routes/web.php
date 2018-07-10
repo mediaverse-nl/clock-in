@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 use App\User;
 
 Route::get('/', function () {
@@ -42,6 +41,8 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     Route::patch('/card/{id?}', 'CardController@update')->name('card.update');
     Route::delete('/card/{id?}', 'CardController@destroy')->name('card.destroy');
 
+//    Route::resource('mail', 'MailController');
+    Route::patch('/user/add-card', 'UserController@addCard')->name('user.update.card');
     Route::resource('user', 'UserController');
     Route::resource('calendar', 'CalendarController');
 
@@ -51,16 +52,6 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     Route::patch('/clocked/{id}/stop', 'ClockedController@stopTimer')->name('clocked.stopTimer');
     Route::patch('/clocked/{id}/start', 'ClockedController@startTimer')->name('clocked.startTimer');
     Route::patch('/clocked/{id}/update', 'ClockedController@update')->name('clocked.update');
-
-
-
-    Route::get('test2', function (){
-        $user = new User;
-        $weeknumber = \Illuminate\Support\Facades\Input::get('weeknumber');
-        $user_id = \Illuminate\Support\Facades\Input::get('user');
-
-        return $user->barChartThisWeek($weeknumber, $user_id);
-    });
 
     Route::get('test', function (){
         $users = User::select('id', 'name', 'email', 'created_at')->get();
@@ -81,7 +72,7 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
             {
                 $excel->sheet($user->name, function($sheet) use($user, $row)
                 {
-                    $clocked = $user->clocked()->thisMonth()->get();
+                    $clocked = $user->clocked->ThisMonth();
 
                     $sheet->setCellValue('A1', 'start');
                     $sheet->setCellValue('B1', 'stop');

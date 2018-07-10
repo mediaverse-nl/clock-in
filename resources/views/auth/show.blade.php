@@ -61,34 +61,34 @@
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Gegevens
-            </div>
-            <div class="panel-body">
-                {!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'patch']) !!}
+    {{--<div class="col-md-6">--}}
+        {{--<div class="panel panel-default">--}}
+            {{--<div class="panel-heading">--}}
+                {{--Gegevens--}}
+            {{--</div>--}}
+            {{--<div class="panel-body">--}}
+                {{--{!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'patch']) !!}--}}
 
-                <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-                    {!! Form::label('name', 'name') !!}
-                    {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}
-                    @include('components.input-error-msg', ['name' => 'name'])
-                </div>
+                {{--<div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">--}}
+                    {{--{!! Form::label('name', 'name') !!}--}}
+                    {{--{!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => '-- select --']) !!}--}}
+                    {{--@include('components.input-error-msg', ['name' => 'name'])--}}
+                {{--</div>--}}
 
-                <div class="form-group {{ $errors->has('email') ? 'has-error' : ''}}">
-                    {!! Form::label('email', 'email') !!}
-                    {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'email']) !!}
-                    @include('components.input-error-msg', ['name' => 'email'])
-                </div>
+                {{--<div class="form-group {{ $errors->has('email') ? 'has-error' : ''}}">--}}
+                    {{--{!! Form::label('email', 'email') !!}--}}
+                    {{--{!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'email']) !!}--}}
+                    {{--@include('components.input-error-msg', ['name' => 'email'])--}}
+                {{--</div>--}}
 
 
-                {!! Form::submit('save', ['class' => 'btn btn-warning']) !!}
+                {{--{!! Form::submit('save', ['class' => 'btn btn-warning']) !!}--}}
 
-                {!! Form::close() !!}
+                {{--{!! Form::close() !!}--}}
 
-            </div>
-        </div>
-    </div>
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 
 
     {{--<div class="col-md-6">--}}
