@@ -18,7 +18,7 @@ class CreateDevicesTable extends Migration
             $table->unsignedInteger('location_id')->unsigned();
             $table->foreign('location_id')->references('id')->on('location');
             $table->string('version');
-            $table->string('serial_nr');
+            $table->string('serial_nr')->unique();
             $table->timestamps();
         });
     }
