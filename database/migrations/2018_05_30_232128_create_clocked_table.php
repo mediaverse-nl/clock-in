@@ -17,7 +17,7 @@ class CreateClockedTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedInteger('device_id')->nullable();
+            $table->unsignedInteger('device_id');
             $table->foreign('device_id')->references('id')->on('devices');
             $table->string('started_at');
             $table->string('stopped_at')->nullable();

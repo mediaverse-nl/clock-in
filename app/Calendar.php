@@ -11,7 +11,6 @@ class Calendar extends Model
 
     protected $primaryKey = "id";
 
-
     protected $dates = [
         'start',
         'stop',

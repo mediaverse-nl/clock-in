@@ -19,8 +19,8 @@ class CreateSettingsTable extends Migration
             $table->foreign('business_id')->references('id')->on('business');
             $table->string('accountant_email');
             $table->string('manager_email');
-            $table->decimal('user_unit_price', 3);
-            $table->decimal('device_unit_price', 3);
+            $table->decimal('user_unit_price', 10, 2);
+            $table->decimal('device_unit_price', 10, 2);
             $table->timestamps();
         });
     }
