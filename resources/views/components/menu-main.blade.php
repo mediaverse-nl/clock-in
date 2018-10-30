@@ -110,13 +110,23 @@
     <div class="navbar-default sidebar bar-menu" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav in" id="side-menu">
+                <br>
+                <li>
+                    <h4 style="padding: 0px 15px;">normal user</h4>
+                </li>
                 <li>
                     <a href="{{route('auth.dashboard')}}" class="{{\Request::is('panel/mijn-dashboard*') ? 'active' : '' }}">
                         <i class="fa fa-chart-line fa-fw"></i>
                         Mijn Dashboard
                     </a>
                 </li>
+
+
                 @can('permission', ['admin'])
+                    <br>
+                    <li>
+                        <h4 style="padding: 0px 15px;">manager</h4>
+                    </li>
                     <li>
                         <a href="{{route('dashboard')}}" class="{{\Request::is('panel/dashboard*') ? 'active' : '' }}">
                             <i class="fa fa-tachometer-alt fa-fw"></i>
@@ -151,6 +161,93 @@
                         </a>
                     </li>
                 @endcan
+
+                {{--<br>--}}
+                {{--<li>--}}
+                    {{--<h4 style="padding: 0px 15px;">admin <small>location specific</small></h4>--}}
+                {{--</li>--}}
+                {{--<li class="">--}}
+                    {{--<a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">--}}
+                        {{--<i class="fa fa-user-clock fa-fw"></i>--}}
+                        {{--devices--}}
+                    {{--</a>--}}
+                {{--</li>--}}
+                {{--<li class="">--}}
+                    {{--<a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">--}}
+                        {{--<i class="fa fa-user-clock fa-fw"></i>--}}
+                        {{--packages--}}
+                    {{--</a>--}}
+                {{--</li>--}}
+
+
+                <br>
+                <li>
+                    <h4 style="padding: 0px 15px;">super admin</h4>
+                </li>
+                {{--<li class="">--}}
+                    {{--<a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">--}}
+                        {{--<i class="fa fa-user-clock fa-fw"></i>--}}
+                        {{--locations > whitelist,devices--}}
+                    {{--</a>--}}
+                {{--</li>--}}
+                {{--<li class="">--}}
+                    {{--<a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">--}}
+                        {{--<i class="fa fa-user-clock fa-fw"></i>--}}
+                        {{--business > locations,settings,packages--}}
+                    {{--</a>--}}
+                {{--</li>--}}
+                <li class="">
+                    <a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">
+                        <i class="fa fa-user-clock fa-fw"></i>
+                        tickets/reports
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="#">
+                        <i class="fa fa-sitemap fa-fw"></i>
+                        Business
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-user-clock fa-fw"></i>
+                                settings
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-user-clock fa-fw"></i>
+                                packages
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-sitemap fa-fw"></i>
+                                location
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-third-level collapse" aria-expanded="false" style="">
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-user-clock fa-fw"></i>
+                                        whitelist
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-user-clock fa-fw"></i>
+                                        devices
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-third-level -->
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+
             </ul>
         </div>
         <!-- /.sidebar-collapse -->
