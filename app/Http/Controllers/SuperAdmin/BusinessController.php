@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers\SuperAdmin;
 
+use App\Business;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class BusinessController extends Controller
 {
+    protected $business;
+
+    public function __construct(Business $business)
+    {
+        $this->business = $business;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,10 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        //
+        $business = $this->business->get();
+
+        return view('admin.business.index')
+            ->with('business', $business);
     }
 
     /**
@@ -46,7 +57,10 @@ class BusinessController extends Controller
      */
     public function show($id)
     {
-        //
+        $business = $this->business->findOrFail($id);
+
+        return view('admin.business.show')
+            ->with('business', $business);
     }
 
     /**

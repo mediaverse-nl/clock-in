@@ -58,6 +58,11 @@ class User extends Authenticatable
         return $this->hasMany('App\UserRole');
     }
 
+    public function business()
+    {
+        return $this->belongsTo('App\Business');
+    }
+
     public function hasAccess($permissions)
     {
         foreach ($this->userRoles as $role) {

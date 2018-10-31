@@ -26,14 +26,24 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 Route::get('password/change', 'Auth\ChangePasswordController@showChangePasswordForm')->name('password.change.form');
 Route::post('password/change', 'Auth\ChangePasswordController@changePassword')->name('password.postChangePassword');
 
+Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('SuperAdmin')->group(function () {
+    Route::get('/dashboard', 'DashboardController')->name('dashboard');
+    Route::resource('business', 'BusinessController');
+    Route::resource('packages', 'PackagesController');
+    Route::resource('location', 'LocationsController', ['only' => [
+        'index', 'destroy', 'show'
+    ]]);
+
+});
+
 Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function () {
 
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('/mijn-dashboard', 'DashboardController@show')->name('auth.dashboard');
 
-    Route::get('/payroll', 'PayrollController@index')->name('payroll.index');
-    Route::get('/payroll/{id}', 'PayrollController@show')->name('payroll.show');
-    Route::get('/payroll/{id}/edit', 'PayrollController@edit')->name('payroll.edit');
+//    Route::get('/payroll', 'PayrollController@index')->name('payroll.index');
+//    Route::get('/payroll/{id}', 'PayrollController@show')->name('payroll.show');
+//    Route::get('/payroll/{id}/edit', 'PayrollController@edit')->name('payroll.edit');
 
     Route::get('/card', 'CardController@index')->name('card.index');
     Route::get('/card/{id}', 'CardController@show')->name('card.show');

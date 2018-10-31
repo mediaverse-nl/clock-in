@@ -172,6 +172,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         GeneaLabs\LaravelCaffeine\LaravelCaffeineServiceProvider::class,
         Webklex\IMAP\Providers\LaravelServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
 
         /*
@@ -238,6 +239,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Client' => Webklex\IMAP\Facades\Client::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 

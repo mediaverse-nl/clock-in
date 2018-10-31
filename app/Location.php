@@ -19,5 +19,18 @@ class Location extends Model
 
     public $incrementing = true;
 
+    public function business()
+    {
+        return $this->belongsTo('App\Business', 'business_id', 'id');
+    }
 
+    public function whitelist()
+    {
+        return $this->belongsToMany('App\Whitelist');
+    }
+
+    public function devices()
+    {
+        return $this->belongsToMany('App\Devices');
+    }
 }
