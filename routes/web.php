@@ -31,7 +31,7 @@ Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('S
     Route::resource('business', 'BusinessController');
     Route::resource('packages', 'PackagesController');
     Route::resource('location', 'LocationsController', ['only' => [
-        'index', 'destroy', 'show'
+        'index', 'destroy', 'show', 'edit'
     ]]);
 
 });

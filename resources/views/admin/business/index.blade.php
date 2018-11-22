@@ -4,9 +4,9 @@
 
     <div class="col-md-8">
 
-        @component('components.table', ['title' => 'Users'])
+        @component('components.table', ['title' => 'Business'])
             @slot('btn')
-                <a href="{{route('user.create')}}" class="btn btn-success btn-xs pull-right">
+                <a href="{{route('u')}}" class="btn btn-success btn-xs pull-right">
                     <i class="fa fa-plus fa-fw"></i>
                 </a>
             @endslot
@@ -14,16 +14,16 @@
             @slot('head')
                 <th>id</th>
                 <th>name</th>
-                {{--<th>name</th>--}}
+                {{--<th>x</th>--}}
                 <th class="no-sort">options</th>
             @endslot
 
             @slot('body')
                 @foreach($business as $buss)
                     <tr>
-                        <td>{{$buss->id}}</td>
+                        <td>{{$buss->id}} <span class="hidden">{{$buss}}</span></td>
                         <td>{{$buss->name}}</td>
-{{--                        <td>{{$user}}</td>--}}
+                        {{--<td></td>--}}
                         <td>
                             @component('components.dropdown-btn')
                                 <li>

@@ -71,7 +71,10 @@ class BusinessController extends Controller
      */
     public function edit($id)
     {
-        //
+        $business = $this->business->findOrFail($id);
+
+        return view('admin.business.edit')
+            ->with('business', $business);
     }
 
     /**
@@ -83,7 +86,7 @@ class BusinessController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
