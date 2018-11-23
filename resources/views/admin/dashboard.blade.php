@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="col-md-4">
-        <a href="{{route('clocked.index')}}">
+        <a href="{{route('super.business.index')}}">
             <div class="panel panel-default" id="start-panel">
                 <div class="panel-body">
                     <i class="fa fa-user-clock fa-5x"></i>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-md-4">
-        <a href="{{route('clocked.index')}}">
+        <a href="{{route('super.dashboard')}}">
             <div class="panel panel-default" id="start-panel">
                 <div class="panel-body">
                     <i class="fa fa-user-clock fa-5x"></i>

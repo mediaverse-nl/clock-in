@@ -15,5 +15,6 @@ class VerifyCsrfToken extends BaseVerifier
         //
         'test',
         'clocked',
+        'check-status',
     ];
 }

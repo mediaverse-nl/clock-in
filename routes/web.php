@@ -27,13 +27,13 @@ Route::get('password/change', 'Auth\ChangePasswordController@showChangePasswordF
 Route::post('password/change', 'Auth\ChangePasswordController@changePassword')->name('password.postChangePassword');
 
 Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('SuperAdmin')->group(function () {
+    Route::get('/', 'DashboardController');
     Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::resource('business', 'BusinessController');
     Route::resource('packages', 'PackagesController');
     Route::resource('location', 'LocationsController', ['only' => [
         'index', 'destroy', 'show', 'edit'
     ]]);
-
 });
 
 Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function () {
@@ -50,6 +50,7 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     Route::get('/card/{id}/edit', 'CardController@edit')->name('card.edit');
     Route::patch('/card/{id?}', 'CardController@update')->name('card.update');
     Route::delete('/card/{id?}', 'CardController@destroy')->name('card.destroy');
+
 
 //    Route::resource('mail', 'MailController');
     Route::patch('/user/add-card', 'UserController@addCard')->name('user.update.card');
@@ -111,13 +112,10 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
                 });
                 $row = $start_row;
             }
-
-
 //            $excel->sheet('Sheet 2', function($sheet) use($users) {
 //                $sheet->fromArray($users->take(2));
 //            });
         })->export('xls');
-
     });
 });
 
@@ -125,4 +123,10 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
 
 //Route::get('/dashboard', 'DashboardController@index')->middleware(['checkForUser', 'auth']);
 Route::post('/clocked', 'ClockedController@check')->name('clocked.check')->middleware('checkForUser');
+Route::get('/check-status', function (){
+    return 'ok';
+});
+Route::post('/check-status', function (){
+    return 'ok';
+});
 
