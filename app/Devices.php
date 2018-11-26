@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Devices extends Model
 {
-    protected $table = 'devices';
+    protected $table = 'device';
 
     protected $primaryKey = "id";
 
@@ -21,7 +21,7 @@ class Devices extends Model
 
     public function location()
     {
-        return $this->belongsTo('App\Location');
+        return $this->belongsTo('App\Location', 'location_id', 'id');
     }
 
     public function clocked()

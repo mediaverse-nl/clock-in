@@ -2,31 +2,17 @@
 
 namespace App\Http\Controllers\SuperAdmin;
 
-use App\Business;
-use App\Location;
+use App\Functions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class LocationsController extends Controller
+class FunctionController extends Controller
 {
-    protected $location;
+    protected $function;
 
-    protected $business;
-
-    public function __construct(Location $location, Business $business)
+    public function __construct(Functions $function)
     {
-        $this->location = $location;
-        $this->business = $business;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view('admin.location.index');
+        $this->function = $function;
     }
 
     /**
@@ -36,7 +22,7 @@ class LocationsController extends Controller
      */
     public function create($business_id)
     {
-        return view('admin.location.create')
+        return view('admin.function.create')
             ->with('business_id', $business_id);
     }
 
@@ -48,12 +34,26 @@ class LocationsController extends Controller
      */
     public function store(Request $request)
     {
-        $location = $this->location;
+        $function = $this->function;
 
-        $location->create($request->except('_method', '_token'));
+        $function->business_id = $request->business_id;
+        $function->value = $request->value;
+
+        $function->save();
 
         return redirect()
             ->route('super.business.edit', $request->business_id);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
     }
 
     /**
@@ -64,10 +64,7 @@ class LocationsController extends Controller
      */
     public function edit($id)
     {
-        $location = $this->location->findOrFail($id);
-
-        return view('admin.location.edit')
-            ->with('location', $location);
+        //
     }
 
     /**

@@ -35,7 +35,7 @@ class BusinessController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.business.create');
     }
 
     /**
@@ -46,7 +46,22 @@ class BusinessController extends Controller
      */
     public function store(Request $request)
     {
-        //
+//        todo validation of request
+        $business = $this->business;
+
+        $business->save($request->all());
+
+        $business->package()->create([
+            'business_id' => $business->id,
+            'price' => 0
+        ]);
+        $business->settings()->create([
+            'business_id' => $business->id,
+            'user_unit_price' => 0
+        ]);
+
+        return redirect()
+            ->route('super.business.edit', $business->id);
     }
 
     /**

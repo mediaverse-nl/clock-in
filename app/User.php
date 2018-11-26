@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Card');
     }
 
+    public function userFunctions()
+    {
+        return $this->hasMany('App\UserFunctions', 'user_id', 'id');
+    }
+
     public function clocked()
     {
         return $this->hasMany('App\Clocked');

@@ -30,9 +30,23 @@ Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('S
     Route::get('/', 'DashboardController');
     Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::resource('business', 'BusinessController');
-    Route::resource('packages', 'PackagesController');
+    Route::resource('package', 'PackagesController');
+    Route::get('/l-{id}/device/create', 'DeviceController@create')->name('device.create');
+    Route::resource('device', 'DevicesController', ['only' => [
+        'destroy', 'store', 'edit', 'update'
+    ]]);
+    Route::get('/b-{id}/function/create', 'FunctionController@create')->name('function.create');
+    Route::resource('function', 'FunctionController', ['only' => [
+        'destroy', 'store', 'edit', 'update'
+    ]]);
+    Route::get('/b-{id}/user/create', 'UserController@create')->name('user.create');
+    Route::resource('user', 'UserController', ['only' => [
+        'destroy', 'store', 'edit', 'update'
+    ]]);
+    Route::resource('settings', 'PackagesController');
+    Route::get('/b-{id}/location/create', 'LocationsController@create')->name('location.create');
     Route::resource('location', 'LocationsController', ['only' => [
-        'index', 'destroy', 'show', 'edit'
+        'destroy', 'store', 'edit', 'update'
     ]]);
 });
 

@@ -15,6 +15,8 @@ class Business extends Model
         'updated_at'
     ];
 
+    protected $fillable = ['name', 'coc_nr', 'vat_nr', 'bank_name', 'bank_iban', 'address', 'address_nr', 'postal_code', 'place', 'country'];
+
     protected $dateFormat = 'Y-m-d H:i:s';
 
     public $incrementing = true;
@@ -26,16 +28,21 @@ class Business extends Model
 
     public function package()
     {
-        return $this->belongsTo('App\Packages');
+        return $this->hasOne('App\Packages');
     }
 
     public function settings()
     {
-        return $this->belongsTo('App\Settings');
+        return $this->hasOne('App\Settings');
     }
 
     public function locations()
     {
         return $this->hasMany('App\Location', 'business_id', 'id');
+    }
+
+    public function functions()
+    {
+        return $this->hasMany('App\Functions', 'business_id', 'id');
     }
 }

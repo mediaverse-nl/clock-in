@@ -10,6 +10,8 @@ class Packages extends Model
 
     protected $primaryKey = "id";
 
+    protected $fillable = ['price', 'business_id'];
+
     protected $dates = [
         'created_at',
         'updated_at'

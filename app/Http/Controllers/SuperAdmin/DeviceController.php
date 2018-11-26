@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\SuperAdmin;
 
-use App\Business;
+use App\Devices;
 use App\Location;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class LocationsController extends Controller
+class DeviceController extends Controller
 {
+    protected $device;
     protected $location;
 
-    protected $business;
-
-    public function __construct(Location $location, Business $business)
+    public function __construct(Devices $device, Location $location)
     {
         $this->location = $location;
-        $this->business = $business;
+        $this->device = $device;
     }
 
     /**
@@ -26,7 +25,7 @@ class LocationsController extends Controller
      */
     public function index()
     {
-        return view('admin.location.index');
+        //
     }
 
     /**
@@ -34,10 +33,15 @@ class LocationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($business_id)
+    public function create($location_id)
     {
-        return view('admin.location.create')
-            ->with('business_id', $business_id);
+        $devices = $this->device
+            ->where('location_id', '=', null)
+            ->get();
+
+        return view('admin.device.create')
+            ->with('devices', $devices)
+            ->with('location_id', $location_id);
     }
 
     /**
@@ -48,12 +52,23 @@ class LocationsController extends Controller
      */
     public function store(Request $request)
     {
-        $location = $this->location;
+        $device = $this->device;
 
-        $location->create($request->except('_method', '_token'));
+        $device->location_id = $request->location_id;
+//        $device->location_id = $request->device;
 
-        return redirect()
-            ->route('super.business.edit', $request->business_id);
+        return ;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
     }
 
     /**
@@ -64,10 +79,7 @@ class LocationsController extends Controller
      */
     public function edit($id)
     {
-        $location = $this->location->findOrFail($id);
-
-        return view('admin.location.edit')
-            ->with('location', $location);
+        //
     }
 
     /**

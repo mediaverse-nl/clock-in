@@ -10,6 +10,8 @@ class Location extends Model
 
     protected $primaryKey = "id";
 
+    protected $fillable = ['business_id'];
+
     protected $dates = [
         'created_at',
         'updated_at'
@@ -26,11 +28,11 @@ class Location extends Model
 
     public function whitelist()
     {
-        return $this->belongsToMany('App\Whitelist');
+        return $this->hasMany('App\Whitelist');
     }
 
     public function devices()
     {
-        return $this->belongsToMany('App\Devices');
+        return $this->hasMany('App\Devices', 'location_id');
     }
 }

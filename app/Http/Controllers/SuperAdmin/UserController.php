@@ -3,30 +3,22 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Business;
-use App\Location;
+use App\User;
+use function Composer\Autoload\includeFile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
-class LocationsController extends Controller
+class UserController extends Controller
 {
-    protected $location;
+    protected $user;
 
     protected $business;
 
-    public function __construct(Location $location, Business $business)
+    public function __construct(Business $business, User $user)
     {
-        $this->location = $location;
+        $this->user = $user;
         $this->business = $business;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view('admin.location.index');
     }
 
     /**
@@ -36,7 +28,10 @@ class LocationsController extends Controller
      */
     public function create($business_id)
     {
-        return view('admin.location.create')
+        $business = $this->business->findOrFail($business_id);
+
+        return view('admin.user.create')
+            ->with('business', $business)
             ->with('business_id', $business_id);
     }
 
@@ -48,9 +43,26 @@ class LocationsController extends Controller
      */
     public function store(Request $request)
     {
-        $location = $this->location;
+        $random_password = str_random(8);
 
-        $location->create($request->except('_method', '_token'));
+        $user = $this->user;
+        $user->business_id = $request->business_id;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($random_password);
+        $user->save();
+
+        foreach ($request->functions as $function)
+        {
+            $user->userFunctions()->create([
+                'user_id' => $user->id,
+                'function_id' => $function
+            ]);
+        }
+
+
+//        todo this must send email
+//        Mail::to($user->email)->send(new RegisterdAccount($user, $random_password));
 
         return redirect()
             ->route('super.business.edit', $request->business_id);
@@ -64,10 +76,10 @@ class LocationsController extends Controller
      */
     public function edit($id)
     {
-        $location = $this->location->findOrFail($id);
+        $user = $this->user->findOrFail($id);
 
-        return view('admin.location.edit')
-            ->with('location', $location);
+        return view('admin.user.edit')
+            ->with('user', $user);
     }
 
     /**
@@ -79,7 +91,11 @@ class LocationsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = $this->user->findOrFail($id);
+
+        $user->save();
+
+        return redirect()->route('super.business', $user->business->id);
     }
 
     /**

@@ -169,7 +169,7 @@
                 {{--<li class="">--}}
                     {{--<a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">--}}
                         {{--<i class="fa fa-user-clock fa-fw"></i>--}}
-                        {{--devices--}}
+                        {{--device--}}
                     {{--</a>--}}
                 {{--</li>--}}
                 {{--<li class="">--}}
@@ -187,7 +187,7 @@
                 {{--<li class="">--}}
                     {{--<a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">--}}
                         {{--<i class="fa fa-user-clock fa-fw"></i>--}}
-                        {{--locations > whitelist,devices--}}
+                        {{--locations > whitelist,device--}}
                     {{--</a>--}}
                 {{--</li>--}}
                 {{--<li class="">--}}

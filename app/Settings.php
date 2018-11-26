@@ -10,6 +10,8 @@ class Settings extends Model
 
     protected $primaryKey = "id";
 
+    protected $fillable = ['user_unit_price', 'business_id'];
+
     protected $dates = [
         'created_at',
         'updated_at'

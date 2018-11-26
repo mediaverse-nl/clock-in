@@ -6,7 +6,7 @@
 
         @component('components.table', ['title' => 'Business'])
             @slot('btn')
-                <a href="{{route('u')}}" class="btn btn-success btn-xs pull-right">
+                <a href="{{route('super.business.create')}}" class="btn btn-success btn-xs pull-right">
                     <i class="fa fa-plus fa-fw"></i>
                 </a>
             @endslot
