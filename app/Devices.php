@@ -10,6 +10,8 @@ class Devices extends Model
 
     protected $primaryKey = "id";
 
+    protected $fillable = ['mac_address', 'version'];
+
     protected $dates = [
         'created_at',
         'updated_at'

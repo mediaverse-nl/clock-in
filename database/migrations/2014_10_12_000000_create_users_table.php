@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('business_id')->unsigned();
             $table->foreign('business_id')->references('id')->on('business');
+            $table->string('clock_in_code')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
@@ -29,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('place');
             $table->rememberToken();
             $table->timestamps();
+            $table->unique(['business_id', 'clock_in_code']);
         });
     }
 

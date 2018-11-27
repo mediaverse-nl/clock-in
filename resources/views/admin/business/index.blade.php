@@ -32,12 +32,6 @@
                                         edit
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="{{route('super.business.show', $buss->id)}}">
-                                        <i class="fa fa-edit fa-fw"></i>
-                                        watch
-                                    </a>
-                                </li>
                             @endcomponent
                         </td>
                     </tr>
