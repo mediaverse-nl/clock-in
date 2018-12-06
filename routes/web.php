@@ -12,9 +12,27 @@
 */
 use App\User;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-})->middleware('auth');
+Route::get('/', 'WelcomeController')->name('home');
+Route::get('/contact', 'ContactController@index')->name('contact.index');
+Route::get('/diensten', function (){
+    return view('site.services');
+})->name('service.index');
+
+Route::get('/system', function (){
+    return view('site.system');
+})->name('system.index');
+
+Route::get('/about', function (){
+    return view('site.about');
+})->name('about.index');
+
+Route::get('/team', function (){
+    return view('site.team');
+})->name('team.index');
+
+Route::get('/roadmap', function (){
+    return view('site.roadmap');
+})->name('roadmap.index');
 
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
