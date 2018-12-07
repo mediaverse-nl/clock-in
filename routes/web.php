@@ -26,13 +26,17 @@ Route::get('/about', function (){
     return view('site.about');
 })->name('about.index');
 
-Route::get('/team', function (){
-    return view('site.team');
-})->name('team.index');
-
 Route::get('/roadmap', function (){
     return view('site.roadmap');
 })->name('roadmap.index');
+
+Route::get('/privacy-policy', function (){
+    return view('site.privacy');
+})->name('privacy.index');
+
+Route::get('/terms-of-use', function (){
+    return view('site.terms');
+})->name('terms.index');
 
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');

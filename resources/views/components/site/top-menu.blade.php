@@ -27,6 +27,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{!! route('contact.index') !!}">Contact</a>
                 </li>
+                <li class="nav-item" style="padding-left:10px;">
+                    <a class="nav-link btn btn-primary" href="{!! route('contact.index') !!}" style="color: #FFFFFF;">Login klant</a>
+                </li>
             </ul>
         </div>
     </div>

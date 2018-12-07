@@ -2,45 +2,75 @@
 
 @section('content')
 
+    @component('components.site.banner-background')
+        @slot('title')
+            <h1 class="my-4">About Us
+                <small>It's Nice to Meet You!</small>
+            </h1>
+        @endslot
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, explicabo dolores ipsam aliquam inventore corrupti eveniet quisquam quod totam laudantium repudiandae obcaecati ea consectetur debitis velit facere nisi expedita vel?</p>
+    @endcomponent
+
     <!-- Page Content -->
     <div class="container">
 
         <!-- Introduction Row -->
-        <h1 class="my-4">About Us
-            <small>It's Nice to Meet You!</small>
-        </h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, explicabo dolores ipsam aliquam inventore corrupti eveniet quisquam quod totam laudantium repudiandae obcaecati ea consectetur debitis velit facere nisi expedita vel?</p>
-
-        <!-- Team Members Row -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="my-4">Our Team</h2>
-            </div>
-            <div class="col-lg-3 col-sm-6 text-center mb-4">
-                <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-                <h3>John Smith
-                    <small>Job Title</small>
-                </h3>
-                <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
-            </div>
-            <div class="col-lg-3 col-sm-6 text-center mb-4">
-                <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-                <h3>John Smith
-                    <small>Job Title</small>
-                </h3>
-                <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
-            </div>
-
-        </div>
 
     </div>
     <!-- /.container -->
+
+    <!-- Testimonials -->
+    <section class="testimonials text-center">
+        <div class="container">
+            <h2 class="mb-5">Our Team</h2>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                        <img class="img-fluid rounded-circle mb-3" src="img/testimonials-1.jpg" alt="">
+                        <h5>Deveron Reniers</h5>
+                        <span class="font-weight-dark">CEO</span>
+                        <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                        <img class="img-fluid rounded-circle mb-3" src="img/testimonials-2.jpg" alt="">
+                        <h5>Fred S.</h5>
+                        <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                        <img class="img-fluid rounded-circle mb-3" src="img/testimonials-3.jpg" alt="">
+                        <h5>Sarah	W.</h5>
+                        <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
 
 @endsection
 
 @push('css')
     <style>
-       
+
+        .testimonials {
+            padding-top: 7rem;
+            padding-bottom: 7rem;
+        }
+
+        .testimonials .testimonial-item {
+            max-width: 18rem;
+        }
+
+        .testimonials .testimonial-item img {
+            max-width: 12rem;
+            -webkit-box-shadow: 0px 5px 5px 0px #adb5bd;
+            box-shadow: 0px 5px 5px 0px #adb5bd;
+        }
+
     </style>
 @endpush
 
