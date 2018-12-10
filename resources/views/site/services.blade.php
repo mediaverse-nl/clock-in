@@ -15,7 +15,7 @@
                'textLeft' => false,
                'content' => [
                    [
-                       'title' => 'Wat betaald u',
+                       'title' => 'Wat betaald u, €1 per personeelslid.',
                        'text' => 'het systeem kost 1 euro per personeelslid per maand',
                        'image' => '/img/bg-showcase-1.jpg',
                    ]
@@ -33,7 +33,7 @@
                'content' => [
                    [
                        'title' => '1 terminal per locatie',
-                       'text' => 'Onze terminal kost 13,50 per maand. u kunt dan kiezen uit de num pad of de NFC editie',
+                       'text' => 'Onze terminal kost 13,50 per maand. u kunt dan kiezen uit de num pad of de NFC editie. <br> <small>Als u meer dan 20 personeelsleden heeft, krijg u de 1ste terminal gratis.</small>',
                        'image' => '/img/bg-showcase-1.jpg',
                    ]
                ]
@@ -41,10 +41,13 @@
             @endcomponent
         </div>
 
+        <br>
+        <br>
+        <br>
+        <br>
+
     </div>
 
-    <br>
-    <br>
 
 
 @endsection
@@ -56,7 +59,7 @@
             border-radius: 0px;
         }
         .showcase .showcase-img {
-             min-height: 20rem;
+            min-height: 15rem;
             background-size: cover;
         }
         .showcase .showcase-text {

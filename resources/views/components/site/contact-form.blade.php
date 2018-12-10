@@ -29,7 +29,7 @@
     <h2 style="margin-left: -15px;">Contactformulier</h2>
     <form>
         <div class="form-group row">
-            <label for="name" class=" col-form-label">naam</label>
+            <label for="name" class=" col-form-label">Naam</label>
             <input type="text" class="form-control" id="name" value="">
         </div>
         <div class="form-group row">

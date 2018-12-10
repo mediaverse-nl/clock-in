@@ -2,11 +2,11 @@
 
 @section('content')
 
-    @component('components.site.banner-background')
-        @slot('title')
-            <h1 class="text-center" style="font-weight: bolder; font-size: 65px;">Systeem</h1>
-        @endslot
-    @endcomponent
+    {{--@component('components.site.banner-background')--}}
+        {{--@slot('title')--}}
+            {{--<h1 class="text-center" style="font-weight: bolder; font-size: 65px;">Systeem</h1>--}}
+        {{--@endslot--}}
+    {{--@endcomponent--}}
 
     <!-- Image Showcases -->
     <section class="showcase">

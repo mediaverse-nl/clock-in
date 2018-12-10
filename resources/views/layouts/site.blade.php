@@ -59,7 +59,7 @@
             bottom: 0;
             width: 100%;
             /* Set the fixed height of the footer here */
-            height: 150px;
+            height: 180px;
             line-height: 20px; /* Vertically center the text there */
             background-color: #f5f5f5;
         }
@@ -75,7 +75,6 @@
     </div>
 
     @include('components.site.footer')
-
 
     <!-- Scripts -->
     <!-- JQuery -->
