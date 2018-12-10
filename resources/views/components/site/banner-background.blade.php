@@ -25,10 +25,15 @@
 
 @push('css')
 <style>
+
     .call-to-action {
+        @if(isset($img))
+            background: url("{!! $img !!}") no-repeat center center;
+        @else
+            background: url("/img/agenda-banner.jpg") no-repeat center center;
+        @endif
         position: relative;
         background-color: #343a40;
-        background: url("/img/bg-masthead.jpg") no-repeat center center;
         background-size: cover;
         padding-top: 7rem;
         padding-bottom: 7rem;
@@ -41,7 +46,7 @@
         width: 100%;
         top: 0;
         left: 0;
-        opacity: 0.3;
+        opacity: 0.5;
     }
 </style>
 @endpush

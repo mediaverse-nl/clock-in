@@ -2,88 +2,122 @@
 
 @section('content')
 
-    @component('components.site.banner-background')
+    @component('components.site.banner-background', ['img' => '/img/social-banner.jpg'])
         @slot('title')
             <h1 class="text-center" style="font-weight: bolder; font-size: 65px;">Contact Us</h1>
         @endslot
     @endcomponent
 
-    @component('components.site.content-box', [
-        'textLeft' => true,
-        'content' => [
-            [
-                'title' => 'Contact Us',
-                'text' => '<div class="col-lg-4 offset-lg-1 col-md-5">
-                    <h2 class="section-title"></h2>
-                    <ul class="pl-0">
-                        <!-- contact items -->
-                        <li class="d-flex mb-30">
-                            <i class="round-icon mr-3 ti-mobile"></i>
-                            <div class="align-self-center font-primary">
-                                <p>+88 0123 456 789</p>
-                                <p>+88 987 654 3210</p>
-                            </div>
-                        </li>
-                        <li class="d-flex mb-30">
-                            <i class="round-icon mr-3 ti-email"></i>
-                            <div class="align-self-center font-primary">
-                                <p>info@biztrox.com</p>
-                                <p>biztrox@email.com</p>
-                            </div>
-                        </li>
-                        <li class="d-flex mb-30">
-                            <i class="round-icon mr-3 ti-map-alt"></i>
-                            <div class="align-self-center font-primary">
-                                <p>24/B Garden Street.</p>
-                                <p>Northambia, Weals, UK</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>',
-                'image' => false,
-            ]
-        ]
-    ])
-    @endcomponent
-
-    <section class="section">
+    <section class="features-icons bg-light text-center">
         <div class="container">
             <div class="row">
-
-                <!-- form -->
-                <div class="col-lg-6 col-md-7">
-                    <div class="p-5 rounded box-shadow">
-                        <form action="#" class="row">
-                            <div class="col-lg-12">
-                                <h3>Contact Form</h3>
-                            </div>
-                            <div class="col-lg-6">
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Name" required="">
-                            </div>
-                            <div class="col-lg-6">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required="">
-                            </div>
-                            <div class="col-lg-12">
-                                <input type="text" name="subject" id="subject" class="form-control" placeholder="Subject" required="">
-                            </div>
-                            <div class="col-lg-12">
-                                <textarea class="form-control p-2" name="message" id="message" placeholder="Your Message Here..." required="" style="height: 150px;"></textarea>
-                            </div>
-                            <div class="col-lg-12">
-                                <button class="btn btn-primary" type="submit" value="send">Submit Now</button>
-                            </div>
-                        </form>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex">
+                            <a href="http://localhost:8000/system" class="m-auto">
+                                <i class="fas fa-map fa-2x fa-fw text-primary"></i>
+                            </a>
+                        </div>
+                        <h3>Adres</h3>
+                        <p class="lead mb-0">Daalakkersweg 2.182, <br>5641JA Eindhoven </p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex">
+                            <a href="http://localhost:8000/diensten" class="m-auto">
+                                <i class="fas fa-phone fa-2x fa-fw text-primary"></i>
+                            </a>
+                        </div>
+                        <h3>Telefoon</h3>
+                        <p class="lead mb-0">
+                            +31 85 009 1205<br>
+                            +31 6 53779761
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex">
+                            <a href="http://localhost:8000/roadmap" class="m-auto">
+                                <i class="fas fa-at fa-2x fa-fw text-primary"></i>
+                            </a>
+                        </div>
+                        <h3>E-mail</h3>
+                        <p class="lead mb-0">
+                            info@mediaverse.nl
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    @component('components.site.content-box', [
+        'textLeft' => true,
+        'content' => [
+            [
+                'imgContent' => view('components.site.maps'),
+                'text' => view('components.site.contact-form'),
+                'image' => '/img/bg-showcase-1.jpg',
+            ]
+        ]
+    ])
+    @endcomponent
+
+
 @endsection
 
 @push('css')
     <style>
+        .card{
+            padding: 30px;
+            border: none;
+            border-radius: 0px;
+            background-color: #f8f9fa;
+        }
+        .card input,
+        .card textarea,
+        .card select
+        {
+            border-radius: 0px;
 
+        }
+        .card .form-group {
+             margin-bottom: 5px !important;
+        }
+        .showcase .showcase-img {
+            min-height: 30rem;
+            text-align:center;
+            /*background-size: contain;*/
+            /*background-repeat: no-repeat;*/
+        }
+
+        @media (min-width: 768px){
+            .showcase .showcase-text {
+                padding: 5rem;
+            }
+        }
+        .features-icons {
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+
+        .features-icons .features-icons-item {
+            max-width: 20rem;
+        }
+
+        .features-icons .features-icons-item .features-icons-icon {
+            height: 7rem;
+        }
+
+        .features-icons .features-icons-item .features-icons-icon i {
+            font-size: 4.5rem;
+        }
+
+        .features-icons .features-icons-item:hover .features-icons-icon i {
+            font-size: 5rem;
+        }
     </style>
 @endpush
 

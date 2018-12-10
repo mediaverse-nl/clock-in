@@ -1,10 +1,18 @@
 @extends('layouts.site')
 
 @section('content')
+
+    @component('components.site.banner-background', ['img' => '/img/roadmap-banner.jpg'])
+        @slot('title')
+            <h1 class="text-center" style="font-weight: bolder; font-size: 65px;">Roadmap</h1>
+        @endslot
+    @endcomponent
+
+
     <div class="container">
         <br>
         <br>
-        <h2 class="pb-3 pt-2 border-bottom mb-5 text-center">Roadmap</h2>
+        <h2 class="pb-3 pt-2 border-bottom mb-5 text-center"></h2>
 
         <!--first section-->
         <div class="row align-items-center how-it-works d-flex">

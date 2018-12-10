@@ -70,15 +70,15 @@
         'textLeft' => true,
         'content' => [
             [
-                'title' => 'test',
+                'title' => 'clock in system',
                 'text' => 'test',
                 'image' => '/img/bg-showcase-1.jpg',
             ],[
-                'title' => 'test',
-                'text' => 'test',
+                'title' => 'features',
+                'text' => view('components.site.text-box.features'),
                 'image' => '/img/bg-showcase-1.jpg',
             ],[
-                'title' => 'test',
+                'title' => 'free trail',
                 'text' => 'test',
                 'image' => '/img/bg-showcase-1.jpg',
             ],[
@@ -89,6 +89,10 @@
         ]
     ])
     @endcomponent
+
+
+
+
 
     <!-- Testimonials -->
     <section class="testimonials text-center bg-light">
