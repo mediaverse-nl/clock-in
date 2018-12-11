@@ -11,7 +11,7 @@
     <section class="features-icons bg-light text-center">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
                             <a href="http://localhost:8000/system" class="m-auto">
@@ -22,7 +22,7 @@
                         <p class="lead mb-0">Daalakkersweg 2.182, <br>5641JA Eindhoven </p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
                             <a href="http://localhost:8000/diensten" class="m-auto">
@@ -36,7 +36,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="features-icons-item mx-auto mb-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
                             <a href="http://localhost:8000/roadmap" class="m-auto">
@@ -93,11 +93,6 @@
             /*background-repeat: no-repeat;*/
         }
 
-        @media (min-width: 768px){
-            .showcase .showcase-text {
-                padding: 5rem;
-            }
-        }
         .features-icons {
             padding-top: 5rem;
             padding-bottom: 5rem;

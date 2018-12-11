@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.site.banner-background', ['title' => 'Diensten'])
+    @component('components.site.banner-background', ['title' => 'Diensten', 'img' => '/img/agenda-analysis-business.jpg'])
         sadasd
     @endcomponent
 
@@ -16,7 +16,7 @@
                'content' => [
                    [
                        'title' => 'Wat betaald u, €1 per personeelslid.',
-                       'text' => 'het systeem kost 1 euro per personeelslid per maand',
+                       'text' => 'Onze systeem kost 1 euro per personeelslid per maand',
                        'image' => '/img/bg-showcase-1.jpg',
                    ]
                ]
@@ -43,12 +43,26 @@
 
         <br>
         <br>
+        <div class="card shadow ">
+            @component('components.site.content-box', [
+               'textLeft' => false,
+               'content' => [
+                   [
+                       'title' => 'NFC tags',
+                       'text' => 'Onze terminal kost 13,50 per maand. u kunt dan kiezen uit de num pad of de NFC editie. <br> <small>Als u meer dan 20 personeelsleden heeft, krijg u de 1ste terminal gratis.</small>',
+                       'image' => '/img/bg-showcase-1.jpg',
+                   ]
+               ]
+            ])
+            @endcomponent
+        </div>
+
+        <br>
+        <br>
         <br>
         <br>
 
     </div>
-
-
 
 @endsection
 

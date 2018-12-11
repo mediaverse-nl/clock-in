@@ -19,6 +19,32 @@
                                 <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
                             </div>
                         </div>
+                        <br>
+                        <div class="form-row">
+                            <div class="col-12 col-md-9 mb-2 mb-md-0">
+
+                                <select name="" id="" class="form-control">
+                                    <option value="" disabled selected>aantal werknemers</option>
+                                    <option value="">1 ~ 5</option>
+                                    <option value="">6 ~ 10</option>
+                                    <option value="">11 ~ 20</option>
+                                    <option value="">21 ~ 50</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="form-row">
+                            <div class="col-12 col-md-9 mb-2 mb-md-0">
+
+                                <select name="" id="" class="form-control">
+                                    <option value="" disabled selected>aantal locaties</option>
+                                    @for($i = 1; $i <= 100; $i++)
+                                        <option value="{!! $i !!}">{!! $i !!}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -29,7 +55,7 @@
     <section class="features-icons bg-light text-center">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
                             <a href="{!! route('system.index') !!}" class="m-auto">
@@ -40,7 +66,7 @@
                         <p class="lead mb-0">This theme will look great on any device, no matter the size!</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
                             <a href="{!! route('service.index') !!}" class="m-auto">
@@ -51,7 +77,7 @@
                         <p class="lead mb-0">Featuring the latest build of the new Bootstrap 4 framework!</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="features-icons-item mx-auto mb-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
                             <a href="{!! route('roadmap.index') !!}" class="m-auto">
@@ -72,23 +98,25 @@
             [
                 'title' => 'clock in system',
                 'text' => 'test',
-                'image' => '/img/bg-showcase-1.jpg',
+                'image' => '/img/calendar.jpg',
             ],[
                 'title' => 'features',
                 'text' => view('components.site.text-box.features'),
-                'image' => '/img/bg-showcase-1.jpg',
+                'image' => '/img/features.jpg',
             ],[
                 'title' => 'free trail',
                 'text' => 'test',
-                'image' => '/img/bg-showcase-1.jpg',
-            ],[
-                'title' => 'test',
-                'text' => 'test',
-                'image' => '/img/bg-showcase-1.jpg',
-            ],
+                'image' => '/img/agreement.jpg',
+            ]
+
         ]
     ])
     @endcomponent
+    {{--,[--}}
+    {{--'title' => 'test',--}}
+    {{--'text' => 'test',--}}
+    {{--'image' => '/img/bg-showcase-1.jpg',--}}
+    {{--],--}}
 
 
 
@@ -99,21 +127,21 @@
         <div class="container">
             <h2 class="mb-5">What people are saying...</h2>
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
                         <img class="img-fluid rounded-circle mb-3" src="img/testimonials-1.jpg" alt="">
                         <h5>Margaret E.</h5>
                         <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
                         <img class="img-fluid rounded-circle mb-3" src="img/testimonials-2.jpg" alt="">
                         <h5>Fred S.</h5>
                         <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
                         <img class="img-fluid rounded-circle mb-3" src="img/testimonials-3.jpg" alt="">
                         <h5>Sarah	W.</h5>
@@ -152,8 +180,13 @@
         </div>
     </section>
 
-    @component('components.site.banner-background', ['title' => 'sadasdasd'])
-        sadasd
+    @component('components.site.banner-background', ['title' => 'Ga aan de slag met Space'])
+        <p>
+            Space geeft je alles wat je nodig hebt om zaken te doen, geweldige dingen te bouwen en je doelen te bereiken.
+            <br>
+            <br>
+            <a href="{!! route('contact.index') !!}" class="btn btn-lg btn-primary">neem contact op</a>
+        </p>
     @endcomponent
 
 @endsection

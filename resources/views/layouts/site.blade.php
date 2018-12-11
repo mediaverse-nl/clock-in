@@ -84,7 +84,7 @@
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
-    {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.15/js/mdb.min.js"></script>    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>--}}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.15/js/mdb.min.js"></script>    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
     {{--http://git.blivesta.com/animsition/--}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js"></script>
@@ -102,7 +102,7 @@
                 loadingClass: 'animsition-loading',
                 loadingInner: '', // e.g '<img src="loading.svg" />'
                 timeout: false,
-                timeoutCountdown: 5000,
+                timeoutCountdown: 2000,
                 onLoadEvent: true,
                 browser: [ 'animation-duration', '-webkit-animation-duration'],
                 // "browser" option allows you to disable the "animsition" in case the css property in the array is not supported by your browser.

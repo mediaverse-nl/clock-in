@@ -171,7 +171,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         GeneaLabs\LaravelCaffeine\LaravelCaffeineServiceProvider::class,
-        Webklex\IMAP\Providers\LaravelServiceProvider::class,
+//        Webklex\IMAP\Providers\LaravelServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
 
 

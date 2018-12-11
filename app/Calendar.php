@@ -163,6 +163,9 @@ class Calendar extends Model
             ->setOptions([ //set fullcalendar options
                 'FirstDay' => 1,
                 'contentheight' => 850,
+                'themeSystem' => 'bootstrap4',
+//                'theme' => 'bootstrap4',
+                'theme' => true,
                 'editable' => false,
                 'allDay' => false,
                 'aspectRatio' => 1.5,
@@ -170,7 +173,7 @@ class Calendar extends Model
                 'timeFormat' => 'HH:mm',
                 'color' => '#73e600',
             ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-                //            'viewRender' => 'function() {alert("Callbacks!");}'
+                //'viewRender' => 'function() {alert("Callbacks!");}'
             ]);
     }
 

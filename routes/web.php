@@ -14,7 +14,7 @@ use App\User;
 
 Route::get('/', 'WelcomeController')->name('home');
 Route::get('/contact', 'ContactController@index')->name('contact.index');
-Route::get('/diensten', function (){
+Route::get('/services', function (){
     return view('site.services');
 })->name('service.index');
 
@@ -22,7 +22,7 @@ Route::get('/system', function (){
     return view('site.system');
 })->name('system.index');
 
-Route::get('/about', function (){
+Route::get('/over-ons', function (){
     return view('site.about');
 })->name('about.index');
 
@@ -37,6 +37,20 @@ Route::get('/privacy-policy', function (){
 Route::get('/terms-of-use', function (){
     return view('site.terms');
 })->name('terms.index');
+
+Route::get('/terms-of-use', function (){
+    return view('site.terms');
+})->name('terms.index');
+
+Route::domain('app.clock-on.nl')->name('app.')->namespace('App')->group(function () {
+    Route::get('/dashboard', 'DashboardController')->name('dashboard');
+    Route::get('/rooster', 'ScheduleController@index')->name('schedule.index');
+//
+//    Route::get('/rooster', function (){
+//        return dd('test');
+//    });
+});
+
 
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');

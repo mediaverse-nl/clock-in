@@ -42,8 +42,15 @@
 @push('css')
     <style>
 
+        /*Small devices (landscape phones, 576px and up)*/
+        @media (min-width: 576px) {
+            .showcase .showcase-text {
+                padding: 3rem !important;
+            }
+        }
+
         .showcase .showcase-text {
-            padding: 3rem;
+            padding: 2rem ;
         }
 
         .showcase .showcase-img {
@@ -51,11 +58,7 @@
             background-size: cover;
         }
 
-        @media (min-width: 768px) {
-            .showcase .showcase-text {
-                padding: 7rem;
-            }
-        }
+
 
     </style>
 @endpush
