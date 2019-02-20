@@ -163,15 +163,27 @@ class Calendar extends Model
             ->setOptions([ //set fullcalendar options
                 'FirstDay' => 1,
                 'contentheight' => 850,
-                'themeSystem' => 'bootstrap4',
+//                'themeSystem' => 'bootstrap3',
 //                'theme' => 'bootstrap4',
-                'theme' => true,
+//                'theme' => 'bootstrap3',
                 'editable' => false,
                 'allDay' => false,
-                'aspectRatio' => 1.5,
+                'aspectRatio' => 1.7,
                 'slotLabelFormat' => 'HH:mm:ss',
                 'timeFormat' => 'HH:mm',
+                'defaultView' => 'basicWeek',
                 'color' => '#73e600',
+//                'defaultView' => 'listYear',
+                 'header' => [
+                    'left' => 'prev,next,today,list',
+                    'center' => 'title',
+                    'right' => 'month,agendaWeek,agendaDay basicWeek,basicDay',
+                ],
+//                'buttonText' => [
+//                    'today' => 'Today',
+//                    'month' => 'Calendar View',
+//                    'listYear' => 'List View',
+//                ],
             ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
                 //'viewRender' => 'function() {alert("Callbacks!");}'
             ]);
@@ -187,6 +199,8 @@ class Calendar extends Model
             'vakantie' =>   'vakantie',
             'afspraak' =>   'afspraak',
             'standaard' =>  'standaard',
+            'verlof' =>     'verlof',
+            'ziek' =>       'ziek',
         ]);
     }
 

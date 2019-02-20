@@ -45,10 +45,6 @@ Route::get('/terms-of-use', function (){
 Route::domain('app.clock-on.nl')->name('app.')->namespace('App')->group(function () {
     Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::get('/rooster', 'ScheduleController@index')->name('schedule.index');
-//
-//    Route::get('/rooster', function (){
-//        return dd('test');
-//    });
 });
 
 
@@ -86,14 +82,23 @@ Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('S
     ]]);
 });
 
+//new dashboard user
+Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->name('panel.')->group(function () {
+    Route::get('/beschikbaarheid', 'AvailabilityController@index')->name('availability.index');
+    Route::get('/rooster', 'ScheduleController@index')->name('schedule.index');
+});
+
+//new dashboard management
+Route::prefix('beheer')->middleware(['auth'])->namespace('Management')->name('management.')->group(function () {
+    Route::get('/rooster', 'ScheduleController@index')->name('schedule.index');
+});
+
 Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function () {
+
+
 
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('/mijn-dashboard', 'DashboardController@show')->name('auth.dashboard');
-
-//    Route::get('/payroll', 'PayrollController@index')->name('payroll.index');
-//    Route::get('/payroll/{id}', 'PayrollController@show')->name('payroll.show');
-//    Route::get('/payroll/{id}/edit', 'PayrollController@edit')->name('payroll.edit');
 
     Route::get('/card', 'CardController@index')->name('card.index');
     Route::get('/card/{id}', 'CardController@show')->name('card.show');
@@ -101,8 +106,6 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     Route::patch('/card/{id?}', 'CardController@update')->name('card.update');
     Route::delete('/card/{id?}', 'CardController@destroy')->name('card.destroy');
 
-
-//    Route::resource('mail', 'MailController');
     Route::patch('/user/add-card', 'UserController@addCard')->name('user.update.card');
     Route::resource('user', 'UserController');
     Route::resource('calendar', 'CalendarController');

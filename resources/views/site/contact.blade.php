@@ -14,7 +14,7 @@
                 <div class="col-md-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
-                            <a href="http://localhost:8000/system" class="m-auto">
+                            <a href="#" class="m-auto">
                                 <i class="fas fa-map fa-2x fa-fw text-primary"></i>
                             </a>
                         </div>
@@ -25,27 +25,27 @@
                 <div class="col-md-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
-                            <a href="http://localhost:8000/diensten" class="m-auto">
+                            <a href="#" class="m-auto">
                                 <i class="fas fa-phone fa-2x fa-fw text-primary"></i>
                             </a>
                         </div>
                         <h3>Telefoon</h3>
                         <p class="lead mb-0">
-                            +31 85 009 1205<br>
-                            +31 6 53779761
+                            <a href="tel:+31 85 009 1205">+31 85 009 1205</a><br>
+                            <a href="tel:+31 6 53779761">+31 6 53779761</a>
                         </p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="features-icons-item mx-auto mb-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
-                            <a href="http://localhost:8000/roadmap" class="m-auto">
+                            <a href="mailto:info@mediaverse.nl" class="m-auto">
                                 <i class="fas fa-at fa-2x fa-fw text-primary"></i>
                             </a>
                         </div>
                         <h3>E-mail</h3>
                         <p class="lead mb-0">
-                            info@mediaverse.nl
+                            <a href="mailto:info@mediaverse.nl">info@mediaverse.nl</a>
                         </p>
                     </div>
                 </div>

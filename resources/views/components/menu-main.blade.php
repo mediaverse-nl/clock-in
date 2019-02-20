@@ -120,7 +120,18 @@
                         Mijn Dashboard
                     </a>
                 </li>
-
+                <li>
+                    <a href="{{route('panel.availability.index')}}" class="{{\Request::is('panel/mijn-dashboard*') ? 'active' : '' }}">
+                        <i class="fa fa-clock fa-fw"></i>
+                        Mijn Beschikbaarheid
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('panel.schedule.index')}}" class="{{\Request::is('panel/mijn-dashboard*') ? 'active' : '' }}">
+                        <i class="fa fa-calendar fa-fw"></i>
+                        Mijn Rooster
+                    </a>
+                </li>
 
                 @can('permission', ['admin'])
                     <br>
@@ -131,6 +142,12 @@
                         <a href="{{route('dashboard')}}" class="{{\Request::is('panel/dashboard*') ? 'active' : '' }}">
                             <i class="fa fa-tachometer-alt fa-fw"></i>
                             Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('management.schedule.index')}}" class="{{\Request::is('panel/card*') ? 'active' : ''  }}">
+                            <i class="fa fa-calendar fa-fw"></i>
+                            Rooster
                         </a>
                     </li>
                     <li>

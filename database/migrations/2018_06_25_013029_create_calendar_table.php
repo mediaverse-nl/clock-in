@@ -17,10 +17,12 @@ class CreateCalendarTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id')->nullable()->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('location_id')->nullable()->unsigned();
+            $table->foreign('location_id')->references('id')->on('location');
             $table->string('title')->nullable();
             $table->string('description', 200)->nullable();
             $table->boolean('full_day')->default(0);
-            $table->boolean('private')->default(1);
+            $table->string('status')->default('');
             $table->timestamp('start');
             $table->timestamp('stop')->nullable();
             $table->timestamps();

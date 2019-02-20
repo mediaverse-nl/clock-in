@@ -22,7 +22,7 @@
                     </div>
                 @else
                     <div class="row no-gutters">
-                        <div class="col-lg-6 text-white showcase-img call-to-action overlay" style="background-image: url('{!! $item['image'] !!}') no-repeat center center;;">
+                        <div class="col-lg-6 text-white showcase-img call-to-action overlay" style="background-image: url({!! $item['image'] !!});">
                             @if(isset($item['imgContent']))
                                 {!! $imgContent !!}
                             @endif

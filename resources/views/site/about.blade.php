@@ -29,23 +29,24 @@
                         <img class="img-fluid rounded-circle mb-3" src="img/testimonials-1.jpg" alt="">
                         <h5>Deveron Reniers</h5>
                         <span class="font-weight-dark">CEO</span>
-                        <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
+                        <p class="font-weight-light mb-0"></p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-3">
                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
                         <img class="img-fluid rounded-circle mb-3" src="img/testimonials-2.jpg" alt="">
-                        <h5>Fred S.</h5>
-                        <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
+                        <h5>Maximiliaan Einderhand</h5>
+                        <span class="font-weight-dark">Marketing</span>
+                        <p class="font-weight-light mb-0"></p>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                        <img class="img-fluid rounded-circle mb-3" src="img/testimonials-3.jpg" alt="">
-                        <h5>Sarah	W.</h5>
-                        <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
-                    </div>
-                </div>
+                {{--<div class="col-sm-6 col-md-6 col-lg-3">--}}
+                    {{--<div class="testimonial-item mx-auto mb-5 mb-lg-0">--}}
+                        {{--<img class="img-fluid rounded-circle mb-3" src="img/testimonials-3.jpg" alt="">--}}
+                        {{--<h5>Sarah	W.</h5>--}}
+                        {{--<p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
             </div>
         </div>
 
