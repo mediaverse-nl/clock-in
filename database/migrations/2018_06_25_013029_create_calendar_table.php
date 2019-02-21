@@ -22,7 +22,7 @@ class CreateCalendarTable extends Migration
             $table->string('title')->nullable();
             $table->string('description', 200)->nullable();
             $table->boolean('full_day')->default(0);
-            $table->string('status')->default('');
+            $table->string('status')->default('standaard');
             $table->timestamp('start');
             $table->timestamp('stop')->nullable();
             $table->timestamps();

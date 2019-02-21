@@ -96,16 +96,16 @@
         'textLeft' => true,
         'content' => [
             [
-                'title' => 'Clock In System',
-                'text' => 'Het systeem is gericht op het efficiënter maken van administratie door dit zo simpel mogelijk te laten verlopen. De efficiëntie komt voor uit de technologische ontwikkelingen en het gemak van gebruik. Hoe makkelijker wij het maken om het systeem te gebruiken, de sneller en beter de eindgebruiker het systeem goed kan gebruiken in zijn/haar werk.',
+                'title' => 'clock in system',
+                'text' => 'test',
                 'image' => '/img/calendar.jpg',
             ],[
-                'title' => 'System Features',
+                'title' => 'features',
                 'text' => view('components.site.text-box.features'),
                 'image' => '/img/features.jpg',
             ],[
-                'title' => 'Free Trail',
-                'text' => 'Mocht u het systeem willen uitproberen dan bieden wij een gratis proefperiode van 2 maanden aan. Hier tegenover staat dat wij van u informatie krijgen over wat u van het systeem vond en hoe het verbeterd kan worden.',
+                'title' => 'free trail',
+                'text' => 'test',
                 'image' => '/img/agreement.jpg',
             ]
 
@@ -123,35 +123,35 @@
 
 
     <!-- Testimonials -->
-    {{--<section class="testimonials text-center bg-light">--}}
-        {{--<div class="container">--}}
-            {{--<h2 class="mb-5">What people are saying...</h2>--}}
-            {{--<div class="row">--}}
-                {{--<div class="col-md-4">--}}
-                    {{--<div class="testimonial-item mx-auto mb-5 mb-lg-0">--}}
-                        {{--<img class="img-fluid rounded-circle mb-3" src="img/testimonials-1.jpg" alt="">--}}
-                        {{--<h5>Margaret E.</h5>--}}
-                        {{--<p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="col-md-4">--}}
-                    {{--<div class="testimonial-item mx-auto mb-5 mb-lg-0">--}}
-                        {{--<img class="img-fluid rounded-circle mb-3" src="img/testimonials-2.jpg" alt="">--}}
-                        {{--<h5>Fred S.</h5>--}}
-                        {{--<p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="col-md-4">--}}
-                    {{--<div class="testimonial-item mx-auto mb-5 mb-lg-0">--}}
-                        {{--<img class="img-fluid rounded-circle mb-3" src="img/testimonials-3.jpg" alt="">--}}
-                        {{--<h5>Sarah	W.</h5>--}}
-                        {{--<p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
+    <section class="testimonials text-center bg-light">
+        <div class="container">
+            <h2 class="mb-5">What people are saying...</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                        <img class="img-fluid rounded-circle mb-3" src="img/testimonials-1.jpg" alt="">
+                        <h5>Margaret E.</h5>
+                        <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                        <img class="img-fluid rounded-circle mb-3" src="img/testimonials-2.jpg" alt="">
+                        <h5>Fred S.</h5>
+                        <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                        <img class="img-fluid rounded-circle mb-3" src="img/testimonials-3.jpg" alt="">
+                        <h5>Sarah	W.</h5>
+                        <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    {{--</section>--}}
+    </section>
 
     <section class="py-5">
         <div class="container">
