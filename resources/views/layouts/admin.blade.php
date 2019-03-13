@@ -82,6 +82,16 @@
             box-shadow: none !important;
         }
 
+        hr{
+            border-bottom: 1px solid #dddddd;
+            border-top: 0px;
+            clear:both;
+            display:block;
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px 0px;
+         }
+
     </style>
 
 </head>

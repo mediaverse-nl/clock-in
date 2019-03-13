@@ -36,7 +36,7 @@
     <hr>
 
     <div class="col-md-12">
-        <table class="table table-responsive table-striped" >
+        <table class="table table-responsive" >
             <tr>
                 <th colspan="8" class="text-center">week 8</th>
             </tr>
@@ -56,8 +56,6 @@
                                 </div>
                                 <div class="modal-body">
 
-
-
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -68,14 +66,47 @@
                     </div>
                 </th>
                 @for($w = 0; $w < 7; $w++)
-                    <th class="text-center {!! \App\Calendar::day() == \App\Calendar::startOfWeek()->addDays($w)->format('d') ? 'success' : ''  !!}">
-                        <small>{!! \App\Calendar::startOfWeek()->addDays($w)->format('D d') !!} <br>
-                        20 hrs / &euro;144</small>
+                    <th class="text-center {!! \App\Calendar::day() == \App\Calendar::startOfWeek()->addDays($w)->format('d') ? 'success' : '' !!}">
+                        <small>
+                            {!! \App\Calendar::startOfWeek()->addDays($w)->format('D d') !!} <br>
+                            20 hrs / &euro;144
+                        </small>
                     </th>
                 @endfor
             </tr>
+
+            <tr class="active">
+                <td>shifts</td>
+                <td>
+                    <div class="panel panel-default" style="margin-bottom: 0px;">
+                        <div class="text-center bg-active" style="background-color: #e3e3e3; padding: 1px 10px;">
+                            <small><b>12:45-18:25</b></small> <br>
+                            counter
+                        </div>
+                    </div>
+                    <div class="panel panel-default" style="margin-bottom: 0px; margin-top: 4px;">
+                        <div class="text-center bg-active" style="background-color: #e3e3e3; padding: 1px 10px;">
+                            <small><b>12:45-18:25</b></small> <br>
+                            Serving
+                        </div>
+                    </div>
+                    <div class="panel panel-default" style="margin-bottom: 0px; margin-top: 4px;">
+                        <div class="text-center bg-active" style="background-color: #e3e3e3; padding: 1px 10px;">
+                            <small><b>12:45-18:25</b></small> <br>
+                            Manager
+                        </div>
+                    </div>
+                </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+
             @for($u = 0; $u < 5; $u++)
-                <tr>
+                <tr class="">
                     <th style="width: 200px;">
                         <img class="img-circle" style="vertical-align: top; height: 35px; width: 35px;" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
                         <div style="display: inline-block; margin-left: 10px;">

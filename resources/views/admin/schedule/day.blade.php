@@ -37,11 +37,18 @@
 
     @php
         function timeToPercentage($workingHours){
-            $workedHours = 8;
-             return number_format((timePosision($workingHours) * 100) / 1440, 0);
+            $position = (timePosition($workingHours) * 100);
+
+            return number_format($position / 1440, 0);
         }
 
-        function timePosision($workingHours){
+        function timeLength($workedMin = 960){
+           $position = ($workedMin * 100);
+
+            return number_format(($position / 1440), 2);
+        }
+
+        function timePosition($workingHours){
             $timeArray = explode(':', $workingHours);
 
             $hrs = (int)$timeArray[0];
@@ -53,7 +60,8 @@
             return $totalMinutes;
         }
 
-        echo  timeToPercentage("01:45");
+        echo number_format(timeLength(960), 2);
+        echo timeToPercentage("01:30");
 
     @endphp
 
