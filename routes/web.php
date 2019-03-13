@@ -60,6 +60,7 @@ Route::post('password/change', 'Auth\ChangePasswordController@changePassword')->
 
 Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('SuperAdmin')->group(function () {
     Route::get('/', 'DashboardController');
+    Route::get('/test', 'BusinessController@test');
     Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::resource('business', 'BusinessController');
     Route::resource('package', 'PackagesController');
@@ -89,13 +90,20 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->name('panel.')
 });
 
 //new dashboard management
-Route::prefix('beheer')->middleware(['auth'])->namespace('Management')->name('management.')->group(function () {
-    Route::get('/rooster', 'ScheduleController@index')->name('schedule.index');
+Route::prefix('admin')->middleware(['auth'])->namespace('Admin')->name('admin.')->group(function () {
+    Route::get('/rooster/day', 'ScheduleController@day')->name('schedule.day');
+    Route::get('/rooster/week', 'ScheduleController@week')->name('schedule.week');
+    Route::get('/rooster/month', 'ScheduleController@month')->name('schedule.month');
+    Route::get('/rooster/availability', 'ScheduleController@availability')->name('schedule.availability');
+    Route::get('/rooster/departments', 'ScheduleController@departments')->name('schedule.departments');
+    Route::get('/team', 'TeamController@index')->name('team.index');
+    Route::get('/team/roles', 'TeamController@roles')->name('team.roles');
+    Route::get('/reports', 'ReportController@index')->name('report.index');
+    Route::get('/settings', 'SettingsController@index')->name('settings.index');
+    Route::get('/tijdregistratie', 'TimeTrackingController@index')->name('time-tracking.index');
 });
 
 Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function () {
-
-
 
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('/mijn-dashboard', 'DashboardController@show')->name('auth.dashboard');

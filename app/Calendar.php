@@ -30,6 +30,26 @@ class Calendar extends Model
         return $this->belongsTo('App\User');
     }
 
+    public static function startOfWeek()
+    {
+        return Carbon::now()->startOfWeek();
+    }
+
+    public static function endOfWeek()
+    {
+        return Carbon::now()->endOfWeek();
+    }
+
+    public static function weekNumber()
+    {
+        return Carbon::now()->format('W');
+    }
+
+    public static function day()
+    {
+        return Carbon::now()->format('d');
+    }
+
     public function scopeWhereTitle($q, $title){
         if ($title !== null){
             return $q->where('title', '=', $title);

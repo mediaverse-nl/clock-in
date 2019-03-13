@@ -1,20 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\SuperAdmin;
+namespace App\Http\Controllers\Admin;
 
-use App\Business;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class BusinessController extends Controller
+class ReportController extends Controller
 {
-    protected $business;
-
-    public function __construct(Business $business)
-    {
-        $this->business = $business;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -22,18 +14,7 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        $business = $this->business->get();
-
-        return view('admin.business.index')
-            ->with('business', $business);
-    }
-
-    public function test()
-    {
-        $business = $this->business->get();
-
-        return view('admin.business.test')
-            ->with('business', $business);
+        return view('admin.report.index');
     }
 
     /**
@@ -43,7 +24,7 @@ class BusinessController extends Controller
      */
     public function create()
     {
-        return view('admin.business.create');
+        //
     }
 
     /**
@@ -54,22 +35,7 @@ class BusinessController extends Controller
      */
     public function store(Request $request)
     {
-//        todo validation of request
-        $business = $this->business;
-
-        $business->save($request->all());
-
-        $business->package()->create([
-            'business_id' => $business->id,
-            'price' => 0
-        ]);
-        $business->settings()->create([
-            'business_id' => $business->id,
-            'user_unit_price' => 0
-        ]);
-
-        return redirect()
-            ->route('super.business.edit', $business->id);
+        //
     }
 
     /**
@@ -80,10 +46,7 @@ class BusinessController extends Controller
      */
     public function show($id)
     {
-        $business = $this->business->findOrFail($id);
-
-        return view('admin.business.show')
-            ->with('business', $business);
+        //
     }
 
     /**
@@ -94,10 +57,7 @@ class BusinessController extends Controller
      */
     public function edit($id)
     {
-        $business = $this->business->findOrFail($id);
-
-        return view('admin.business.edit')
-            ->with('business', $business);
+        //
     }
 
     /**
@@ -109,7 +69,7 @@ class BusinessController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //
     }
 
     /**
