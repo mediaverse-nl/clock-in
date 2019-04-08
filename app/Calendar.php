@@ -40,6 +40,16 @@ class Calendar extends Model
         return Carbon::now()->endOfWeek();
     }
 
+    public static function startOfMonth()
+    {
+        return Carbon::now()->startOfMonth();
+    }
+
+    public static function endOfMonth()
+    {
+        return Carbon::now()->endOfMonth();
+    }
+
     public static function weekNumber()
     {
         return Carbon::now()->format('W');

@@ -47,7 +47,6 @@ Route::domain('app.clock-on.nl')->name('app.')->namespace('App')->group(function
     Route::get('/rooster', 'ScheduleController@index')->name('schedule.index');
 });
 
-
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
@@ -91,6 +90,7 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->name('panel.')
 
 //new dashboard management
 Route::prefix('admin')->middleware(['auth'])->namespace('Admin')->name('admin.')->group(function () {
+    Route::get('/', 'DashboardController')->name('dashboard');
     Route::get('/rooster/day', 'ScheduleController@day')->name('schedule.day');
     Route::get('/rooster/week', 'ScheduleController@week')->name('schedule.week');
     Route::get('/rooster/month', 'ScheduleController@month')->name('schedule.month');

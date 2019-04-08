@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ScheduleController extends Controller
 {
-    public function __construct()
-    {
+    protected $user;
 
+    public function __construct(User $user)
+    {
+        $this->user = $user;
     }
 
     public function day()
     {
-        return view('admin.schedule.day');
+        $users = $this->user->get();
+
+        return view('admin.schedule.day')
+            ->with('users', $users);
     }
 
     public function week()
@@ -24,7 +30,7 @@ class ScheduleController extends Controller
 
     public function month()
     {
-
+        return view('admin.schedule.month');
     }
 
     public function availability()

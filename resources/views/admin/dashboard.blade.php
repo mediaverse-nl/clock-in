@@ -1,39 +1,64 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 
-    <div class="col-md-4">
-        <a href="{{route('super.business.index')}}">
-            <div class="panel panel-default" id="start-panel">
-                <div class="panel-body">
-                    <i class="fa fa-user-clock fa-5x"></i>
-                    <div class="pull-right">
-                        <p class="text-right">Clocked In</p>
-                        <span class="h1">
-                             Business
-                        </span>
+    @php
+        use GuzzleHttp\Client;
+
+        $client = new Client();
+        $api_response = $client
+            ->request('GET', 'http://weerlive.nl/api/json-data-10min.php?key=74e3b11987&locatie=Eindhoven')
+            ->getBody();
+
+        $weather = (object) json_decode((string) $api_response, false);
+        $weatherResponse = $weather->liveweer[0];
+        //dd($weatherResponse->plaats);
+    @endphp
+
+    <div class="col-md-12">
+        <div class="row">
+
+            {!! $weatherResponse->temp !!}
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        rooster
+                    </div>
+                    <div class="panel-body">
+                        asdasd
                     </div>
                 </div>
             </div>
-        </a>
-    </div>
 
-    <div class="col-md-4">
-        <a href="{{route('super.dashboard')}}">
-            <div class="panel panel-default" id="start-panel">
-                <div class="panel-body">
-                    <i class="fa fa-user-clock fa-5x"></i>
-                    <div class="pull-right">
-                        <p class="text-right">Clocked In</p>
-                        <span class="h1">
-                             Tickets
-                        </span>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        time tracker
+                    </div>
+                    <div class="panel-body">
+                        asdasd
                     </div>
                 </div>
             </div>
-        </a>
-    </div>
 
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        time tracker
+                    </div>
+                    <div class="panel-body">
+                        asdasd
+                    </div>
+                </div>
+            </div>
+
+            asdasdasd
+
+            http://weerlive.nl/api/json-data-10min.php?key=74e3b11987&locatie=Eindhoven
+
+        </div>
+    </div>
 @endsection
 
 @push('css')

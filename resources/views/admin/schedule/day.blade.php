@@ -60,8 +60,9 @@
             return $totalMinutes;
         }
 
-        echo number_format(timeLength(960), 2);
-        echo timeToPercentage("01:30");
+        echo timeLength(960);
+        echo '<br>';
+        echo timeToPercentage("24:00");
 
     @endphp
 
@@ -98,31 +99,33 @@
                     </div>
                 </th>
                 @for($w = 0; $w < 1; $w++)
-                    <th class="{!! \App\Calendar::day() == \App\Calendar::startOfWeek()->addDays($w)->format('d') ? 'success' : ''  !!}">
+                    <th class="{!! \App\Calendar::day() == \App\Calendar::startOfWeek()->addDays($w)->format('d') ? 'success' : ''  !!}" style="padding: 2px 0px;">
                         <small>
                             {{--{!! \Carbon\Carbon::now()->format('d M') !!}<br>--}}
                         20 hrs / &euro;144</small>
-                        <div class="row">
+                        <div style="">
                             {{--<div class="col-md-2 text-left" style="padding: 0px;">--}}
                                 {{--00:01--}}
                             {{--</div>--}}
-                            <div class="col-md-2 col-sm-2 col-lg-2 hidden-xs text-right" style="padding: 0px;">
-                                04:00
+                            <div class="col-md-2 col-sm-2 col-lg-2 hidden-xs" style="padding: 0px;">
+                                <div class="row"><div class="text-left col-sm-6  col-md-6">01</div>
+                                    <div class="text-right col-sm-6 col-md-6">04</div></div>
+
                             </div>
                             <div class="col-md-2 col-sm-2 col-lg-2 hidden-xs text-right" style="padding: 0px;">
-                                08:00
+                                08
                             </div>
                             <div class="col-md-2 col-sm-2 col-lg-2 hidden-xs text-right" style="padding: 0px;">
-                                12:00
+                                12
                             </div>
                             <div class="col-md-2 col-sm-2 col-lg-2 hidden-xs text-right" style="padding: 0px;">
-                                16:00
+                                16
                             </div>
                             <div class="col-md-2 col-sm-2 col-lg-2 hidden-xs text-right" style="padding: 0px;">
-                                20:00
+                                20
                             </div>
                             <div class="col-md-2 col-sm-2 col-lg-2 hidden-xs text-right" style="padding: 0px;">
-                                23:59
+                                23
                             </div>
                         </div>
                     </th>
@@ -130,21 +133,25 @@
 
 
             </tr>
-            @for($u = 0; $u < 5; $u++)
+            @foreach($users as $user)
                 <tr>
-                    <th style="width: 200px;">
+                    <th style="width: 250px;">
                         <img class="img-circle" style="vertical-align: top; height: 35px; width: 35px;" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
                         <div style="display: inline-block; margin-left: 10px;">
-                            willem <br>
+                            {!! $user->name !!} <br>
                             <small class="mute">
                                 {!! random_int(5, 20) !!} hrs
                             </small>
                         </div>
                     </th>
                     @for($s = 0; $s < 1; $s++)
-                        @if(random_int(0,1) == $s)
+                        @if(random_int(0,$s) == $s)
                             <td style="padding: 5px 1px;">
+
                                 <div class="panel panel-default" style="width: 33%;margin-left: {!! rand(0, 66) !!}%; margin-bottom: 0px;">
+                                sdasda
+                                </div>
+                                 <div class="panel panel-default" style="width: 33%;margin-left: {!! rand(0, 66) !!}%; margin-bottom: 0px;">
                                     <div class="text-center pane    l-body  bg-warning" style="padding: 5px 10px;">
                                         <small><b>12:45-18:25</b></small> <br>
                                         counter
@@ -157,7 +164,7 @@
 
                     @endfor
                 </tr>
-            @endfor
+            @endforeach
         </table>
     </div>
 

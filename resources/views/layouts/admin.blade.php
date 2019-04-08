@@ -89,7 +89,7 @@
             display:block;
             width: 100%;
             margin-top: 20px;
-            padding: 10px 0px;
+            /*padding: 10px 0px;*/
          }
 
     </style>
@@ -103,7 +103,7 @@
                 <a class="navbar-brand" href="#">WebSiteName</a>
             </div>
             <ul class="nav navbar-nav">
-                <li class=""><a href="#">Dashboard</a></li>
+                <li class="{!! \Request::is('admin') ? 'active' : '' !!}"><a href="{!! route('admin.dashboard') !!}">Dashboard</a></li>
                 <li class="{!! \Request::is('admin/rooster*') ? 'active' : '' !!}"><a href="{!! route('admin.schedule.week') !!}">Rooster</a></li>
                 <li class="{!! \Request::is('admin/tijdregistratie*') ? 'active' : '' !!}"><a href="{!! route('admin.time-tracking.index') !!}">Time Tracking</a></li>
                 <li class="{!! \Request::is('admin/team*') ? 'active' : '' !!}"><a href="{!! route('admin.team.index') !!}">Team</a></li>
@@ -111,8 +111,8 @@
                 <li class="{!! \Request::is('admin/settings*') ? 'active' : '' !!}"><a href="{!! route('admin.settings.index') !!}">Settings</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                {{--<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>--}}
+                <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Uitloggen</a></li>
             </ul>
         </div>
     </nav>

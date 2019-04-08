@@ -145,10 +145,10 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('management.schedule.index')}}" class="{{\Request::is('panel/card*') ? 'active' : ''  }}">
-                            <i class="fa fa-calendar fa-fw"></i>
-                            Rooster
-                        </a>
+                        {{--<a href="{{route('management.schedule.index')}}" class="{{\Request::is('panel/card*') ? 'active' : ''  }}">--}}
+                            {{--<i class="fa fa-calendar fa-fw"></i>--}}
+                            {{--Rooster--}}
+                        {{--</a>--}}
                     </li>
                     <li>
                         <a href="{{route('card.index')}}" class="{{\Request::is('panel/card*') ? 'active' : ''  }}">

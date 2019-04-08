@@ -76,24 +76,12 @@
             </tr>
 
             <tr class="active">
-                <td>shifts</td>
+                <td></td>
                 <td>
                     <div class="panel panel-default" style="margin-bottom: 0px;">
                         <div class="text-center bg-active" style="background-color: #e3e3e3; padding: 1px 10px;">
                             <small><b>12:45-18:25</b></small> <br>
-                            counter
-                        </div>
-                    </div>
-                    <div class="panel panel-default" style="margin-bottom: 0px; margin-top: 4px;">
-                        <div class="text-center bg-active" style="background-color: #e3e3e3; padding: 1px 10px;">
-                            <small><b>12:45-18:25</b></small> <br>
-                            Serving
-                        </div>
-                    </div>
-                    <div class="panel panel-default" style="margin-bottom: 0px; margin-top: 4px;">
-                        <div class="text-center bg-active" style="background-color: #e3e3e3; padding: 1px 10px;">
-                            <small><b>12:45-18:25</b></small> <br>
-                            Manager
+                            feestdag
                         </div>
                     </div>
                 </td>
