@@ -22,7 +22,6 @@
                         <br>
                         <div class="form-row">
                             <div class="col-12 col-md-9 mb-2 mb-md-0">
-
                                 <select name="" id="" class="form-control">
                                     <option value="" disabled selected>aantal werknemers</option>
                                     <option value="">1 ~ 5</option>

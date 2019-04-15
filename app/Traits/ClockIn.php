@@ -19,9 +19,7 @@ trait ClockIn
     {
         $card_id = $request->get($rfidTag);
         $check = $this->clocked()->getUserFromCard($card_id);
-        $mac_address = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
 
-//        dd($card_id, $check);
         if($check != 404){
             $isClockedIn = $this->clocked()->clockedIn();
 
@@ -61,6 +59,8 @@ trait ClockIn
     private function storeEntry(Request $request)
     {
         $clocked = $this->clocked();
+
+        $clocked->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
         $clocked->started_at = $this->time()->toDateTimeString();
         $clocked->user_id = $this->clocked()->currentUser() ;
         $clocked->save();
@@ -75,7 +75,7 @@ trait ClockIn
      */
 
     private function updateEntry(Request $request)
-    {
+    {/
         $entry = $this->clocked()->newestEntry();
 
         $diffInMinutes = $this->time()->diffInMinutes($entry->started_at);

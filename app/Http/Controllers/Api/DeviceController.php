@@ -26,7 +26,7 @@ class DeviceController extends Controller
         return $this->check($request, 'rfid_tag');
 //        rfid_tag
 
-        return 'ok';
+//        return 'ok';
     }
 
     public function numpad(Request $request)

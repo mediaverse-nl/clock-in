@@ -96,7 +96,7 @@ class Clocked extends Model
             return $device->id;
         }
 
-        return 404;
+        return null;
     }
 
 
