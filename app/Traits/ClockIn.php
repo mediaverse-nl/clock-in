@@ -75,7 +75,7 @@ trait ClockIn
      */
 
     private function updateEntry(Request $request)
-    {/
+    {
         $entry = $this->clocked()->newestEntry();
 
         $diffInMinutes = $this->time()->diffInMinutes($entry->started_at);
