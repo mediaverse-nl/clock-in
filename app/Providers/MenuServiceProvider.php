@@ -34,7 +34,7 @@ class MenuServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('components.menu-main', function ($view) {
+        view()->composer('includes.*', function ($view) {
             $view->with('notificationClocked', $this->notificationClocked());
         });
     }

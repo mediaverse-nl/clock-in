@@ -68,7 +68,6 @@ class Clocked extends Model
         return $userId;
     }
 
-
     /**
      * @return bool
      */
@@ -84,6 +83,22 @@ class Clocked extends Model
 
         return 404;
     }
+
+    /**
+     * @return bool
+     */
+    public function getDeviceFromMacAddress($mac_address)
+    {
+        $device = Devices::where('mac_address', 'like', '%'.$mac_address.'%')
+            ->first();
+
+        if($device !== null){
+            return $device->id;
+        }
+
+        return 404;
+    }
+
 
     public function newestEntry()
     {

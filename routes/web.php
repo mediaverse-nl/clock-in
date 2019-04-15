@@ -59,7 +59,7 @@ Route::post('password/change', 'Auth\ChangePasswordController@changePassword')->
 
 Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('SuperAdmin')->group(function () {
     Route::get('/', 'DashboardController');
-    Route::get('/test', 'BusinessController@test');
+//    Route::get('/test', 'BusinessController@test');
     Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::resource('business', 'BusinessController');
     Route::resource('package', 'PackagesController');
