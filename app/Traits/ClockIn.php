@@ -92,7 +92,7 @@ trait ClockIn
         return Carbon::now();
     }
 
-    private function clocked(){
+    protected function clocked(){
         return new Clocked();
     }
 
