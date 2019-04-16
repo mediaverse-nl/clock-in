@@ -99,7 +99,6 @@ class Clocked extends Model
         return null;
     }
 
-
     public function newestEntry()
     {
         return $this->where('active', '=', 1)

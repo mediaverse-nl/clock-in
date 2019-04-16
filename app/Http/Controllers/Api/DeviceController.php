@@ -24,9 +24,6 @@ class DeviceController extends Controller
         }
 
         return $this->check($request, 'rfid_tag');
-//        rfid_tag
-
-//        return 'ok';
     }
 
     public function numpad(Request $request)
@@ -41,12 +38,23 @@ class DeviceController extends Controller
             return $errors;
         }
 
-        //
+//        $clocked = $this->clocked();
+//
+//        $clocked->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+//        $clocked->started_at = $this->time()->toDateTimeString();
+//        $clocked->user_id = $this->clocked()->currentUser() ;
+//        $clocked->save();
+//
+//        $entry = $this->clocked()->newestEntry();
+//
+//        $diffInMinutes = $this->time()->diffInMinutes($entry->started_at);
+//
+//        $entry->stopped_at = $this->time()->toDateTimeString();
+//        $entry->worked_min = $diffInMinutes;
+//        $entry->active = 0;
+//        $entry->save();
 
-        return response()->json([
-            'message' => 'ok',
-            'status' => $httpStatus
-        ], $httpStatus);
+        return $diffInMinutes;
     }
 
     public function touch(Request $request)

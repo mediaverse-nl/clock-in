@@ -9,6 +9,15 @@ use Illuminate\Http\Request;
 
 trait ClockIn
 {
+    public function tet(Request $request, $clockInCode)
+    {
+//        clock_in_code
+        $clockCode = $request->get($clockInCode);
+
+        $check = $this->clocked()->getUserFromCard($clockCode);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
