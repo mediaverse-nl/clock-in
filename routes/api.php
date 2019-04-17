@@ -21,6 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    202: Aanvaard
 //    200: OK
 
+Route::get('test', function (){
+    return 'test';
+});
 Route::post('device-service-touch', 'Api\DeviceController@touch');
 Route::post('device-rfid', 'Api\DeviceController@rfid');
 Route::post('device-numpad', 'Api\DeviceController@numpad');

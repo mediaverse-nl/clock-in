@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Card;
 use App\Clocked;
+use App\Devices;
 use App\Traits\ApiResponse;
 use App\Traits\ClockIn;
 use App\User;
@@ -26,8 +27,17 @@ class DeviceController extends Controller
             return $errors;
         }
 
+         $device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+
+//        dd($device_id);
+        if (true){
+            $device = Devices::where('id', '=', $device_id)->first();
+k
+//            dd($device);
+        }
+
         $card = (new Card())
-            ->where('value', '=', $request->rfid_tag);
+            ->where('value','=', $request->rfid_tag);
 
         if ($card->exists()){
             $user_id = $card->first()->user_id;
@@ -42,7 +52,7 @@ class DeviceController extends Controller
                 $worked_min = $this->time()->diffInMinutes($entry->started_at);
                 $entry->stopped_at = $this->time()->toDateTimeString();
                 $entry->worked_min = $worked_min;
-                $entry->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+                $entry->device_id = $device_id;
                 $entry->started_at = $this->time()->toDateTimeString();
                 $entry->active = 0;
                 $entry->save();
@@ -57,7 +67,7 @@ class DeviceController extends Controller
                     ], 200);
             }else{
                 $clocked = $this->clocked();
-                $clocked->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+                $clocked->device_id = $device_id;
                 $clocked->started_at = $this->time()->toDateTimeString();
                 $clocked->user_id = $user_id;
                 $clocked->save();
@@ -69,6 +79,11 @@ class DeviceController extends Controller
                     ], 201);
             }
         }else{
+            $card = (new Card());
+            $card->user_id = null;
+            $card->value = $request->rfid_tag;
+            $card->save();
+
             return response()
                 ->json([
                     'error' => 'tag niet gevonden',
