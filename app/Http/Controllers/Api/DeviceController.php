@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Card;
+use App\Clocked;
 use App\Traits\ApiResponse;
 use App\Traits\ClockIn;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -23,7 +26,55 @@ class DeviceController extends Controller
             return $errors;
         }
 
-        return $this->check($request, 'rfid_tag');
+        $card = (new Card())
+            ->where('value', '=', $request->rfid_tag);
+
+        if ($card->exists()){
+            $user_id = $card->first()->user_id;
+
+            $entry = (new Clocked())
+                ->where('active', '=', 1)
+                ->where('user_id', '=', $user_id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($entry){
+                $worked_min = $this->time()->diffInMinutes($entry->started_at);
+                $entry->stopped_at = $this->time()->toDateTimeString();
+                $entry->worked_min = $worked_min;
+                $entry->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+                $entry->started_at = $this->time()->toDateTimeString();
+                $entry->active = 0;
+                $entry->save();
+
+                return response()
+                    ->json([
+                        'data' => [
+                            'min_gewerkt' => $worked_min
+                        ],
+                        'message' => 'uitgecheckt',
+                        'status' => 200,
+                    ], 200);
+            }else{
+                $clocked = $this->clocked();
+                $clocked->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+                $clocked->started_at = $this->time()->toDateTimeString();
+                $clocked->user_id = $user_id;
+                $clocked->save();
+
+                return response()
+                    ->json([
+                        'message' => 'ingecheckt',
+                        'status' => 201,
+                    ], 201);
+            }
+        }else{
+            return response()
+                ->json([
+                    'error' => 'tag niet gevonden',
+                    'status' => 404,
+                ], 404);
+        }
     }
 
     public function numpad(Request $request)
@@ -38,23 +89,55 @@ class DeviceController extends Controller
             return $errors;
         }
 
-//        $clocked = $this->clocked();
-//
-//        $clocked->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
-//        $clocked->started_at = $this->time()->toDateTimeString();
-//        $clocked->user_id = $this->clocked()->currentUser() ;
-//        $clocked->save();
-//
-//        $entry = $this->clocked()->newestEntry();
-//
-//        $diffInMinutes = $this->time()->diffInMinutes($entry->started_at);
-//
-//        $entry->stopped_at = $this->time()->toDateTimeString();
-//        $entry->worked_min = $diffInMinutes;
-//        $entry->active = 0;
-//        $entry->save();
+        $user = (new User())
+            ->where('clock_in_code', '=', $request->clock_in_code);
 
-        return $diffInMinutes;
+        if ($user->exists()){
+            $user_id = $user->first(['id'])->id;
+
+            $entry = (new Clocked())
+                ->where('active', '=', 1)
+                ->where('user_id', '=', $user_id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($entry){
+                $worked_min = $this->time()->diffInMinutes($entry->started_at);
+                $entry->stopped_at = $this->time()->toDateTimeString();
+                $entry->worked_min = $worked_min;
+                $entry->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+                $entry->started_at = $this->time()->toDateTimeString();
+                $entry->active = 0;
+                $entry->save();
+
+                return response()
+                    ->json([
+                        'data' => [
+                            'min_gewerkt' => $worked_min
+                        ],
+                        'message' => 'uitgecheckt',
+                        'status' => 200,
+                    ], 200);
+            }else{
+                $clocked = $this->clocked();
+                $clocked->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+                $clocked->started_at = $this->time()->toDateTimeString();
+                $clocked->user_id = $user_id;
+                $clocked->save();
+
+                return response()
+                    ->json([
+                        'message' => 'ingecheckt',
+                        'status' => 201,
+                    ], 201);
+            }
+        }else{
+            return response()
+                ->json([
+                    'error' => 'code niet gevonden',
+                    'status' => 404,
+                ], 404);
+        }
     }
 
     public function touch(Request $request)
