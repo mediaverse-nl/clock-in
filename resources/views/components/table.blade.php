@@ -20,7 +20,7 @@
     </div>
 </div>
 
-@push('js')
+@push('css')
     <style>
         .no-sort{
             width: 50px;

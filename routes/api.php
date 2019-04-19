@@ -24,7 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('test', function (){
     return 'test';
 });
-Route::post('device-service-touch', 'Api\DeviceController@touch');
-Route::post('device-rfid', 'Api\DeviceController@rfid');
-Route::post('device-numpad', 'Api\DeviceController@numpad');
+Route::post('device-service-touch', 'Api\DeviceController@touch')->middleware('ipCheck');
+Route::post('device-rfid', 'Api\DeviceController@rfid')->middleware('ipCheck');
+Route::post('device-numpad', 'Api\DeviceController@numpad')->middleware('ipCheck');
 

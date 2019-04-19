@@ -24,15 +24,7 @@ class BusinessController extends Controller
     {
         $business = $this->business->get();
 
-        return view('admin.business.index')
-            ->with('business', $business);
-    }
-
-    public function test()
-    {
-        $business = $this->business->get();
-
-        return view('admin.business.test')
+        return view('super-admin.business.index')
             ->with('business', $business);
     }
 
@@ -96,7 +88,7 @@ class BusinessController extends Controller
     {
         $business = $this->business->findOrFail($id);
 
-        return view('admin.business.edit')
+        return view('super-admin.business.edit')
             ->with('business', $business);
     }
 

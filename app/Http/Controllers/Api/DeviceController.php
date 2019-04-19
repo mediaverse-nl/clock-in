@@ -18,22 +18,12 @@ class DeviceController extends Controller
     public function rfid(Request $request)
     {
         $errors = $this->checkForErrors($request, [
-//            'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
-            'ip_adress' => 'required|ip',
+            'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
             'rfid_tag' => 'required',
         ]);
 
         if (!empty($errors)){
             return $errors;
-        }
-
-         $device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
-
-//        dd($device_id);
-        if (true){
-            $device = Devices::where('id', '=', $device_id)->first();
-
-//            dd($device);
         }
 
         $card = (new Card())
