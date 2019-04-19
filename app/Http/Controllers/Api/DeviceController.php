@@ -18,7 +18,7 @@ class DeviceController extends Controller
     public function rfid(Request $request)
     {
         $errors = $this->checkForErrors($request, [
-            'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
+//            'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
             'ip_adress' => 'required|ip',
             'rfid_tag' => 'required',
         ]);
@@ -32,7 +32,7 @@ class DeviceController extends Controller
 //        dd($device_id);
         if (true){
             $device = Devices::where('id', '=', $device_id)->first();
-k
+
 //            dd($device);
         }
 
