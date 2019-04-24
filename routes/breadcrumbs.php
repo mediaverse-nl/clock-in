@@ -10,14 +10,14 @@ Breadcrumbs::register('super.dashboard', function($breadcrumbs)
 Breadcrumbs::register('super.business.index', function($breadcrumbs)
 {
     $breadcrumbs->parent('super.dashboard');
-    $breadcrumbs->push('Business', route('super.business.index'));
+    $breadcrumbs->push('Businesses', route('super.business.index'));
 });
 
 // dashboard > business > edit
 Breadcrumbs::register('super.business.edit', function($breadcrumbs, $modal)
 {
     $breadcrumbs->parent('super.business.index');
-    $breadcrumbs->push('#'.$modal->id, route('super.business.edit', $modal->id));
+    $breadcrumbs->push($modal->name, route('super.business.edit', $modal->id));
 });
 
 // dashboard > business > edit > location
