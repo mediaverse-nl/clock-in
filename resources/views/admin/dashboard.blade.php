@@ -2,23 +2,23 @@
 
 @section('content')
 
-    @php
-        use GuzzleHttp\Client;
+    {{--@php--}}
+        {{--use GuzzleHttp\Client;--}}
 
-        $client = new Client();
-        $api_response = $client
-            ->request('GET', 'http://weerlive.nl/api/json-data-10min.php?key=74e3b11987&locatie=Eindhoven')
-            ->getBody();
+        {{--$client = new Client();--}}
+        {{--$api_response = $client--}}
+            {{--->request('GET', 'http://weerlive.nl/api/json-data-10min.php?key=74e3b11987&locatie=Eindhoven')--}}
+            {{--->getBody();--}}
 
-        $weather = (object) json_decode((string) $api_response, false);
-        $weatherResponse = $weather->liveweer[0];
-        //dd($weatherResponse->plaats);
-    @endphp
+        {{--$weather = (object) json_decode((string) $api_response, false);--}}
+        {{--$weatherResponse = $weather->liveweer[0];--}}
+        {{--//dd($weatherResponse->plaats);--}}
+    {{--@endphp--}}
 
     <div class="col-md-12">
         <div class="row">
 
-            {!! $weatherResponse->temp !!}
+{{--            {!! $weatherResponse->temp !!}--}}
 
             <div class="col-md-6">
                 <div class="panel panel-default">

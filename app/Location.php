@@ -10,7 +10,14 @@ class Location extends Model
 
     protected $primaryKey = "id";
 
-    protected $fillable = ['business_id'];
+    protected $fillable = [
+        'business_id',
+        'address',
+        'address_nr',
+        'postal_code',
+        'place',
+        'country',
+    ];
 
     protected $dates = [
         'created_at',
@@ -34,5 +41,10 @@ class Location extends Model
     public function devices()
     {
         return $this->hasMany('App\Devices', 'location_id');
+    }
+
+    public function getFulAddressAttribute()
+    {
+        return $this->address.' '.$this->address_nr;
     }
 }

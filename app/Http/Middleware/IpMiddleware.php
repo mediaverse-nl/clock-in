@@ -20,7 +20,7 @@ class IpMiddleware
 
         if (!in_array($request->ip(), $whitelist->get()->pluck('ip_address')->toArray()))
         {
-            return response()
+             return response()
                 ->json([
                     'error' => 'ip niet bekend',
                     'status' => 404,

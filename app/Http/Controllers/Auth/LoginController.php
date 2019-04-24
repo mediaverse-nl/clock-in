@@ -37,7 +37,16 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        return redirect()->route('dashboard');
+        foreach ($user->userRoles as $role)
+        {
+            if ($role->role->value = 'super') {
+                return redirect()->route('super.dashboard');
+            }elseif ($role->role->value = 'admin'){
+                return redirect()->route('admin.dashboard');
+            }elseif ($role->role->value = 'normal'){
+                return redirect()->route('panel.dashboard');
+            }
+        }
     }
     /**
      * Create a new controller instance.

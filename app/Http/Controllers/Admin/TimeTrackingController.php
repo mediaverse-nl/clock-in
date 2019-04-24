@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Clocked;
+use App\Traits\getLocationTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class TimeTrackingController extends Controller
 {
-    public function __construct()
-    {
+    use getLocationTrait;
 
+    protected $clocked;
+
+    public function __construct(Clocked $clocked)
+    {
+        $this->clocked = $clocked;
     }
 
     /**
@@ -19,7 +25,15 @@ class TimeTrackingController extends Controller
      */
     public function index()
     {
-        return view('admin.timeTracking.index');
+        $clocked = $this->clocked
+            ->where('device_id', '=', 1)
+//            ->where('location_id', '=', 1)
+                ->orderBy('active', 'desc')
+                ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.timeTracking.index')
+            ->with('clocked', $clocked);
     }
 
     /**

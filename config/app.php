@@ -173,6 +173,7 @@ return [
         GeneaLabs\LaravelCaffeine\LaravelCaffeineServiceProvider::class,
 //        Webklex\IMAP\Providers\LaravelServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
 
 
         /*
@@ -240,6 +241,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Client' => Webklex\IMAP\Facades\Client::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
 
     ],
 

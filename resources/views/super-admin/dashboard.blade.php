@@ -1,6 +1,9 @@
 @extends('layouts.super-admin')
 
 @section('content')
+
+    {!! Breadcrumbs::render('super.dashboard') !!}
+
     <div class="col-md-12">
         <div class="row">
             @component('components.table', ['title' => 'Business'])

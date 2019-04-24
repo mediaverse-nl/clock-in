@@ -60,9 +60,9 @@
             return $totalMinutes;
         }
 
-        echo timeLength(960);
-        echo '<br>';
-        echo timeToPercentage("24:00");
+        //echo timeLength(960);
+        //echo '<br>';
+        //echo timeToPercentage("24:00");
 
     @endphp
 
@@ -99,10 +99,10 @@
                     </div>
                 </th>
                 @for($w = 0; $w < 1; $w++)
-                    <th class="{!! \App\Calendar::day() == \App\Calendar::startOfWeek()->addDays($w)->format('d') ? 'success' : ''  !!}" style="padding: 2px 0px;">
-                        <small>
+                    <th class="{!! \App\Calendar::day() == \App\Calendar::startOfWeek()->addDays($w)->format('d') ? 'success' : ''  !!}" style="padding: 2px 5px;">
+                        <p class="text-center">
                             {{--{!! \Carbon\Carbon::now()->format('d M') !!}<br>--}}
-                        20 hrs / &euro;144</small>
+                        20 hrs / &euro; --</p>
                         <div style="">
                             {{--<div class="col-md-2 text-left" style="padding: 0px;">--}}
                                 {{--00:01--}}

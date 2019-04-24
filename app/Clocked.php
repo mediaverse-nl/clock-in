@@ -16,12 +16,21 @@ class Clocked extends Model
         'started_at',
         'stopped_at'
     ];
+
     /**
      * Get the user that owns the phone.
      */
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Get the user that owns the phone.
+     */
+    public function device()
+    {
+        return $this->belongsTo('App\Devices');
     }
 
     public function diffInTime()

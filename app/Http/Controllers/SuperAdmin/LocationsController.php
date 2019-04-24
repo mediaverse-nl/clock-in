@@ -36,7 +36,7 @@ class LocationsController extends Controller
      */
     public function create($business_id)
     {
-        return view('admin.location.create')
+        return view('super-admin.location.create')
             ->with('business_id', $business_id);
     }
 
@@ -49,6 +49,8 @@ class LocationsController extends Controller
     public function store(Request $request)
     {
         $location = $this->location;
+
+//        dd($request->except('_method', '_token'));
 
         $location->create($request->except('_method', '_token'));
 
@@ -66,7 +68,7 @@ class LocationsController extends Controller
     {
         $location = $this->location->findOrFail($id);
 
-        return view('admin.location.edit')
+        return view('super-admin.location.edit')
             ->with('location', $location);
     }
 

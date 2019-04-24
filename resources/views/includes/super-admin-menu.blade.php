@@ -79,6 +79,18 @@
                     <h4 style="padding: 0px 15px;">super admin</h4>
                 </li>
                 <li class="">
+                    <a href="{{route('super.dashboard')}}" class="{{\Request::is('super-admin') || \Request::is('super-admin/dashboard') ? 'active' : ''  }}">
+                        <i class="fas fa-tachometer-alt fa-fw"></i>                        dashboard
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{{route('super.business.index')}}" class="{{\Request::is('super-admin/business*') ? 'active' : ''  }}">
+                        <i class="fa fa-building fa-fw"></i>
+                        business
+                    </a>
+                </li>
+
+                <li class="">
                     <a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">
                         <i class="fa fa-user-clock fa-fw"></i>
                         tickets/reports

@@ -73,7 +73,6 @@
 
 </head>
 <body>
-
     <div id="wrapper">
         <!-- Navigation -->
         @include('includes.super-admin-menu')

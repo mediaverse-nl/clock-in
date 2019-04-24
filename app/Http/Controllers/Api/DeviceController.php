@@ -17,6 +17,8 @@ class DeviceController extends Controller
 
     public function rfid(Request $request)
     {
+//        dd(1);
+
         $errors = $this->checkForErrors($request, [
             'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
             'rfid_tag' => 'required',
@@ -42,7 +44,7 @@ class DeviceController extends Controller
                 $worked_min = $this->time()->diffInMinutes($entry->started_at);
                 $entry->stopped_at = $this->time()->toDateTimeString();
                 $entry->worked_min = $worked_min;
-                $entry->device_id = $device_id;
+                $entry->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
                 $entry->started_at = $this->time()->toDateTimeString();
                 $entry->active = 0;
                 $entry->save();
@@ -57,7 +59,7 @@ class DeviceController extends Controller
                     ], 200);
             }else{
                 $clocked = $this->clocked();
-                $clocked->device_id = $device_id;
+                $clocked->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
                 $clocked->started_at = $this->time()->toDateTimeString();
                 $clocked->user_id = $user_id;
                 $clocked->save();

@@ -23,9 +23,17 @@
                          <select class="form-control" id="sel1" style="border-radius: 0px;">
                             <option>alle locaties</option>
                             <option>daalakkerseweg 2</option>
-                            <option>kruisstraat 63</option>
-                            <option>Eindhovenseweg 1023</option>
                          </select>
+                    </div>
+                </div>
+
+                <div class="btn-group pull-left" role="group" aria-label="" style="margin-left: 5px">
+                    {{--<a class="btn btn-default"><</a>--}}
+                    <div class="form-group">
+                        <select class="form-control" id="sel1" style="border-radius: 0px;">
+                            <option>alle gebruikers</option>
+                            <option>deveron reniers</option>
+                        </select>
                     </div>
                 </div>
 
@@ -45,38 +53,50 @@
                 <th class="">datum </th>
                 <th>persoon</th>
                 <th>time card</th>
-                <th>rooster</th>
+                {{--<th>rooster</th>--}}
                 <th>gewerkt</th>
-                <th></th>
+                {{--<th></th>--}}
                 <th class="">locatie</th>
                 <th class=""></th>
-                {{--<th class=""> </th>--}}
-            </tr>
-            @for($u = 0; $u < 3; $u++)
+             </tr>
+            @foreach($clocked as $c)
                 <tr>
                     <td class="">
-                        {!! date('d M') !!}
-                    </td>
+                        {{--{!! $c !!}--}}
+                        {!! $c->started_at->format('d M') !!}
+                     </td>
                     <td style="width: 200px;">
                         <img class="img-circle" style="height: 35px; width: 35px;" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
                         <div style="display: inline-block;">
-                            willem
+                            {!! $c->user->name !!}
                         </div>
                     </td>
                     <td class="">
-                        <b>{!! date('h:i') !!} - {!! date('h:i') !!}</b>
+                        @if($c->active)
+                            <b>{!! $c->started_at->format('h:i') !!} - /</b>
+                        @else
+                            <b>{!! $c->started_at->format('h:i') !!} - {!! $c->stopped_at->format('h:i') !!}</b>
+                        @endif
                     </td>
+                    {{--<td class="">--}}
+                        {{--@if(!$c->active)--}}
+                            {{--{!! $c->worked_min !!} <small>min</small>--}}
+                        {{--@else--}}
+                            {{--0 <small>min</small>--}}
+                        {{--@endif--}}
+                    {{--</td>--}}
                     <td class="">
-                        6:30
+                        @if(!$c->active)
+                            {!! $c->worked_min !!} <small>min</small>
+                        @else
+                            0 <small>min</small>
+                        @endif
                     </td>
+                    {{--<td class="">--}}
+                        {{--<span class="label label-danger">2+</span>--}}
+                    {{--</td>--}}
                     <td class="">
-                        5:25
-                    </td>
-                    <td class="">
-                        <span class="label label-danger">2+</span>
-                    </td>
-                    <td class="">
-                         daalakkersweg 2
+                        {!! $c->device->location->fulAddress !!}
                      </td>
                     <td>
                         <a href="" class="btn btn-default pull-right">
@@ -84,7 +104,7 @@
                         </a>
                     </td>
                 </tr>
-            @endfor
+            @endforeach
         </table>
     </div>
 

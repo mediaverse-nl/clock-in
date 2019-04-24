@@ -59,7 +59,6 @@ Route::post('password/change', 'Auth\ChangePasswordController@changePassword')->
 
 Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('SuperAdmin')->group(function () {
     Route::get('/', 'DashboardController');
-//    Route::get('/test', 'BusinessController@test');
     Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::resource('business', 'BusinessController');
     Route::resource('package', 'PackagesController');
@@ -90,7 +89,8 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->name('panel.')
 
 //new dashboard management
 Route::prefix('admin')->middleware(['auth'])->namespace('Admin')->name('admin.')->group(function () {
-    Route::get('/', 'DashboardController')->name('dashboard');
+    Route::get('/', 'DashboardController');
+    Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::get('/rooster/day', 'ScheduleController@day')->name('schedule.day');
     Route::get('/rooster/week', 'ScheduleController@week')->name('schedule.week');
     Route::get('/rooster/month', 'ScheduleController@month')->name('schedule.month');
