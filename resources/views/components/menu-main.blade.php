@@ -50,24 +50,24 @@
 
             </a>
             <ul class="dropdown-menu dropdown-alerts" style="padding-top: 10px;">
-                @foreach($notificationClocked as $clock)
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-stopwatch fa-fw"></i>
-                                {{\Carbon\Carbon::parse($clock->started_at)->diffForHumans(\Carbon\Carbon::now(), true, true, 3)}}
-                                <span class="pull-right text-muted small">{{$clock->diffInTime()}}</span>
-                            </div>
+                {{--@foreach($notificationClocked as $clock)--}}
+                    {{--<li>--}}
+                        {{--<a href="#">--}}
+                            {{--<div>--}}
+                                {{--<i class="fa fa-stopwatch fa-fw"></i>--}}
+                                {{--{{\Carbon\Carbon::parse($clock->started_at)->diffForHumans(\Carbon\Carbon::now(), true, true, 3)}}--}}
+                                {{--<span class="pull-right text-muted small">{{$clock->diffInTime()}}</span>--}}
+                            {{--</div>--}}
 
 
-                        </a>
-                    </li>
-                    @if(!$loop->last)
-                        <li class="divider"></li>
-                    @else
-                        <br />
-                    @endif
-                @endforeach
+                        {{--</a>--}}
+                    {{--</li>--}}
+                    {{--@if(!$loop->last)--}}
+                        {{--<li class="divider"></li>--}}
+                    {{--@else--}}
+                        {{--<br />--}}
+                    {{--@endif--}}
+                {{--@endforeach--}}
 
                 {{--<li>--}}
                     {{--<a class="text-center" href="#">--}}

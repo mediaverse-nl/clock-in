@@ -241,7 +241,6 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Client' => Webklex\IMAP\Facades\Client::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
 
     ],
 

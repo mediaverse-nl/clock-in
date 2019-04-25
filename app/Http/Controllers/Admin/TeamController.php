@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Traits\getLocationTrait;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class TeamController extends Controller
 {
+    use getLocationTrait;
+
     protected $user;
 
     public function __construct(User $user)

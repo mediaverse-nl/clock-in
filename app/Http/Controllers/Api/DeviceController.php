@@ -8,6 +8,7 @@ use App\Devices;
 use App\Traits\ApiResponse;
 use App\Traits\ClockIn;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -42,10 +43,9 @@ class DeviceController extends Controller
 
             if ($entry){
                 $worked_min = $this->time()->diffInMinutes($entry->started_at);
-                $entry->stopped_at = $this->time()->toDateTimeString();
+                $entry->stopped_at = Carbon::now();
                 $entry->worked_min = $worked_min;
                 $entry->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
-                $entry->started_at = $this->time()->toDateTimeString();
                 $entry->active = 0;
                 $entry->save();
 
@@ -110,10 +110,9 @@ class DeviceController extends Controller
 
             if ($entry){
                 $worked_min = $this->time()->diffInMinutes($entry->started_at);
-                $entry->stopped_at = $this->time()->toDateTimeString();
+                $entry->stopped_at = Carbon::now();
                 $entry->worked_min = $worked_min;
                 $entry->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
-                $entry->started_at = $this->time()->toDateTimeString();
                 $entry->active = 0;
                 $entry->save();
 

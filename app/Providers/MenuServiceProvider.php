@@ -3,19 +3,26 @@
 namespace App\Providers;
 
 use App\Clocked;
+use App\Location;
+use App\Traits\getLocationTrait;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 
 class MenuServiceProvider extends ServiceProvider
 {
+//    use getLocationTrait;
+
     protected $notificationClocked = [];
 
     protected $clocked;
     protected $user;
+//    protected $location;
 
     public function __construct()
     {
         $this->clocked = new Clocked();
+//        $this->location = new Location();
     }
 
     function notificationClocked()
@@ -25,6 +32,13 @@ class MenuServiceProvider extends ServiceProvider
             ->take(6)
             ->orderBy('id','desc')
             ->get();
+    }
+
+    function menuUserLocations()
+    {
+//        $this->currentLocationId();
+
+//        return $this->getLocationsFromUser();
     }
 
     /**
@@ -37,5 +51,9 @@ class MenuServiceProvider extends ServiceProvider
         view()->composer('includes.*', function ($view) {
             $view->with('notificationClocked', $this->notificationClocked());
         });
+
+//        view()->composer('layouts.admin', function ($view) {
+//            $view->with('menuUserLocations', $this->menuUserLocations());
+//        });
     }
 }

@@ -111,6 +111,15 @@
                 <li class="{!! \Request::is('admin/settings*') ? 'active' : '' !!}"><a href="{!! route('admin.settings.index') !!}">Settings</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <div class="form-group">
+                         <select class="form-control" id="sel1">
+                            @foreach($menuUserLocations as $i)
+                                <option>{!! $i !!}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </li>
                 {{--<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>--}}
                 <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Uitloggen</a></li>
             </ul>
@@ -142,6 +151,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/lang/nl.js"></script>
 
     <script>
+
+        $('.action').click(function(){
+            var editaction=($(this).attr("id"));
+
+            console.log(editaction);
+            $.ajax({
+                type:"POST",
+                url:"{!! route('admin.location.change') !!}",
+                data:"location_id="+editaction,
+                success:function(results){
+                    // window.location.href="REDIRECTED ROUTE URL"
+                }
+            });
+        });
+
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
         });

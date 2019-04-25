@@ -101,6 +101,7 @@ Route::prefix('admin')->middleware(['auth'])->namespace('Admin')->name('admin.')
     Route::get('/reports', 'ReportController@index')->name('report.index');
     Route::get('/settings', 'SettingsController@index')->name('settings.index');
     Route::get('/tijdregistratie', 'TimeTrackingController@index')->name('time-tracking.index');
+//    Route::post('/changeLocation', 'LocationController@change')->name('location.change');
 });
 
 Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function () {

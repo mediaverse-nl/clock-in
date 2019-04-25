@@ -116,6 +116,39 @@ class Clocked extends Model
             ->first();
     }
 
+
+    public function timeToPercentage(){
+        $position = ($this->timePosition($this->started_at->format('H:i')) * 100);
+
+        return number_format($position / 1440, 2);
+    }
+
+    public function timeLength(){
+        $position = ($this->worked_min * 100);
+
+        $position = number_format(($position / 1440), 2);
+
+        if ($position + $this->timeToPercentage() > 100){
+            $position = 100 - $this->timeToPercentage();
+        }
+//        $position = $this->timeToPercentage();
+
+        return $position;
+    }
+
+    private function timePosition($workingHours){
+        $timeArray = explode(':', $workingHours);
+
+        $hrs = (int)$timeArray[0];
+        $min = (int)$timeArray[1];
+
+        $totalMinutes = $hrs * 60;
+        $totalMinutes = $totalMinutes + $min;
+
+        return $totalMinutes;
+    }
+
+
     public function scopeMyRecords($query)
     {
         $query->where('user_id', '=', $this->currentUser());

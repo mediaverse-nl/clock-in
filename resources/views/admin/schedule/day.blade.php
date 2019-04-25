@@ -2,6 +2,11 @@
 
 @section('content')
 
+    @php
+        $date = \Carbon\Carbon::now()->addDays(0);
+        $formattedDate = $date->format('Y-m-d');
+    @endphp
+
     <div class="col-md-12">
         <a href="{!! route('admin.schedule.week') !!}" class="active btn btn-primary">week</a>
         <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>
@@ -15,7 +20,7 @@
             <div class="col-md-12">
                 <div class="btn-group pull-left" role="group" aria-label="">
                     <a class="btn btn-default"><</a>
-                    <a class="btn btn-default disabled">{!! \Carbon\Carbon::now()->format('d M') !!}</a>
+                    <a class="btn btn-default disabled">{!! $date->format('d M') !!}</a>
                     <a class="btn btn-default">></a>
                 </div>
 
@@ -35,36 +40,7 @@
 
     <hr>
 
-    @php
-        function timeToPercentage($workingHours){
-            $position = (timePosition($workingHours) * 100);
 
-            return number_format($position / 1440, 0);
-        }
-
-        function timeLength($workedMin = 960){
-           $position = ($workedMin * 100);
-
-            return number_format(($position / 1440), 2);
-        }
-
-        function timePosition($workingHours){
-            $timeArray = explode(':', $workingHours);
-
-            $hrs = (int)$timeArray[0];
-            $min = (int)$timeArray[1];
-
-            $totalMinutes = $hrs * 60;
-            $totalMinutes = $totalMinutes + $min;
-
-            return $totalMinutes;
-        }
-
-        //echo timeLength(960);
-        //echo '<br>';
-        //echo timeToPercentage("24:00");
-
-    @endphp
 
     <div class="col-md-12">
         <table class="table table-responsive table-striped" >
@@ -144,25 +120,35 @@
                             </small>
                         </div>
                     </th>
-                    @for($s = 0; $s < 1; $s++)
-                        @if(random_int(0,$s) == $s)
-                            <td style="padding: 5px 1px;">
+                    {{--@for($s = 0; $s < 1; $s++)--}}
+                        {{--@if(random_int(0,$s) == $s)--}}
+                    <td style="padding: 5px 1px;">
+{{--                        {!! \Carbon\Carbon::parse($formattedDate.'23:59:59') !!}--}}
+                        {!! $clocks = $user->clocked()
+                        ->where('started_at', '>=', \Carbon\Carbon::parse($formattedDate))
+                        ->where('stopped_at', '<=', \Carbon\Carbon::parse($formattedDate.'23:59:59'))
+                        ->where('worked_min', '!=', 0)
+                        ->get() !!} <br><br>
+                        <div class="panel panel-default" style="width: 100%; position: relative;">
 
-                                <div class="panel panel-default" style="width: 33%;margin-left: {!! rand(0, 66) !!}%; margin-bottom: 0px;">
-                                sdasda
-                                </div>
-                                 <div class="panel panel-default" style="width: 33%;margin-left: {!! rand(0, 66) !!}%; margin-bottom: 0px;">
-                                    <div class="text-center pane    l-body  bg-warning" style="padding: 5px 10px;">
-                                        <small><b>12:45-18:25</b></small> <br>
-                                        counter
-                                    </div>
-                                </div>
-                            </td>
-                        @else
-                            <td></td>
-                        @endif
+                            @foreach($clocks as $clocked)
 
-                    @endfor
+                                <div data-toggle="tooltip"
+                                     title="van {!! $clocked->started_at->format('H:i') !!} t/m {!! $clocked->stopped_at->format('H:i') !!} - gewerkte min {!! $clocked->worked_min !!}"
+                                     style="height: 8px; display: inline-block; position: absolute; background: black; color: green; width: {!! $clocked->timeLength() !!}%;margin-left: {!! $clocked->timeToPercentage() !!}%; margin-bottom: 0px;">
+                                </div>
+
+                                {{--<div class="panel panel-default" style="width: 33%;margin-left: {!! rand(0, 66) !!}%; margin-bottom: 0px;">--}}
+                                    {{--<div class="text-center pane    l-body  bg-warning" style="padding: 5px 10px;">--}}
+                                        {{--<small><b>12:45-18:25</b></small> <br>--}}
+                                        {{--counter--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+
+                            @endforeach
+                        </div>
+
+                    </td>
                 </tr>
             @endforeach
         </table>

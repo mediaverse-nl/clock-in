@@ -8,10 +8,11 @@ use App\Location;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 trait getLocationTrait
 {
-    public $location;
+//    public $location;
 
     public function __construct($location)
     {
@@ -22,15 +23,18 @@ trait getLocationTrait
     {
         $location_id = key($this->getLocationsFromUser());
 
-        $session = session('location_id');
+//        $session = session('location_id');
 
-        if (!isset($session)){
-            $session = session('location_id', $location_id);
-        }else{
-            $session = session('location_id');
-        }
+//        if (Session::has('location_id')){
+//            $session = Session::get('location_id');
+//        }else{
+//            $session = Session::put('location_id', $location_id);
+//        }
+//        Session::save();
 
-        return $session;
+//        dd($session);
+
+//        return $session;
     }
 
     public function getLocationsFromUser()
