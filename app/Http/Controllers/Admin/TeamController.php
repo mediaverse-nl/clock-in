@@ -6,6 +6,7 @@ use App\Traits\getLocationTrait;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class TeamController extends Controller
 {
@@ -45,7 +46,7 @@ class TeamController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.team.create');
     }
 
     /**
@@ -56,7 +57,28 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $random_password = str_random(8);
+
+        $user = $this->user;
+        $user->business_id = $request->business_id;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($random_password);
+        $user->save();
+
+        foreach ($request->functions as $function)
+        {
+            $user->userFunctions()->create([
+                'user_id' => $user->id,
+                'function_id' => $function
+            ]);
+        }
+
+//        todo this must send email
+//        Mail::to($user->email)->send(new RegisterdAccount($user, $random_password));
+
+        return redirect()
+            ->route('super.business.edit', $request->business_id);
     }
 
     /**

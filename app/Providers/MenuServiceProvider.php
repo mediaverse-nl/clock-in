@@ -11,18 +11,17 @@ use Illuminate\Support\ServiceProvider;
 
 class MenuServiceProvider extends ServiceProvider
 {
-//    use getLocationTrait;
+    use getLocationTrait;
 
     protected $notificationClocked = [];
 
     protected $clocked;
     protected $user;
-//    protected $location;
 
     public function __construct()
     {
         $this->clocked = new Clocked();
-//        $this->location = new Location();
+        $this->location = new Location();
     }
 
     function notificationClocked()
@@ -36,9 +35,9 @@ class MenuServiceProvider extends ServiceProvider
 
     function menuUserLocations()
     {
-//        $this->currentLocationId();
+        $this->currentLocationId();
 
-//        return $this->getLocationsFromUser();
+        return $this->getLocationsFromUser();
     }
 
     /**
@@ -52,8 +51,8 @@ class MenuServiceProvider extends ServiceProvider
             $view->with('notificationClocked', $this->notificationClocked());
         });
 
-//        view()->composer('layouts.admin', function ($view) {
-//            $view->with('menuUserLocations', $this->menuUserLocations());
-//        });
+        view()->composer('layouts.admin', function ($view) {
+            $view->with('menuUserLocations', $this->menuUserLocations());
+        });
     }
 }
