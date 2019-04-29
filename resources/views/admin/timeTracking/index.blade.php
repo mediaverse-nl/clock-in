@@ -12,17 +12,20 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-group pull-left" role="group" aria-label="">
-                    <a class="btn btn-default"><</a>
-                    <a class="btn btn-default disabled">{!! \App\Calendar::startOfWeek()->format('d M').' - '.\App\Calendar::endOfWeek()->format('d M') !!}</a>
-                    <a class="btn btn-default">></a>
+                    <input type="text" name="daterange" class="form-control" value="{!! $setDate !!}" />
+                    {{--<input type="text" name="daterange" class="form-control" value="01/01/2019 - 01/15/2019" />--}}
+
+                    {{--<a class="btn btn-default"><</a>--}}
+                    {{--<a class="btn btn-default disabled"></a>--}}
+                    {{--<a class="btn btn-default">></a>--}}
                 </div>
 
                 <div class="btn-group pull-left" role="group" aria-label="" style="margin-left: 5px">
-                    {{--<a class="btn btn-default"><</a>--}}
-                    <div class="form-group">
+                     <div class="form-group">
                         @component('components.filter', [
-                            'items' => [1,2],
-                            'name' => 'locations',
+                            'items' => $locations,
+                            'setValue' => $location,
+                            'name' => 'location',
                             'placeholder' => 'alle locaties',
                         ])
                         @endcomponent
@@ -30,12 +33,14 @@
                 </div>
 
                 <div class="btn-group pull-left" role="group" aria-label="" style="margin-left: 5px">
-                    {{--<a class="btn btn-default"><</a>--}}
-                    <div class="form-group">
-                        <select class="form-control" id="sel1" style="border-radius: 0px;">
-                            <option>alle gebruikers</option>
-                            <option>deveron reniers</option>
-                        </select>
+                     <div class="form-group">
+                        @component('components.filter', [
+                            'items' => $users,
+                            'setValue' => $user,
+                            'name' => 'user',
+                            'placeholder' => 'alle gebruikers',
+                        ])
+                        @endcomponent
                     </div>
                 </div>
 
@@ -75,9 +80,9 @@
                     </td>
                     <td class="">
                         @if($c->active)
-                            <b>{!! $c->started_at->format('h:i') !!} - /</b>
+                            <b>{!! $c->started_at->format('H:i') !!} - /</b>
                         @else
-                            <b>{!! $c->started_at->format('h:i') !!} - {!! $c->stopped_at->format('h:i') !!}</b>
+                            <b>{!! $c->started_at->format('H:i') !!} - {!! $c->stopped_at->format('H:i') !!}</b>
                         @endif
                     </td>
                     {{--<td class="">--}}
@@ -130,5 +135,15 @@
 @endpush
 
 @push('js')
-
+    <script>
+        $(function() {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'right',
+                minDate: '{!! $minDate->format('m/d/Y')  !!}',
+                maxDate: "{!! \Carbon\Carbon::now()->format('m/d/Y') !!}"
+            }, function(start, end, label) {
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            });
+        });
+    </script>
 @endpush

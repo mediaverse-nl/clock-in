@@ -1,7 +1,7 @@
 {!! Form::open(['route' => ['admin.filter.flash'], 'method' => 'post']) !!}
     {!! Form::hidden('route_name', \Route::current()->getName()) !!}
     {!! Form::hidden('filter_name', $name) !!}
-    {!! Form::select('filter_item',$items,null,['class' => 'form-control','placeholder' => $placeholder,'onchange' => 'this.form.submit()']) !!}
+    {!! Form::select('filter_item',$items, $setValue,['class' => 'form-control','placeholder' => $placeholder,'onchange' => 'this.form.submit()']) !!}
 {!! Form::close() !!}
 
 @push('css')

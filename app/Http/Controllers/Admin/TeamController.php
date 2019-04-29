@@ -27,7 +27,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $this->filterItems(['user']);
+//        $this->filterItems(['user']);
 
 
         $users = $this->getBusinessFromUser()->users()->get();
