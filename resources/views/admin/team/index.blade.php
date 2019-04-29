@@ -35,40 +35,50 @@
             <tr>
                 <th></th>
                 <th class="">email</th>
+                <th class="">clock in code</th>
                 <th class="">contract uren</th>
                 <th class="">hourly rate</th>
                 <th class=""></th>
             </tr>
 
-            @for($u = 0; $u < 3; $u++)
+            @foreach($users as $user)
                 <tr>
                     <td style="width: 200px;">
                         <img class="img-circle" style="height: 35px; width: 35px;" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
                         <div style="margin-left:10px; display: inline-block;">
-                            willem
+                            {!! $user->name !!}
                         </div>
                     </td>
                     <td class="">
                         <div style="display: inline-block;">
-                            email@email.com
+                            {!! $user->email !!}
                         </div>
                     </td>
                     <td class="">
                         <div style="display: inline-block;">
-                            20
+                            {!! $user->clock_in_code !!}
                         </div>
                     </td>
                     <td class="">
                         <div style="display: inline-block;">
-                            &euro;8.23
+                            0
+                        </div>
+                    </td>
+                    <td class="">
+                        <div style="display: inline-block;">
+                            &euro;0.00
                         </div>
                     </td>
                     <td>
-                        <a href="" class="btn btn-warning pull-right">
+                        <a href="{!! route('admin.team.edit', $user->id) !!}" class="btn btn-warning pull-right">
                             <i class="fas fa-edit"></i>
                         </a>
                     </td>
                 </tr>
+            @endforeach
+
+            @for($u = 0; $u < 3; $u++)
+
             @endfor
         </table>
     </div>

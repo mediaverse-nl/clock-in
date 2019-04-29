@@ -41,26 +41,26 @@
                 {{--{!! Form::hidden('business_id', $business_id) !!}--}}
 
                 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-                    {!! Form::label('name', 'User Name') !!}
+                    {!! Form::label('name', 'Volledige Naam') !!}
                     {!! Form::text('name', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'name'])
                 </div>
                 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-                    {!! Form::label('email', 'E-Mail Address') !!}
+                    {!! Form::label('email', 'E-Mail Adres') !!}
                     {!! Form::email('email', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'email'])
                 </div>
 
                 <div class="form-group {{ $errors->has('function') ? 'has-error' : ''}}">
-                    {!! Form::label('function', 'User Function') !!}
-                    {{--@foreach($business->functions as $function)--}}
-                        {{--<div class="checkbox">--}}
-                            {{--<label>--}}
-                                {{--{!! Form::checkbox('functions[]', $function->id, false)!!}--}}
-                                {{--{!! $function->value !!}--}}
-                            {{--</label>--}}
-                        {{--</div>--}}
-                    {{--@endforeach--}}
+                    {!! Form::label('function', 'Functies') !!}
+                    @foreach($business->functions as $function)
+                        <div class="checkbox">
+                            <label>
+                                {!! Form::checkbox('functions[]', $function->id, false)!!}
+                                {!! $function->value !!}
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
 
                 <small id="emailHelp" class="form-text text-muted">

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Clocked;
+use App\Traits\FilterSessionTrait;
 use App\Traits\getLocationTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class TimeTrackingController extends Controller
 {
-    use getLocationTrait;
+    use getLocationTrait, FilterSessionTrait;
 
     protected $clocked;
 
@@ -25,12 +26,26 @@ class TimeTrackingController extends Controller
      */
     public function index()
     {
-        $clocked = $this->clocked
-            ->where('device_id', '=', 1)
-//            ->where('location_id', '=', 1)
-                ->orderBy('active', 'desc')
-                ->orderBy('created_at', 'desc')
-            ->get();
+//        $this->filterItems(['user', 'date', 'location']);
+
+//        $this->setItem('user', 1);
+
+        $users = $this->getBusinessFromUser()->users;
+
+        $clocks = [];
+        foreach ($users as $user)
+        {
+            $clocks[] = $user->clocked()
+                ->where(function ($q){
+//                    $q->where('user_id', '=', 4);
+                })
+                ->get();
+        }
+
+        $clocked = collect($clocks)
+            ->collapse()
+            ->sortByDesc('active')
+            ->sortByDesc('created_at');
 
         return view('admin.timeTracking.index')
             ->with('clocked', $clocked);

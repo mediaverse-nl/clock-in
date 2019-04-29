@@ -98,11 +98,14 @@ Route::prefix('admin')->middleware(['auth'])->namespace('Admin')->name('admin.')
     Route::get('/rooster/departments', 'ScheduleController@departments')->name('schedule.departments');
     Route::get('/team', 'TeamController@index')->name('team.index');
     Route::get('/team/create', 'TeamController@create')->name('team.create');
+    Route::get('/team/edit/{id}', 'TeamController@edit')->name('team.edit');
+    Route::post('/team', 'TeamController@store')->name('team.store');
     Route::get('/team/roles', 'TeamController@roles')->name('team.roles');
     Route::get('/reports', 'ReportController@index')->name('report.index');
     Route::get('/settings', 'SettingsController@index')->name('settings.index');
     Route::get('/tijdregistratie', 'TimeTrackingController@index')->name('time-tracking.index');
     Route::post('/change-location', 'LocationController@change')->name('location.change');
+    Route::post('/filter-options', 'FilterController@flash')->name('filter.flash');
 });
 
 Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function () {

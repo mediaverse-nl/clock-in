@@ -20,10 +20,12 @@
                 <div class="btn-group pull-left" role="group" aria-label="" style="margin-left: 5px">
                     {{--<a class="btn btn-default"><</a>--}}
                     <div class="form-group">
-                         <select class="form-control" id="sel1" style="border-radius: 0px;">
-                            <option>alle locaties</option>
-                            <option>daalakkerseweg 2</option>
-                         </select>
+                        @component('components.filter', [
+                            'items' => [1,2],
+                            'name' => 'locations',
+                            'placeholder' => 'alle locaties',
+                        ])
+                        @endcomponent
                     </div>
                 </div>
 
@@ -55,9 +57,9 @@
                 <th>time card</th>
                 {{--<th>rooster</th>--}}
                 <th>gewerkt</th>
-                {{--<th></th>--}}
+
                 <th class="">locatie</th>
-                <th class=""></th>
+                 <th class=""></th>
              </tr>
             @foreach($clocked as $c)
                 <tr>

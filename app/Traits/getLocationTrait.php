@@ -37,6 +37,16 @@ trait getLocationTrait
 //        return $session;
     }
 
+    public function getUser()
+    {
+        return auth()->user();
+    }
+
+    public function getBusinessFromUser()
+    {
+        return auth()->user()->business;
+    }
+
     public function getLocationsFromUser()
     {
         $user = auth()->user();

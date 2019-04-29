@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Traits\FilterSessionTrait;
 use App\Traits\getLocationTrait;
 use App\User;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class TeamController extends Controller
 {
-    use getLocationTrait;
+    use getLocationTrait, FilterSessionTrait;
 
     protected $user;
 
@@ -26,7 +27,13 @@ class TeamController extends Controller
      */
     public function index()
     {
-        return view('admin.team.index');
+        $this->filterItems(['user']);
+
+
+        $users = $this->getBusinessFromUser()->users()->get();
+
+        return view('admin.team.index')
+            ->with('users', $users);
     }
 
     /**
@@ -46,7 +53,10 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view('admin.team.create');
+        $business = $this->getBusinessFromUser();
+
+        return view('admin.team.create')
+            ->with('business', $business);
     }
 
     /**
@@ -57,10 +67,12 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
+        $business_id = $this->getBusinessFromUser()->id;
+
         $random_password = str_random(8);
 
         $user = $this->user;
-        $user->business_id = $request->business_id;
+        $user->business_id = $business_id;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($random_password);
@@ -78,18 +90,7 @@ class TeamController extends Controller
 //        Mail::to($user->email)->send(new RegisterdAccount($user, $random_password));
 
         return redirect()
-            ->route('super.business.edit', $request->business_id);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+            ->route('admin.team.edit', $user->id);
     }
 
     /**
@@ -100,7 +101,15 @@ class TeamController extends Controller
      */
     public function edit($id)
     {
-        //
+        $business = $this->getBusinessFromUser();
+
+        if (!in_array($id, $business->users->pluck('id')->toArray())){
+            return abort(403);
+        }
+        $user = $this->getUser();
+
+        return view('admin.team.edit')
+            ->with('user', $user);
     }
 
     /**
