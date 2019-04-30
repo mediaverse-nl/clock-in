@@ -33,6 +33,5 @@ trait FilterSessionTrait
 
     public function sessionExists($name){
         return $this->hasSession($name) ? $this->getSessionKey($name) : null;
-
     }
 }

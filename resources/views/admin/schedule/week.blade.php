@@ -93,6 +93,35 @@
                 <td> </td>
             </tr>
 
+            @foreach($users as $user)
+                <tr class="">
+                    <th style="width: 200px;">
+                        <img class="img-circle" style="vertical-align: top; height: 35px; width: 35px;" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
+                        <div style="display: inline-block; margin-left: 10px;">
+                            {!! $user->name !!} <br>
+                            <small class="mute">
+                                {!! random_int(5, 20) !!} hrs
+                            </small>
+                        </div>
+                    </th>
+                    @for($s = 0; $s < 7; $s++)
+                        @if(random_int(0,6) == $s)
+                            <td style="padding: 5px 1px;">
+                                <div class="panel panel-default" style="margin-bottom: 0px;">
+                                    <div class="text-center pane    l-body  bg-warning" style="padding: 5px 10px;">
+                                        <small><b>12:45-18:25</b></small> <br>
+                                        counter
+                                    </div>
+                                </div>
+                            </td>
+                        @else
+                            <td></td>
+                        @endif
+
+                    @endfor
+                </tr>
+            @endforeach
+
             @for($u = 0; $u < 5; $u++)
                 <tr class="">
                     <th style="width: 200px;">

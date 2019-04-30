@@ -36,7 +36,10 @@ class ScheduleController extends Controller
 
     public function week()
     {
-        return view('admin.schedule.week');
+        $users = $this->user->get();
+
+        return view('admin.schedule.week')
+            ->with('users', $users);
     }
 
     public function month()

@@ -1,7 +1,16 @@
 {!! Form::open(['route' => ['admin.filter.flash'], 'method' => 'post']) !!}
     {!! Form::hidden('route_name', \Route::current()->getName()) !!}
     {!! Form::hidden('filter_name', $name) !!}
-    {!! Form::select('filter_item',$items, $setValue,['class' => 'form-control','placeholder' => $placeholder,'onchange' => 'this.form.submit()']) !!}
+    @if($name == 'date')
+        <div class="input-group " style="width: 230px;">
+            <div class="input-group-addon" style="width: 30px; border-radius: 0px;">
+                <i class="fa fa-calendar"></i>
+            </div>
+            {!! Form::text('filter_item', $setValue, ['class' => 'form-control', 'id' => 'daterange', 'onchange' => 'this.form.submit()']) !!}
+        </div>
+    @else
+        {!! Form::select('filter_item',$items, $setValue,['class' => 'form-control','placeholder' => $placeholder,'onchange' => 'this.form.submit()']) !!}
+    @endif
 {!! Form::close() !!}
 
 @push('css')

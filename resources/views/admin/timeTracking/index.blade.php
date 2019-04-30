@@ -11,13 +11,14 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
-                <div class="btn-group pull-left" role="group" aria-label="">
-                    <input type="text" name="daterange" class="form-control" value="{!! $setDate !!}" />
-                    {{--<input type="text" name="daterange" class="form-control" value="01/01/2019 - 01/15/2019" />--}}
-
-                    {{--<a class="btn btn-default"><</a>--}}
-                    {{--<a class="btn btn-default disabled"></a>--}}
-                    {{--<a class="btn btn-default">></a>--}}
+                <div class="btn-group pull-left">
+                    @component('components.filter', [
+                            'items' => $date,
+                            'setValue' => $setDate,
+                            'name' => 'date',
+                            'placeholder' => '',
+                        ])
+                    @endcomponent
                 </div>
 
                 <div class="btn-group pull-left" role="group" aria-label="" style="margin-left: 5px">
@@ -45,7 +46,7 @@
                 </div>
 
                 <div class="btn-group pull-right" role="group" style="">
-                    {{--<a href="" class="btn btn-default">print</a>--}}
+                    <a href="" class="btn btn-default">print</a>
                     <a href="" class="btn btn-success"><i class="fas fa-plus"></i></a>
                 </div>
             </div>
@@ -137,10 +138,12 @@
 @push('js')
     <script>
         $(function() {
-            $('input[name="daterange"]').daterangepicker({
+            $('#daterange').daterangepicker({
                 opens: 'right',
-                minDate: '{!! $minDate->format('m/d/Y')  !!}',
-                maxDate: "{!! \Carbon\Carbon::now()->format('m/d/Y') !!}"
+                startDate : '{!! $startDate !!}',
+                endDate : '{!! $endDate !!}',
+                minDate: '{!! \Carbon\Carbon::parse($minDate)->format('d-m-Y')  !!}',
+                maxDate: "{!! (\Carbon\Carbon::parse($maxDate)->format('d-m-Y')) !!}"
             }, function(start, end, label) {
                 console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             });

@@ -41,8 +41,14 @@ class TimeTrackingController extends Controller
                     if($this->hasSession('user')){
                         $q->where('user_id', '=', $this->getSessionKey('user'));
                     }
+                })
+                ->where(function ($q){
                     if($this->hasSession('date')){
-                        $q->whereBetween('created_at', [Carbon::now(), Carbon::now()->addDays(7)]);
+                        if($this->hasSession('date')){
+                            $dateArray = explode(' - ', $this->getSessionKey('date'));
+                            $q->whereDate('created_at', '>=', Carbon::parse($dateArray[0]));
+                            $q->whereDate('created_at', '<=', Carbon::parse($dateArray[1].'23:59:59'));
+                        }
                     }
                 })
                 ->whereHas('device', function ($q){
@@ -53,9 +59,29 @@ class TimeTrackingController extends Controller
                 ->get();
         }
 
-        $setDate = \App\Calendar::startOfWeek()->format('d-m-Y').' - '.\App\Calendar::endOfWeek()->format('d-m-Y');
+        $startDate = collect($baseClocks)->collapse()->sortBy('created_at')->first()->created_at->format('d-m-Y');
+        $endDate = collect($baseClocks)->collapse()->sortByDesc('created_at')->first()->created_at->format('d-m-Y');
+        $minDate = Carbon::now()->addDays(-7)->format('d-m-Y');
+        $maxDate = Carbon::now()->format('d-m-Y');
 
-        $minDate = collect($baseClocks)->collapse()->sortBy('created_at')->first()->created_at;
+        if ($startDate <= $minDate){
+            $minDate = $startDate;
+        }
+
+        if($this->hasSession('date')){
+            $dateArray = explode(' - ', $this->getSessionKey('date'));
+
+            $startDate = $dateArray[0];
+            $endDate = $dateArray[1];
+
+            if ((bool)strtotime($dateArray[0]) || (bool)strtotime($dateArray[1])){
+                $this->setItem('date', $startDate.' - '.$endDate);
+            }
+
+            $setDate = $this->getSessionKey('date');
+        }else{
+            $setDate = $minDate.' - '.$maxDate;
+        }
 
         $locations = $business->locations->pluck('fulAddress', 'id');
         $users = $users->pluck('name', 'id');
@@ -75,7 +101,10 @@ class TimeTrackingController extends Controller
             ->with('users', $users)
             ->with('user', $user)
             ->with('date', $date)
+            ->with('startDate', $startDate)
+            ->with('endDate', $endDate)
             ->with('minDate', $minDate)
+            ->with('maxDate', $maxDate)
             ->with('setDate', $setDate)
             ->with('clocked', $clocked);
     }
