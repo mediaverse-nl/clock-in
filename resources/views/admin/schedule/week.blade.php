@@ -2,6 +2,18 @@
 
 @section('content')
 
+    @php
+        use Carbon\CarbonPeriod;
+
+        $startOfWeek = \App\Calendar::startOfWeek();
+        $endOfWeek = \App\Calendar::endOfWeek();
+
+        $period = CarbonPeriod::create($startOfWeek, $endOfWeek);
+
+        // Convert the period to an array of dates
+        $dates = $period->toArray();
+    @endphp
+
     <div class="col-md-12">
         <a href="{!! route('admin.schedule.week') !!}" class="active btn btn-primary">week</a>
         <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>
@@ -15,7 +27,7 @@
             <div class="col-md-12">
                 <div class="btn-group pull-left" role="group" aria-label="">
                     <a class="btn btn-default"><</a>
-                    <a class="btn btn-default disabled">{!! \App\Calendar::startOfWeek()->format('d M').' - '.\App\Calendar::endOfWeek()->format('d M') !!}</a>
+                    <a class="btn btn-default disabled">{!! $startOfWeek->format('d M').' - '.$endOfWeek->format('d M') !!}</a>
                     <a class="btn btn-default">></a>
                 </div>
 
@@ -75,6 +87,7 @@
                 @endfor
             </tr>
 
+            {{--default events--}}
             <tr class="active">
                 <td></td>
                 <td>
@@ -92,6 +105,7 @@
                 <td> </td>
                 <td> </td>
             </tr>
+            {{--end default events--}}
 
             @foreach($users as $user)
                 <tr class="">
@@ -104,21 +118,38 @@
                             </small>
                         </div>
                     </th>
-                    @for($s = 0; $s < 7; $s++)
-                        @if(random_int(0,6) == $s)
-                            <td style="padding: 5px 1px;">
-                                <div class="panel panel-default" style="margin-bottom: 0px;">
-                                    <div class="text-center pane    l-body  bg-warning" style="padding: 5px 10px;">
-                                        <small><b>12:45-18:25</b></small> <br>
-                                        counter
-                                    </div>
-                                </div>
-                            </td>
-                        @else
-                            <td></td>
-                        @endif
+                    @foreach($period as $date)
 
-                    @endfor
+                        {{--$user->clocked()--}}
+                        {{--->whereDate('created_at', '>=', $startOfWeek)--}}
+                        {{--->whereDate('created_at', '<=', $endOfWeek)--}}
+                        {{--->get()--}}
+
+                         <td style="padding: 5px 1px;">
+                            <div class="panel panel-default" style="margin-bottom: 0px;">
+                                <div class="text-center panel-body  bg-warning" style="padding: 5px 10px;">
+                                    <small><b>12:45-18:25</b></small> <br>
+                                    sdasd
+                                </div>
+                            </div>
+                        </td>
+                     @endforeach
+
+{{--                    @for($s = 0; $s < 7; $s++)--}}
+                        {{--@if(random_int(0,6) == $s)--}}
+                            {{--<td style="padding: 5px 1px;">--}}
+                                {{--<div class="panel panel-default" style="margin-bottom: 0px;">--}}
+                                    {{--<div class="text-center pane    l-body  bg-warning" style="padding: 5px 10px;">--}}
+                                        {{--<small><b>12:45-18:25</b></small> <br>--}}
+                                        {{--counter--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</td>--}}
+                        {{--@else--}}
+                            {{--<td></td>--}}
+                        {{--@endif--}}
+
+                    {{--@endfor--}}
                 </tr>
             @endforeach
 
