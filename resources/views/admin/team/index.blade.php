@@ -10,21 +10,16 @@
     <hr>
 
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="btn-group pull-left" role="group" aria-label="">
-                    <a class="btn btn-default" href="{!! route('admin.team.create') !!}" data-toggle="tooltip" data-placement="top" title="Voeg een gebruiker toe">
-                        <i class="fas fa-plus"></i>
-                    </a>
-                    <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Groepsbericht maken">
-                        <i class="fas fa-comment"></i>
-                    </a>
-                    <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Klok in codes">
-                        <i class="fas fa-user-lock"></i>
-                    </a>
-                </div>
-
-            </div>
+        <div style="margin-left: 10px;" class="btn-group pull-left" href="{!! route('admin.team.create') !!}" role="group" aria-label="">
+            <a class="btn btn-default"  data-toggle="tooltip" data-placement="top" title="Voeg een gebruiker toe">
+                <i class="fas fa-plus"></i>
+            </a>
+            <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Groepsbericht maken">
+                <i class="fas fa-comment"></i>
+            </a>
+            <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Klok in codes">
+                <i class="fas fa-user-lock"></i>
+            </a>
         </div>
     </div>
 

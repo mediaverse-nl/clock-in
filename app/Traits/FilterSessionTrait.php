@@ -16,7 +16,12 @@ trait FilterSessionTrait
     }
 
     public function hasSession($key){
-        return session()->has('filter.'.$this->pageName().'.'.$key);
+        $has = session()->has('filter.'.$this->pageName().'.'.$key);
+        $value = $this->getSessionKey($key);
+        if ($has && $value != null){
+            return true;
+        }
+        return false;
     }
 
     public function getSession(){

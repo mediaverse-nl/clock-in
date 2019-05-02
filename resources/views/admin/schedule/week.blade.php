@@ -5,13 +5,27 @@
     @php
         use Carbon\CarbonPeriod;
 
+        $selectedDate = '';
+
         $startOfWeek = \App\Calendar::startOfWeek();
         $endOfWeek = \App\Calendar::endOfWeek();
+
+        $startOfWeek = $startOfWeek->addWeeks(-1);
+        $endOfWeek = $endOfWeek->addWeeks(-1);
 
         $period = CarbonPeriod::create($startOfWeek, $endOfWeek);
 
         // Convert the period to an array of dates
         $dates = $period->toArray();
+
+        function convertToHoursMins($time, $format = '%02d:%02d') {
+            if ($time < 1) {
+                return;
+            }
+            $hours = floor($time / 60);
+            $minutes = ($time % 60);
+            return sprintf($format, $hours, $minutes);
+        }
     @endphp
 
     <div class="col-md-12">
@@ -77,14 +91,14 @@
                         </div>
                     </div>
                 </th>
-                @for($w = 0; $w < 7; $w++)
-                    <th class="text-center {!! \App\Calendar::day() == \App\Calendar::startOfWeek()->addDays($w)->format('d') ? 'success' : '' !!}">
+                @foreach($period as $date)
+                    <th class="text-center {!! \App\Calendar::day() == $date->format('d') ? 'success' : '' !!}">
                         <small>
-                            {!! \App\Calendar::startOfWeek()->addDays($w)->format('D d') !!} <br>
+                            {!! $date->format('D d') !!} <br>
                             20 hrs / &euro;144
                         </small>
                     </th>
-                @endfor
+                @endforeach
             </tr>
 
             {{--default events--}}
@@ -120,18 +134,29 @@
                     </th>
                     @foreach($period as $date)
 
-                        {{--$user->clocked()--}}
-                        {{--->whereDate('created_at', '>=', $startOfWeek)--}}
-                        {{--->whereDate('created_at', '<=', $endOfWeek)--}}
-                        {{--->get()--}}
+                        @php
+                            $clocks = $user->clocked()
+                                ->whereDay('created_at', $date->format('d'))
+                                ->get()
+                        @endphp
 
-                         <td style="padding: 5px 1px;">
-                            <div class="panel panel-default" style="margin-bottom: 0px;">
-                                <div class="text-center panel-body  bg-warning" style="padding: 5px 10px;">
-                                    <small><b>12:45-18:25</b></small> <br>
-                                    sdasd
+                        <td style="padding: 5px 1px;">
+                            @if(!empty($clocks->max('worked_min')))
+                                <div class="panel panel-default" style="margin-bottom: 0px;">
+                                    <div class="text-center panel-body  bg-warning" style="padding: 5px 10px;">
+                                        <span rel="tooltip"
+                                              data-toggle="tooltip"
+                                              data-html="true"
+                                              data-title="
+                                                @foreach($clocks as $clock)
+                                                  <small><b>{!! $clock->started_at->format('H:i').' - '.$clock->stopped_at->format('H:i')  !!}</b></small> <br>
+                                                @endforeach
+                                              ">
+                                        {!! convertToHoursMins($clocks->max('worked_min'), '%02d uur %02d min') !!}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </td>
                      @endforeach
 
