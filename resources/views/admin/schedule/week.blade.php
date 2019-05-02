@@ -152,7 +152,7 @@
                                                   <small><b>{!! $clock->started_at->format('H:i').' - '.$clock->stopped_at->format('H:i')  !!}</b></small> <br>
                                                 @endforeach
                                               ">
-                                        {!! convertToHoursMins($clocks->max('worked_min'), '%02d uur %02d min') !!}
+                                            {!! convertToHoursMins($clocks->max('worked_min'), '%02d uur %02d min') !!}
                                         </span>
                                     </div>
                                 </div>

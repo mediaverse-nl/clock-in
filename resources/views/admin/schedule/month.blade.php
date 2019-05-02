@@ -11,70 +11,25 @@
     <hr>
 
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="btn-group pull-left" role="group" aria-label="">
-                    <a class="btn btn-default"><</a>
-                    <a class="btn btn-default disabled">{!! \App\Calendar::startOfWeek()->format('d M').' - '.\App\Calendar::endOfMonth()->format('d M') !!}</a>
-                    <a class="btn btn-default">></a>
-                </div>
+        <div class="btn-group pull-left" role="group" aria-label="">
+            <a class="btn btn-default"><</a>
+            <a class="btn btn-default disabled">{!! \App\Calendar::startOfWeek()->format('d M').' - '.\App\Calendar::endOfMonth()->format('d M') !!}</a>
+            <a class="btn btn-default">></a>
+        </div>
 
-                <div class="btn-group pull-left" role="group" style="margin: auto 5px;">
-                    <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
-                    <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default">week</a>
-                    <a href="{!! route('admin.schedule.month') !!}" class="active btn btn-default">month</a>
-                </div>
+        <div class="btn-group pull-left" role="group" style="margin: auto 5px;">
+            <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
+            <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default">week</a>
+            <a href="{!! route('admin.schedule.month') !!}" class="active btn btn-default">month</a>
+        </div>
 
-                <div class="btn-group pull-right" role="group" style="">
-                    <a href="" class="btn btn-default"><i class="fas fa-print"></i></a>
-                    <a href="" class="btn btn-success"><i class="fas fa-upload"></i></a>
-                </div>
-            </div>
+        <div class="btn-group pull-right" role="group" style="">
+            <a href="" class="btn btn-default"><i class="fas fa-print"></i></a>
+            <a href="" class="btn btn-success"><i class="fas fa-upload"></i></a>
         </div>
     </div>
 
     <hr>
-
-    @php
-        $array = [];
-        $selectedMonth = \Illuminate\Support\Facades\Input::has('month')
-            ? \Illuminate\Support\Facades\Input::get('month') : 0;
-
-        for ($u = 0; $u < 6; $u++)
-        {
-            $startDate = \Carbon\Carbon::now()
-                ->addMonths($selectedMonth)
-                ->startOfMonth()
-                ->startOfWeek()
-                ->addWeeks($u);
-
-            $dateRange = \Carbon\CarbonPeriod::create($startDate, 7);
-
-            $days = [];
-
-            foreach($dateRange as $date)
-            {
-                $status = \Carbon\Carbon::now()->startOfMonth()->addMonths($selectedMonth)->format('Y-m-d') > $date->format('Y-m-d')
-                    || \Carbon\Carbon::now()->addMonths($selectedMonth)->endOfMonth()->format('Y-m-d') < $date->format('Y-m-d');
-
-                $today =  \Carbon\Carbon::now()->format('Y-m-d')
-                    == $date->format('Y-m-d');
-
-                $days[] = [
-                    'day' => $date->format('Y-m-d'),
-                    'disabled' => $status,
-                    'today' => $today,
-                    'event' => [
-
-                    ],
-                ];
-            }
-            $array[] = [
-                'days' => $days,
-                'weekNumber' => $startDate->weekOfYear
-            ];
-        }
-    @endphp
 
     <div class="col-md-12">
         <table class="table table-responsive" >
@@ -92,11 +47,16 @@
                 @endfor
             </tr>
 
-            @foreach($array as $i)
+            @foreach($calendar as $i)
                 <tr class="">
                     @foreach($i['days'] as $d)
-                         <td class="{!! $d['disabled'] ? 'active' : ''!!} {!! $d['today'] ? 'success' : ''!!}" style="padding: 0px; border: 1px solid #ddd; height: 100px;">
+                        <td class="{!! $d['disabled'] ? 'active' : ''!!} {!! $d['today'] ? 'success' : ''!!}" style="padding: 0px; border: 1px solid #ddd; height: 100px;">
                             <div class="text-center small" style="background: #dddddd">{!!  ($d['day']) !!}</div>
+                            {{--{!! dd($d['event']) !!}--}}
+                            @foreach($d['event'] as $e)
+                                {!! $e !!}
+                            @endforeach
+
                             {!! $d['today'] !!}
                         </td>
                     @endforeach
