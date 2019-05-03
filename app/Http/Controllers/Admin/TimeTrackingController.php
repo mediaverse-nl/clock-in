@@ -149,7 +149,7 @@ class TimeTrackingController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**

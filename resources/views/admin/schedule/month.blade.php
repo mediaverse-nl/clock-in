@@ -11,10 +11,42 @@
     <hr>
 
     <div class="col-md-12">
-        <div class="btn-group pull-left" role="group" aria-label="">
-            <a class="btn btn-default"><</a>
-            <a class="btn btn-default disabled">{!! \App\Calendar::startOfWeek()->format('d M').' - '.\App\Calendar::endOfMonth()->format('d M') !!}</a>
-            <a class="btn btn-default">></a>
+        <div class="btn-group pull-left">
+            @component('components.filter', [
+                    'items' => $date,
+                    'setValue' => $setDate,
+                    'name' => 'date',
+                    'placeholder' => '',
+                ])
+            @endcomponent
+        </div>
+
+        <div class="btn-group pull-left" role="group" aria-label="" style="margin-left: 5px">
+            <div class="form-group">
+                @component('components.filter', [
+                    'items' => [
+                        'gewerkte uren',
+                        'ingeroosterde uren',
+                        'calendar',
+                    ],
+                    'setValue' => [],
+                    'name' => 'location',
+                    'placeholder' => 'alle items',
+                ])
+                @endcomponent
+            </div>
+        </div>
+
+        <div class="btn-group pull-left" role="group" aria-label="" style="margin-left: 5px">
+            <div class="form-group">
+                @component('components.filter', [
+                    'items' => $users,
+                    'setValue' => [],
+                    'name' => 'users',
+                    'placeholder' => 'alle gebruikers',
+                ])
+                @endcomponent
+            </div>
         </div>
 
         <div class="btn-group pull-left" role="group" style="margin: auto 5px;">
@@ -33,10 +65,10 @@
 
     <div class="col-md-12">
         <table class="table table-responsive" >
-            <tr>
-                <th colspan="8" class="text-center">{!! $startDate->format('M') !!}</th>
-            </tr>
-            <tr>
+            {{--<tr style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;" >--}}
+                {{--<th colspan="8" class="text-center">{!! $startDate->format('M') !!}</th>--}}
+            {{--</tr>--}}
+            <tr style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;" >
                 @for($w = 0; $w < 7; $w++)
                     <th class="text-center {!! \App\Calendar::day() == \App\Calendar::startOfWeek()->addDays($w)->format('d') ? 'success' : '' !!}">
                         <small>
@@ -50,12 +82,14 @@
             @foreach($calendar as $i)
                 <tr class="">
                     @foreach($i['days'] as $d)
-                        <td class="{!! $d['disabled'] ? 'active' : ''!!} {!! $d['today'] ? 'success' : ''!!}" style="padding: 0px; border: 1px solid #ddd; height: 100px;">
+                        <td class="{!! $d['disabled'] ? 'active' : ''!!} {!! $d['today'] ? 'success' : ''!!}" style="padding: 0px; border: 1px solid #ddd; height: 150px;width: 100px;">
                             <div class="text-center small" style="background: #dddddd">{!!  ($d['day']) !!}</div>
                             {{--{!! dd($d['event']) !!}--}}
-                            @foreach($d['event'] as $e)
-                                {!! $e !!}
-                            @endforeach
+                            <ul class="calendar-list">
+                                @foreach($d['event'] as $e)
+                                    <li> {!! $e->user->name !!} - {!! $e->total_worked_min !!}</li>
+                                @endforeach
+                            </ul>
 
                             {!! $d['today'] !!}
                         </td>
@@ -102,11 +136,56 @@
         .table > tbody > tr > td {
             vertical-align: center;
         }
-
+        .ranges ul{
+            width: 100% !important;
+        }
+        .ranges{
+            width: 100% !important;
+        }
+        .drp-calendar{
+            display: none !important;
+        }
+        .calendar-list li{
+            background: #0B62A4;
+            color: #FFFFFF;
+            padding: 2px;
+            margin: 2px;
+        }
+        .calendar-list{
+            list-style: none;
+            padding: 0px !important;
+        }
 
     </style>
 @endpush
 
 @push('js')
+    <script>
+        $(function() {
 
+            var dateRange = {};
+            dateRange["Today"] = [moment(), moment()];
+            dateRange["Last 30 Days"] = [moment().subtract(29, 'days'), moment()];
+            $('#daterange').daterangepicker({
+                startDate: "{!! $startDate !!}",
+{{--                endDate: "{!! $endDate !!}",--}}
+                ranges: dateRange
+            }, function () {
+                
+            });
+            // cb(start, end);
+        });
+
+        {{--$(function() {--}}
+            {{--$('#daterange').daterangepicker({--}}
+                {{--opens: 'right',--}}
+                {{--startDate : '{!! $startDate !!}',--}}
+                {{--endDate : '{!! $endDate !!}',--}}
+{{--                minDate: '{!! \Carbon\Carbon::parse($minDate)->format('d-m-Y')  !!}',--}}
+{{--                maxDate: "{!! (\Carbon\Carbon::parse($maxDate)->format('d-m-Y')) !!}"--}}
+            {{--}, function(start, end, label) {--}}
+                {{--console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));--}}
+            {{--});--}}
+        {{--});--}}
+    </script>
 @endpush

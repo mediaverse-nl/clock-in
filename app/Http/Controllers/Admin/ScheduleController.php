@@ -10,11 +10,12 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class ScheduleController extends Controller
 {
-    use FilterSessionTrait, getLocationTrait;
+    use getLocationTrait, FilterSessionTrait;
 
     protected $user;
     protected $clock;
@@ -45,7 +46,18 @@ class ScheduleController extends Controller
     {
         $clock = $this->clock->whereHas('user.business', function ($q){
             $q->where('id', '=', $this->getBusinessFromUser()->id);
+        })
+        ->where(function ($q){
+            if($this->hasSession('date')){
+                if($this->hasSession('date')){
+                    $dateArray = explode(' - ', $this->getSessionKey('date'));
+                    $q->whereDate('created_at', '>=', Carbon::parse($dateArray[0]));
+                    $q->whereDate('created_at', '<=', Carbon::parse($dateArray[1].'23:59:59'));
+                }
+            }
         });
+
+
 
         $calendar = [];
         $selectedMonth = Input::has('month')
@@ -71,12 +83,14 @@ class ScheduleController extends Controller
                 $today = Carbon::now()->format('Y-m-d')
                     == $date->format('Y-m-d');
 
-                $events = $clock;
-
-
-//                dd(Carbon::parse($date->format('Y-m-d'))->toDateString());
-
-                $events = $events->whereDate('started_at', Carbon::parse($date->format('Y-m-d'))->toDateString())->get();
+                $events = $this->clock
+                    ->whereBetween('created_at', [
+                        Carbon::parse($date),
+                        Carbon::parse($date->format('Y-m-d').' 23:59:59'),
+                    ])
+                    ->groupBy('user_id')
+                    ->selectRaw('*, sum(worked_min) as total_worked_min')
+                    ->get();
 
                 $days[] = [
                     'day' => $date->format('Y-m-d'),
@@ -91,8 +105,12 @@ class ScheduleController extends Controller
             ];
         }
 
+        $date = $this->sessionExists('date');
+
         return view('admin.schedule.month')
             ->with('startDate', $startDate)
+            ->with('date', $date)
+            ->with('setDate', $date)
             ->with('calendar', $calendar);
     }
 
