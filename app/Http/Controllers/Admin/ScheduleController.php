@@ -44,6 +44,8 @@ class ScheduleController extends Controller
 
     public function month()
     {
+        $users = $this->getBusinessFromUser()->users->pluck('fullName', 'id');
+
         $clock = $this->clock->whereHas('user.business', function ($q){
             $q->where('id', '=', $this->getBusinessFromUser()->id);
         })
@@ -56,8 +58,6 @@ class ScheduleController extends Controller
                 }
             }
         });
-
-
 
         $calendar = [];
         $selectedMonth = Input::has('month')
@@ -110,6 +110,7 @@ class ScheduleController extends Controller
         return view('admin.schedule.month')
             ->with('startDate', $startDate)
             ->with('date', $date)
+            ->with('users', $users)
             ->with('setDate', $date)
             ->with('calendar', $calendar);
     }

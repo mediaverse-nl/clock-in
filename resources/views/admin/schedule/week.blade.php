@@ -29,7 +29,9 @@
     @endphp
 
     <div class="col-md-12">
-        <a href="{!! route('admin.schedule.week') !!}" class="active btn btn-primary">week</a>
+        <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
+        <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default active">week</a>
+        <a href="{!! route('admin.schedule.month') !!}" class="btn btn-default">month</a>
         <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>
         <a href="{!! route('admin.schedule.availability') !!}" class="btn btn-primary">team beschikbaarheid</a>
     </div>
@@ -43,12 +45,6 @@
                     <a class="btn btn-default"><</a>
                     <a class="btn btn-default disabled">{!! $startOfWeek->format('d M').' - '.$endOfWeek->format('d M') !!}</a>
                     <a class="btn btn-default">></a>
-                </div>
-
-                <div class="btn-group pull-left" role="group" style="margin: auto 5px;">
-                    <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
-                    <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default active">week</a>
-                    <a href="{!! route('admin.schedule.month') !!}" class="btn btn-default">month</a>
                 </div>
 
                 <div class="btn-group pull-right" role="group" style="">

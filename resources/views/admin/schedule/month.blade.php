@@ -3,7 +3,9 @@
 @section('content')
 
     <div class="col-md-12">
-        <a href="{!! route('admin.schedule.week') !!}" class="active btn btn-primary">week</a>
+        <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
+        <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default">week</a>
+        <a href="{!! route('admin.schedule.month') !!}" class="active btn btn-default">month</a>
         <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>
         <a href="{!! route('admin.schedule.availability') !!}" class="btn btn-primary">team beschikbaarheid</a>
     </div>
@@ -13,11 +15,11 @@
     <div class="col-md-12">
         <div class="btn-group pull-left">
             @component('components.filter', [
-                    'items' => $date,
-                    'setValue' => $setDate,
-                    'name' => 'date',
-                    'placeholder' => '',
-                ])
+                'items' => $date,
+                'setValue' => $setDate,
+                'name' => 'date',
+                'placeholder' => '',
+            ])
             @endcomponent
         </div>
 
@@ -47,12 +49,6 @@
                 ])
                 @endcomponent
             </div>
-        </div>
-
-        <div class="btn-group pull-left" role="group" style="margin: auto 5px;">
-            <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
-            <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default">week</a>
-            <a href="{!! route('admin.schedule.month') !!}" class="active btn btn-default">month</a>
         </div>
 
         <div class="btn-group pull-right" role="group" style="">

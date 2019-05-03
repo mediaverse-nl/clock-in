@@ -73,6 +73,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Business');
     }
 
+    public function getFullNameAttribute()
+    {
+        return $this->name;
+    }
+
     public function hasAccess($permissions)
     {
         foreach ($this->userRoles as $role) {
