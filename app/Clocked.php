@@ -2,12 +2,15 @@
 
 namespace App;
 
+use App\Traits\getLocationTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Input;
 
 class Clocked extends Model
 {
+    use getLocationTrait;
+
     protected $table = 'clocked';
 
     protected $dates = [
@@ -160,5 +163,37 @@ class Clocked extends Model
             Carbon::now()->startOfMonth()->subMonth($subMonth),
             Carbon::now()->endOfMonth()->subMonth($subMonth)
         ]);
+    }
+
+    public function scopeLatest($query, $column = null)
+    {
+        if (!$column) {
+            $column = self::CREATED_AT;
+        }
+
+        return $query->orderBy($column, 'desc');
+    }
+
+    public function scopeOldest($query, $column = null)
+    {
+        if (!$column) {
+            $column = self::CREATED_AT;
+        }
+
+        return $query->orderBy($column, 'asc');
+    }
+
+    public function scopeMyBusiness($query)
+    {
+        return $query->whereHas('user.business', function ($q){
+            $q->where('id', '=', $this->getBusinessFromUser()->id);
+        });
+    }
+
+    public function scopeMyLocation($query, $column = null)
+    {
+//        return $query->whereHas('user.business.locations', function ($q){
+//            $q->where('id', '=', $this->getBusinessFromUser()->id);
+//        });
     }
 }

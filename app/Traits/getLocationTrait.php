@@ -14,14 +14,10 @@ trait getLocationTrait
 {
 //    public $location;
 
-    public function __construct($location)
-    {
-//        $this->location = $location;
-    }
 
     public function currentLocationId()
     {
-        $location_id = key($this->getLocationsFromUser());
+        return $location_id = key($this->getLocationsFromUser());
 
 //        $session = session('location_id');
 
@@ -45,6 +41,15 @@ trait getLocationTrait
     public function getBusinessFromUser()
     {
         return auth()->user()->business;
+    }
+
+    public function getLocationIds()
+    {
+//        return auth()->user()
+//            ->business
+//            ->locations
+//            ->pluck('id')
+//            ->toArray();
     }
 
     public function getLocationsFromUser()

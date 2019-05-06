@@ -18,7 +18,6 @@
                 'items' => $date,
                 'setValue' => $setDate,
                 'name' => 'date',
-                'placeholder' => '',
             ])
             @endcomponent
         </div>
@@ -31,7 +30,7 @@
                         'ingeroosterde uren',
                         'calendar',
                     ],
-                    'setValue' => [],
+                    'setValue' => null,
                     'name' => 'location',
                     'placeholder' => 'alle items',
                 ])
@@ -43,7 +42,7 @@
             <div class="form-group">
                 @component('components.filter', [
                     'items' => $users,
-                    'setValue' => [],
+                    'setValue' => $user,
                     'name' => 'users',
                     'placeholder' => 'alle gebruikers',
                 ])
@@ -138,6 +137,9 @@
         .ranges{
             width: 100% !important;
         }
+        .ranges li:last-child {
+            display: none !important;
+        }
         .drp-calendar{
             display: none !important;
         }
@@ -159,29 +161,14 @@
     <script>
         $(function() {
 
-            var dateRange = {};
-            dateRange["Today"] = [moment(), moment()];
-            dateRange["Last 30 Days"] = [moment().subtract(29, 'days'), moment()];
             $('#daterange').daterangepicker({
                 startDate: "{!! $startDate !!}",
-{{--                endDate: "{!! $endDate !!}",--}}
-                ranges: dateRange
+                endDate: "{!! $endDate !!}",
+                ranges: {!! collect($monthRange)->toJson() !!}
             }, function () {
                 
             });
-            // cb(start, end);
-        });
+         });
 
-        {{--$(function() {--}}
-            {{--$('#daterange').daterangepicker({--}}
-                {{--opens: 'right',--}}
-                {{--startDate : '{!! $startDate !!}',--}}
-                {{--endDate : '{!! $endDate !!}',--}}
-{{--                minDate: '{!! \Carbon\Carbon::parse($minDate)->format('d-m-Y')  !!}',--}}
-{{--                maxDate: "{!! (\Carbon\Carbon::parse($maxDate)->format('d-m-Y')) !!}"--}}
-            {{--}, function(start, end, label) {--}}
-                {{--console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));--}}
-            {{--});--}}
-        {{--});--}}
     </script>
 @endpush

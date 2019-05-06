@@ -44,50 +44,81 @@ class ScheduleController extends Controller
 
     public function month()
     {
-        $users = $this->getBusinessFromUser()->users->pluck('fullName', 'id');
+        $oldestFirst = $this->clock->myBusiness()->oldest('started_at');
+        $newestFirst = $this->clock->myBusiness()->latest('started_at');
+        $users = $this->getBusinessFromUser()->users->pluck('name', 'id');
 
-        $clock = $this->clock->whereHas('user.business', function ($q){
-            $q->where('id', '=', $this->getBusinessFromUser()->id);
-        })
-        ->where(function ($q){
-            if($this->hasSession('date')){
-                if($this->hasSession('date')){
-                    $dateArray = explode(' - ', $this->getSessionKey('date'));
-                    $q->whereDate('created_at', '>=', Carbon::parse($dateArray[0]));
-                    $q->whereDate('created_at', '<=', Carbon::parse($dateArray[1].'23:59:59'));
-                }
-            }
-        });
+        $user = null;
+        if ($this->hasSession('users')){
+            $user = $this->getSessionKey('users');
+        }
+
+        $monthRange = [];
+
+        $oldestMonth = Carbon::parse($oldestFirst->first()->started_at)->month;
+        $newestMonth = Carbon::parse($newestFirst->first()->started_at)->month;
+
+        foreach (range($oldestMonth, $newestMonth) as $monthNr){
+             $date = Carbon::createFromDate(date('Y'), $monthNr, 1, 0);
+             $startOfMonth = Carbon::parse($date)->startOfMonth();
+             $endOfMonth = Carbon::parse($date)->endOfMonth();
+             $monthRange[$date->format('F')]
+                = [$startOfMonth->format('d-m-Y'),
+                 $endOfMonth->format('d-m-Y')];
+        }
+
+        $startDate = Carbon::parse($newestFirst->first()->started_at)->startOfMonth()->format('d-m-Y');
+        $endDate = Carbon::parse($newestFirst->first()->started_at)->endOfMonth()->format('d-m-Y');
+
+        if($this->hasSession('date')){
+             $dateArray = explode(' - ', $this->getSessionKey('date'));
+
+             $startDate = Carbon::parse($dateArray[0])->startOfMonth()->format('d-m-Y');
+             $endDate = Carbon::parse($dateArray[1])->endOfMonth()->format('d-m-Y');
+
+             if (!(bool)strtotime($dateArray[0])
+                 || !(bool)strtotime($dateArray[1])){
+                  $this->setItem('date', $startDate.' - '.$endDate);
+             }
+
+             $setDate = $this->getSessionKey('date');
+        }else{
+            $setDate = $startDate.' - '.$endDate;
+        }
 
         $calendar = [];
-        $selectedMonth = Input::has('month')
-            ? Input::get('month') : -1;
+        $selectedMonth = Carbon::parse($startDate)->month;;
 
         for ($u = 0; $u < 6; $u++)
         {
-            $startDate = Carbon::now()
-                ->addMonths($selectedMonth)
-                ->startOfMonth()
-                ->startOfWeek()
-                ->addWeeks($u);
+            $start = Carbon::createFromDate(date('Y'), $selectedMonth, 1, 0)
+                 ->startOfMonth()
+                 ->startOfWeek()
+                 ->addWeeks($u);
 
-            $dateRange = CarbonPeriod::create($startDate, 7);
+            $dateRange = CarbonPeriod::create($start, 7);
 
             $days = [];
 
             foreach($dateRange as $date)
             {
-                $status = Carbon::now()->startOfMonth()->addMonths($selectedMonth)->format('Y-m-d') > $date->format('Y-m-d')
-                    || Carbon::now()->addMonths($selectedMonth)->endOfMonth()->format('Y-m-d') < $date->format('Y-m-d');
+                $status =  Carbon::createFromDate(date('Y'), $selectedMonth, 1, 0)->startOfMonth()->format('Y-m-d') > $date->format('Y-m-d')
+                    ||  Carbon::createFromDate(date('Y'), $selectedMonth, 1, 0)->endOfMonth()->format('Y-m-d') < $date->format('Y-m-d');
 
                 $today = Carbon::now()->format('Y-m-d')
                     == $date->format('Y-m-d');
 
                 $events = $this->clock
-                    ->whereBetween('created_at', [
+                    ->myBusiness()
+                    ->whereBetween('started_at', [
                         Carbon::parse($date),
                         Carbon::parse($date->format('Y-m-d').' 23:59:59'),
                     ])
+                    ->where(function ($q){
+                        if($this->hasSession('users')){
+                            $q->where('user_id', '=', $this->getSessionKey('users'));
+                        }
+                    })
                     ->groupBy('user_id')
                     ->selectRaw('*, sum(worked_min) as total_worked_min')
                     ->get();
@@ -101,17 +132,18 @@ class ScheduleController extends Controller
             }
             $calendar[] = [
                 'days' => $days,
-                'weekNumber' => $startDate->weekOfYear
+                'weekNumber' => $start->weekOfYear
             ];
         }
 
-        $date = $this->sessionExists('date');
-
         return view('admin.schedule.month')
+            ->with('monthRange', $monthRange)
             ->with('startDate', $startDate)
-            ->with('date', $date)
             ->with('users', $users)
-            ->with('setDate', $date)
+            ->with('user', $user)
+            ->with('endDate', $endDate)
+            ->with('date', $date)
+            ->with('setDate', $setDate)
             ->with('calendar', $calendar);
     }
 

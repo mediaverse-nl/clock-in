@@ -144,9 +144,11 @@
                                               data-toggle="tooltip"
                                               data-html="true"
                                               data-title="
-                                                @foreach($clocks as $clock)
-                                                  <small><b>{!! $clock->started_at->format('H:i').' - '.$clock->stopped_at->format('H:i')  !!}</b></small> <br>
-                                                @endforeach
+                                                 @foreach($clocks as $clock)
+                                                    @if(!$clock->active)
+                                                        <small><b>{!! $clock->started_at->format('H:i').' - '.$clock->stopped_at->format('H:i')  !!}</b></small> <br>
+                                                    @endif
+                                                 @endforeach
                                               ">
                                             {!! convertToHoursMins($clocks->max('worked_min'), '%02d uur %02d min') !!}
                                         </span>
@@ -155,22 +157,6 @@
                             @endif
                         </td>
                      @endforeach
-
-{{--                    @for($s = 0; $s < 7; $s++)--}}
-                        {{--@if(random_int(0,6) == $s)--}}
-                            {{--<td style="padding: 5px 1px;">--}}
-                                {{--<div class="panel panel-default" style="margin-bottom: 0px;">--}}
-                                    {{--<div class="text-center pane    l-body  bg-warning" style="padding: 5px 10px;">--}}
-                                        {{--<small><b>12:45-18:25</b></small> <br>--}}
-                                        {{--counter--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--</td>--}}
-                        {{--@else--}}
-                            {{--<td></td>--}}
-                        {{--@endif--}}
-
-                    {{--@endfor--}}
                 </tr>
             @endforeach
 
@@ -198,7 +184,6 @@
                         @else
                             <td></td>
                         @endif
-
                     @endfor
                 </tr>
             @endfor
@@ -213,8 +198,6 @@
         .table > tbody > tr > td {
             vertical-align: middle;
         }
-
-
     </style>
 @endpush
 

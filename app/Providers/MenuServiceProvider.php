@@ -35,7 +35,9 @@ class MenuServiceProvider extends ServiceProvider
 
     function menuUserLocations()
     {
+//        dd(1);
         $this->currentLocationId();
+
 
         return $this->getLocationsFromUser();
     }
