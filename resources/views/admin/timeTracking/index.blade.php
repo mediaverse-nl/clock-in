@@ -3,12 +3,6 @@
 @section('content')
 
     <div class="col-md-12">
-        <a href="" class="btn btn-primary">Roles</a>
-     </div>
-
-    <hr>
-
-    <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-group pull-left">
@@ -46,7 +40,7 @@
                 </div>
 
                 <div class="btn-group pull-right" role="group" style="">
-                    <a href="" class="btn btn-default">print</a>
+                    {{--<a href="" class="btn btn-default">print</a>--}}
                     <a href="" class="btn btn-success"><i class="fas fa-plus"></i></a>
                 </div>
             </div>
@@ -107,7 +101,7 @@
                         {!! $c->device->location->fulAddress !!}
                      </td>
                     <td>
-                        <a href="" class="btn btn-default pull-right">
+                        <a href="" class="btn btn-warning pull-right">
                             <i class="fas fa-edit"></i>
                         </a>
                     </td>
@@ -121,14 +115,6 @@
 
 @push('css')
     <style>
-
-        /*.table-bordered>tbody>tr>td,*/
-        /*.table-bordered>tbody>tr>th:last-child{*/
-            /*border-right-width: 0px !important;*/
-        /*}*/
-        /*.table-bordered>tbody>tr>th:first-child{*/
-            /*border-left-width: 0px !important;*/
-        /*}*/
         .table > tbody > tr > td {
             vertical-align: middle;
         }

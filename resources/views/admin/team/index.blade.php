@@ -11,7 +11,7 @@
 
     <div class="col-md-12">
         <div style="margin-left: 10px;" class="btn-group pull-left" href="{!! route('admin.team.create') !!}" role="group" aria-label="">
-            <a class="btn btn-default"  data-toggle="tooltip" data-placement="top" title="Voeg een gebruiker toe">
+            <a href="{!! route('admin.team.create') !!}" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Voeg een gebruiker toe">
                 <i class="fas fa-plus"></i>
             </a>
             <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Groepsbericht maken">

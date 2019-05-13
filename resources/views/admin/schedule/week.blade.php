@@ -3,24 +3,9 @@
 @section('content')
 
     @php
-        use Carbon\CarbonPeriod;
-
-        $selectedDate = '';
-
-        $startOfWeek = \App\Calendar::startOfWeek();
-        $endOfWeek = \App\Calendar::endOfWeek();
-
-        $startOfWeek = $startOfWeek->addWeeks(-1);
-        $endOfWeek = $endOfWeek->addWeeks(-1);
-
-        $period = CarbonPeriod::create($startOfWeek, $endOfWeek);
-
-        // Convert the period to an array of dates
-        $dates = $period->toArray();
-
         function convertToHoursMins($time, $format = '%02d:%02d') {
             if ($time < 1) {
-                return;
+                return '-';
             }
             $hours = floor($time / 60);
             $minutes = ($time % 60);
@@ -39,19 +24,43 @@
     <hr>
 
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="btn-group pull-left" role="group" aria-label="">
-                    <a class="btn btn-default"><</a>
-                    <a class="btn btn-default disabled">{!! $startOfWeek->format('d M').' - '.$endOfWeek->format('d M') !!}</a>
-                    <a class="btn btn-default">></a>
-                </div>
 
-                <div class="btn-group pull-right" role="group" style="">
-                    <a href="" class="btn btn-default"><i class="fas fa-print"></i></a>
-                    <a href="" class="btn btn-success"><i class="fas fa-upload"></i></a>
-                </div>
+        <div class="btn-group pull-left">
+            @component('components.filter', [
+                'items' => [],
+                'setValue' => $startDate.' - '.$endDate,
+                'name' => 'date',
+            ])
+            @endcomponent
+        </div>
+
+        <div class="btn-group pull-left" role="group" aria-label="" style="margin-left: 5px">
+            <div class="form-group">
+                 @component('components.filter', [
+                    'items' => $selectedableUsers,
+                    'setValue' => $user,
+                    'name' => 'users',
+                    'placeholder' => 'alle gebruikers',
+                ])
+                @endcomponent
             </div>
+        </div>
+
+        <div class="btn-group pull-left" role="group" aria-label="" style="margin-left: 5px">
+            <div class="form-group">
+                 @component('components.filter', [
+                    'items' => $functions,
+                    'setValue' => $function,
+                    'name' => 'functions',
+                    'placeholder' => 'alle functies',
+                ])
+                @endcomponent
+            </div>
+        </div>
+
+        <div class="btn-group pull-right" role="group" style="">
+            <a href="" class="btn btn-default"><i class="fas fa-print"></i></a>
+            <a href="" class="btn btn-success"><i class="fas fa-upload"></i></a>
         </div>
     </div>
 
@@ -60,7 +69,7 @@
     <div class="col-md-12">
         <table class="table table-responsive" >
             <tr>
-                <th colspan="8" class="text-center">week 8</th>
+                <th colspan="8" class="text-center">week {!! $weekNr !!}</th>
             </tr>
             <tr>
                 <th>
@@ -87,11 +96,13 @@
                         </div>
                     </div>
                 </th>
-                @foreach($period as $date)
-                    <th class="text-center {!! \App\Calendar::day() == $date->format('d') ? 'success' : '' !!}">
+                @foreach($header as $date)
+                    <th class="text-center {!! $date['today'] ? 'success' : null !!}">
                         <small>
-                            {!! $date->format('D d') !!} <br>
-                            20 hrs / &euro;144
+                            {!! $date['day'] !!}
+                             <br>
+                            {!! convertToHoursMins($date['total_worked_min'], '%02d uur %02d min') !!}
+                            / &euro; --
                         </small>
                     </th>
                 @endforeach
@@ -117,40 +128,40 @@
             </tr>
             {{--end default events--}}
 
-            @foreach($users as $user)
+            {{--{!! dd($usersList) !!}--}}
+            @foreach($usersList as $user)
                 <tr class="">
-                    <th style="width: 200px;">
-                        <img class="img-circle" style="vertical-align: top; height: 35px; width: 35px;" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
-                        <div style="display: inline-block; margin-left: 10px;">
-                            {!! $user->name !!} <br>
-                            <small class="mute">
-                                {!! random_int(5, 20) !!} hrs
-                            </small>
+                    <th style="width: 200px;" class="{!! $date['today'] ? 'success' : null !!}">
+                        <div style="width: 200px;">
+                            <img class="img-circle" style="vertical-align: top; height: 35px; width: 35px;" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
+                            <div style="display: inline-block; margin-left: 10px;">
+                                 {!! $user['user']->name !!} <br>
+                                 <small class="mute">
+                                    {!! convertToHoursMins($user['week_worked_min'], '%02d uur %02d min') !!}
+                                 </small>
+                            </div>
+                            <br>
+                            @foreach($user['user']->userFunctions as $f)
+                                <span class="badge badge-success small">{!! $f->functions->value !!}</span>
+                            @endforeach
                         </div>
                     </th>
-                    @foreach($period as $date)
-
-                        @php
-                            $clocks = $user->clocked()
-                                ->whereDay('created_at', $date->format('d'))
-                                ->get()
-                        @endphp
-
-                        <td style="padding: 5px 1px;">
-                            @if(!empty($clocks->max('worked_min')))
+                    @foreach($user['week'] as $date)
+                        <td style="padding: 5px 1px; width: 14.28%">
+                            @if(count($date['events']))
                                 <div class="panel panel-default" style="margin-bottom: 0px;">
                                     <div class="text-center panel-body  bg-warning" style="padding: 5px 10px;">
                                         <span rel="tooltip"
                                               data-toggle="tooltip"
                                               data-html="true"
                                               data-title="
-                                                 @foreach($clocks as $clock)
+                                                 @foreach($date['events'] as $clock)
                                                     @if(!$clock->active)
-                                                        <small><b>{!! $clock->started_at->format('H:i').' - '.$clock->stopped_at->format('H:i')  !!}</b></small> <br>
+                                                         <small><b>{!! $clock->started_at->format('H:i').' - '.$clock->stopped_at->format('H:i')  !!}</b></small> <br>
                                                     @endif
                                                  @endforeach
                                               ">
-                                            {!! convertToHoursMins($clocks->max('worked_min'), '%02d uur %02d min') !!}
+                                            {!! convertToHoursMins($clock->worked_min, '%02d uur %02d min') !!}
                                         </span>
                                     </div>
                                 </div>
@@ -159,34 +170,6 @@
                      @endforeach
                 </tr>
             @endforeach
-
-            @for($u = 0; $u < 5; $u++)
-                <tr class="">
-                    <th style="width: 200px;">
-                        <img class="img-circle" style="vertical-align: top; height: 35px; width: 35px;" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
-                        <div style="display: inline-block; margin-left: 10px;">
-                            willem <br>
-                            <small class="mute">
-                                {!! random_int(5, 20) !!} hrs
-                            </small>
-                        </div>
-                    </th>
-                    @for($s = 0; $s < 7; $s++)
-                        @if(random_int(0,6) == $s)
-                            <td style="padding: 5px 1px;">
-                                <div class="panel panel-default" style="margin-bottom: 0px;">
-                                    <div class="text-center pane    l-body  bg-warning" style="padding: 5px 10px;">
-                                        <small><b>12:45-18:25</b></small> <br>
-                                        counter
-                                    </div>
-                                </div>
-                            </td>
-                        @else
-                            <td></td>
-                        @endif
-                    @endfor
-                </tr>
-            @endfor
         </table>
     </div>
 
@@ -198,9 +181,42 @@
         .table > tbody > tr > td {
             vertical-align: middle;
         }
+        .ranges ul{
+            width: 100% !important;
+        }
+        .ranges{
+            width: 100% !important;
+        }
+        .ranges li:last-child {
+            display: none !important;
+        }
+        .drp-calendar{
+            display: none !important;
+        }
+        .calendar-list li{
+            background: #0B62A4;
+            color: #FFFFFF;
+            padding: 2px;
+            margin: 2px;
+        }
+        .calendar-list{
+            list-style: none;
+            padding: 0px !important;
+        }
     </style>
 @endpush
 
 @push('js')
+    <script>
+        $(function() {
 
+            $('#daterange').daterangepicker({
+                startDate: "{!! $startDate !!}",
+                endDate: "{!! $endDate !!}",
+                ranges: {!! collect($weekRange)->toJson() !!}
+            }, function () {
+
+            });
+        });
+    </script>
 @endpush

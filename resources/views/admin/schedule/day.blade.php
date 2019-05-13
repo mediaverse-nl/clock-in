@@ -3,8 +3,18 @@
 @section('content')
 
     @php
-        $date = \Carbon\Carbon::now()->addDays(0);
+        $date = \Carbon\Carbon::parse('2019-04-26')->addDays(0);
         $formattedDate = $date->format('Y-m-d');
+
+    function random_color_part() {
+        return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+    }
+
+    function random_color() {
+        return random_color_part() . random_color_part() . random_color_part();
+    }
+
+    //echo random_color()
     @endphp
 
     <div class="col-md-12">
@@ -122,7 +132,7 @@
 {{--                        {!! \Carbon\Carbon::parse($formattedDate.'23:59:59') !!}--}}
                         {!! $clocks = $user->clocked()
                         ->where('started_at', '>=', \Carbon\Carbon::parse($formattedDate))
-                        ->where('stopped_at', '<=', \Carbon\Carbon::parse($formattedDate.'23:59:59'))
+                        //->where('stopped_at', '>=', \Carbon\Carbon::parse($formattedDate.'23:59:59'))
                         ->where('worked_min', '!=', 0)
                         ->get() !!} <br><br>
                         <div class="panel panel-default" style="width: 100%; position: relative;">
@@ -131,7 +141,7 @@
 
                                 <div data-toggle="tooltip"
                                      title="van {!! $clocked->started_at->format('H:i') !!} t/m {!! $clocked->stopped_at->format('H:i') !!} - gewerkte min {!! $clocked->worked_min !!}"
-                                     style="height: 8px; display: inline-block; position: absolute; background: black; color: green; width: {!! $clocked->timeLength() !!}%;margin-left: {!! $clocked->timeToPercentage() !!}%; margin-bottom: 0px;">
+                                     style="height: 8px; display: inline-block; position: absolute; background: #{!! random_color() !!}; color: green; width: {!! $clocked->timeLength() !!}%;margin-left: {!! $clocked->timeToPercentage() !!}%; margin-bottom: 0px;">
                                 </div>
 
                                 {{--<div class="panel panel-default" style="width: 33%;margin-left: {!! rand(0, 66) !!}%; margin-bottom: 0px;">--}}

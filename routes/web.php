@@ -100,6 +100,7 @@ Route::prefix('admin')->middleware(['auth'])->namespace('Admin')->name('admin.')
     Route::get('/team/create', 'TeamController@create')->name('team.create');
     Route::get('/team/edit/{id}', 'TeamController@edit')->name('team.edit');
     Route::post('/team', 'TeamController@store')->name('team.store');
+    Route::patch('/team/{id}', 'TeamController@update')->name('team.update');
     Route::get('/team/roles', 'TeamController@roles')->name('team.roles');
     Route::get('/reports', 'ReportController@index')->name('report.index');
     Route::get('/settings', 'SettingsController@index')->name('settings.index');

@@ -36,7 +36,7 @@
                 Gebruiker aanmelden
             </div>
             <div class="panel-body">
-                 {!! Form::model($user,['route' => ['admin.team.store'], 'method' => 'post']) !!}
+                 {!! Form::model($user,['route' => ['admin.team.update', $user->id], 'method' => 'PATCH']) !!}
 
                 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
                     {!! Form::label('name', 'Volledige Naam') !!}
@@ -51,49 +51,49 @@
 
                 <div class="form-group {{ $errors->has('date_of_birth') ? 'has-error' : ''}}">
                     {!! Form::label('date_of_birth', 'date_of_birth') !!}
-                    {!! Form::email('date_of_birth', null, ['class' => 'form-control']) !!}
+                    {!! Form::date('date_of_birth', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'date_of_birth'])
                 </div>
 
                 <div class="form-group {{ $errors->has('hourly_rate') ? 'has-error' : ''}}">
                     {!! Form::label('hourly_rate', 'hourly_rate') !!}
-                    {!! Form::email('hourly_rate', null, ['class' => 'form-control']) !!}
+                    {!! Form::number('hourly_rate', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'hourly_rate'])
                 </div>
 
                 <div class="form-group {{ $errors->has('contract_hours') ? 'has-error' : ''}}">
                     {!! Form::label('contract_hours', 'contract_hours') !!}
-                    {!! Form::email('contract_hours', null, ['class' => 'form-control']) !!}
+                    {!! Form::text('contract_hours', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'contract_hours'])
                 </div>
 
                 <div class="form-group {{ $errors->has('address') ? 'has-error' : ''}}">
                     {!! Form::label('address', 'address') !!}
-                    {!! Form::email('address', null, ['class' => 'form-control']) !!}
+                    {!! Form::text('address', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'address'])
                 </div>
 
                 <div class="form-group {{ $errors->has('address_nr') ? 'has-error' : ''}}">
                     {!! Form::label('address_nr', 'address_nr') !!}
-                    {!! Form::email('address_nr', null, ['class' => 'form-control']) !!}
+                    {!! Form::text('address_nr', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'address_nr'])
                 </div>
 
                 <div class="form-group {{ $errors->has('postal_code') ? 'has-error' : ''}}">
                     {!! Form::label('postal_code', 'postal_code') !!}
-                    {!! Form::email('postal_code', null, ['class' => 'form-control']) !!}
+                    {!! Form::text('postal_code', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'postal_code'])
                 </div>
 
                 <div class="form-group {{ $errors->has('place') ? 'has-error' : ''}}">
                     {!! Form::label('place', 'place') !!}
-                    {!! Form::email('place', null, ['class' => 'form-control']) !!}
+                    {!! Form::text('place', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'place'])
                 </div>
 
                 <div class="form-group {{ $errors->has('place') ? 'has-error' : ''}}">
                     {!! Form::label('place', 'place') !!}
-                    {!! Form::email('place', null, ['class' => 'form-control']) !!}
+                    {!! Form::text('place', null, ['class' => 'form-control']) !!}
                     @include('components.input-error-msg', ['name' => 'place'])
                 </div>
 
@@ -102,7 +102,8 @@
                     @foreach($user->business->functions as $function)
                         <div class="checkbox">
                             <label>
-                                {!! Form::checkbox('functions[]', $function->id, false)!!}
+{{--                                {!! dd($user->userFunctions()->pluck('function_id')->toArray()) !!}--}}
+                                {!! Form::checkbox('functions[]', $function->id, in_array($function->id, $user->userFunctions->pluck('function_id')->toArray()))!!}
                                 {!! $function->value !!}
                             </label>
                         </div>

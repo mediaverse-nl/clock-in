@@ -36,6 +36,7 @@ class TimeTrackingController extends Controller
 
         foreach ($users as $user) {
             $baseClocks[] = $user->clocked()->get();
+
             $clocks[] = $user->clocked()
                 ->where(function ($q){
                     if($this->hasSession('user')){
@@ -59,9 +60,10 @@ class TimeTrackingController extends Controller
                 ->get();
         }
 
-        $startDate = collect($baseClocks)->collapse()->sortBy('created_at')->first()->created_at->format('d-m-Y');
-        $endDate = collect($baseClocks)->collapse()->sortByDesc('created_at')->first()->created_at->format('d-m-Y');
-        $minDate = Carbon::now()->addDays(-7)->format('d-m-Y');
+        $startDate = collect($baseClocks)->collapse()->sortBy('started_at')->first()->started_at->format('d-m-Y');
+        $endDate = collect($baseClocks)->collapse()->sortByDesc('started_at')->first()->started_at->format('d-m-Y');
+
+        $minDate = Carbon::parse($startDate)->format('d-m-Y');
         $maxDate = Carbon::now()->format('d-m-Y');
 
         if ($startDate <= $minDate){

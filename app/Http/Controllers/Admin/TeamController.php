@@ -106,7 +106,7 @@ class TeamController extends Controller
         if (!in_array($id, $business->users->pluck('id')->toArray())){
             return abort(403);
         }
-        $user = $this->getUser();
+        $user = $this->user->findOrFail($id);
 
         return view('admin.team.edit')
             ->with('user', $user);
@@ -121,7 +121,22 @@ class TeamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = $this->user->findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        $user->userFunctions()->delete();
+        foreach ($request->functions as $function)
+        {
+            $user->userFunctions()->create([
+                'user_id' => $user->id,
+                'function_id' => $function
+            ]);
+        }
+
+        return redirect()->back();
+
     }
 
     /**
