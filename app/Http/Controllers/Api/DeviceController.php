@@ -18,8 +18,6 @@ class DeviceController extends Controller
 
     public function rfid(Request $request)
     {
-//        dd(1);
-
         $errors = $this->checkForErrors($request, [
             'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
             'rfid_tag' => 'required',
@@ -33,7 +31,16 @@ class DeviceController extends Controller
             ->where('value','=', $request->rfid_tag);
 
         if ($card->exists()){
+
             $user_id = $card->first()->user_id;
+
+            if ($user_id === null){
+                return response()
+                    ->json([
+                        'message' => 'kaart niet gekoppeld aan gebruiker',
+                        'status' => 407,
+                    ], 407);
+            }
 
             $entry = (new Clocked())
                 ->where('active', '=', 1)
@@ -88,7 +95,7 @@ class DeviceController extends Controller
     {
         $errors = $this->checkForErrors($request, [
             'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
-            'ip_adress' => 'required|ip',
+//            'ip_adress' => 'required|ip',
             'clock_in_code' => 'required',
         ]);
 
@@ -151,7 +158,7 @@ class DeviceController extends Controller
         $errors = $this->checkForErrors($request, [
             'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
             'version' => 'required',
-            'ip_adress' => 'required|ip'
+//            'ip_adress' => 'required|ip'
         ]);
 
         if (!empty($errors)){
