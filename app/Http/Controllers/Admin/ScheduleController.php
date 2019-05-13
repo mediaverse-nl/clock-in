@@ -28,7 +28,81 @@ class ScheduleController extends Controller
 
     public function day()
     {
-        $users = $this->user->get();
+        $date = \Carbon\Carbon::parse('2019-04-26')->addDays(0);
+
+        $users = $this->getBusinessFromUser()->users()->get();
+
+        $userList = [];
+        foreach ($users as $user){
+            $clocks = $user->clocked()
+                ->whereBetween('started_at', [Carbon::parse($date->format('Y-m-d')), Carbon::parse($date->format('Y-m-d').'23:59:59')])
+                ->orWhereBetween('stopped_at', [Carbon::parse($date->format('Y-m-d')), Carbon::parse($date->format('Y-m-d').'23:59:59')])
+                ->where('worked_min', '!=', 0)
+                ->get();
+
+            $times = [];
+            foreach ($clocks as $clock){
+                $diffTime = '';
+                $maxTime = 1440;
+                $width = 0;
+                $startPosition = 0;
+                $endPosition = 0;
+
+                if ($date->format('Y-m-d') > $clock->started_at->format('Y-m-d'))
+                {
+                    $StartPosision = 'before';
+                    $diffTime = $clock->stopped_at->diffInMinutes($date->format('Y-m-d H:i'));
+                    $worked_today = $diffTime ;
+                    $startPosition = 0.00;
+                    $width = $clock->timeLength();
+
+                }elseif ($date->format('Y-m-d') < $clock->stopped_at->format('Y-m-d'))
+                {
+                    $StartPosision = 'after';
+                    $diffTime = $clock->started_at->diffInMinutes(Carbon::parse($date->format('Y-m-d').'23:59:59'));
+                    $worked_today = $diffTime ;
+
+                    $width = $clock->timeLength();
+                    $position = $clock->timePosition();
+
+                    dd($position);
+//                    dd($clock->timeToPercentage());
+//                    return number_format($position / 1440, 2)
+
+                    $startPosition = 0.01;
+                    $endPosition = ($worked_today / $maxTime) * 100;
+
+//                    $worked_today = $clock->worked_min;
+                }else{
+                    $StartPosision = 'in';
+                    $worked_today = $diffTime ;
+                    $startPosition = 0.01;
+                    $endPosition = ($worked_today / $maxTime) * 100;
+                }
+
+                $date->diffInMinutes();
+                $times[] = [
+                    'width' => $clock->timeLength(),
+                    'timeToPercentage' => $clock->timeToPercentage(),
+                    'startPosition' => number_format($startPosition, 2),
+//                     'width' => $width,
+                    'started' => $clock->started_at->format('Y-m-d H:i'),
+                    'stopped' => $clock->stopped_at->format('Y-m-d H:i'),
+                    'worked_min' => (int)$clock->worked_min,
+                    'worked_today' => (int)$worked_today,
+                    'start' => $StartPosision,
+                    'diff_time' => (int)$diffTime,
+                ];
+//                dd($times);
+            }
+
+            $userList[] = [
+                'user' => $user,
+                'clocks' => $times,
+            ];
+        }
+
+        dd($userList);
 
         return view('admin.schedule.day')
             ->with('users', $users);
@@ -36,10 +110,156 @@ class ScheduleController extends Controller
 
     public function week()
     {
-        $users = $this->user->get();
+        $selectedableUsers = $this->getBusinessFromUser()->users()->pluck('name', 'id');
+        $oldestFirst = $this->clock->myBusiness()->oldest('started_at');
+        $newestFirst = $this->clock->myBusiness()->latest('started_at');
+        $functions = $this->getBusinessFromUser()->functions->pluck('value', 'id');
+
+        $users = $this->getBusinessFromUser()->users()
+            ->where(function ($q){
+                if ($this->hasSession('users')) {
+                    $q->where('id', '=', $this->getSessionKey('users'));
+                }
+            })
+            ->whereHas('userFunctions', function ($q){
+                if ($this->hasSession('functions')) {
+                    $q->where('function_id', '=', $this->getSessionKey('functions'));
+                }
+            })
+            ->get();
+
+        $selectedUser = null;
+        if ($this->hasSession('users')){
+            $selectedUser = $this->getSessionKey('users');
+        }
+
+        $selectedFunction = null;
+        if ($this->hasSession('functions')){
+            $selectedFunction = $this->getSessionKey('functions');
+        }
+
+        $startDate = Carbon::parse($newestFirst->first()->started_at)->startOfWeek()->format('d-m-Y');
+        $endDate = Carbon::parse($newestFirst->first()->started_at)->endOfWeek()->format('d-m-Y');
+
+        if($this->hasSession('date')){
+            $dateArray = explode(' - ', $this->getSessionKey('date'));
+
+            $startDate = Carbon::parse($dateArray[0])->startOfWeek()->format('d-m-Y');
+            $endDate = Carbon::parse($dateArray[1])->endOfWeek()->format('d-m-Y');
+
+            if (!(bool)strtotime($dateArray[0])
+                || !(bool)strtotime($dateArray[1])){
+                $this->setItem('date', $startDate.' - '.$endDate);
+            }
+            $dateArray = explode(' - ', $this->getSessionKey('date'));
+            $weekNr = Carbon::parse($dateArray[0])->weekOfYear;
+        }else{
+            $weekNr = Carbon::now()->weekOfYear;
+        }
+
+        $weekRange = [];
+
+        $oldestMonth = Carbon::parse($oldestFirst->first()->started_at)->weekOfYear;
+        $newestMonth = Carbon::parse($newestFirst->first()->started_at)->weekOfYear;
+
+        foreach (range($oldestMonth, $newestMonth) as $week){
+            $date = Carbon::now();
+            $date->setISODate(date('Y'), $week);
+            $startOfWeek = Carbon::parse($date)->startOfWeek();
+            $endOfWeek = Carbon::parse($date)->endOfWeek();
+            $weekRange['W'.$date->format('W'). ' Y'.$date->format('Y')]
+                = [$startOfWeek->format('d-m-Y'),
+                $endOfWeek->format('d-m-Y')];
+        }
+
+        $dateRange = CarbonPeriod::create($startDate, 7);
+
+        $header = [];
+
+        foreach($dateRange as $date)
+        {
+            $today = Carbon::now()->format('Y-m-d')
+                == $date->format('Y-m-d');
+
+            $totalWorkedDay = $this->clock
+                ->myBusiness()
+                ->whereBetween('started_at', [
+                    Carbon::parse($date),
+                    Carbon::parse($date->format('Y-m-d').' 23:59:59'),
+                ])
+                ->sum('worked_min');
+
+            $header[] = [
+                'day' => $date->format('D d'),
+                'today' => $today,
+                'total_worked_min' => $totalWorkedDay,
+            ];
+        }
+
+        $usersList = [];
+
+        foreach ($users as $user)
+        {
+            $days = [];
+
+            $weekWorkedMin = $this->clock
+                ->myBusiness()
+                ->whereBetween('started_at', [
+                    Carbon::parse($startDate),
+                    Carbon::parse($endDate.' 23:59:59'),
+                ])
+                ->where('user_id', '=', $user->id)
+                ->sum('worked_min');
+
+            foreach($dateRange as $date)
+            {
+                $today = Carbon::now()->format('Y-m-d')
+                    == $date->format('Y-m-d');
+
+                $events = $this->clock
+                    ->myBusiness()
+                    ->whereBetween('started_at', [
+                        Carbon::parse($date),
+                        Carbon::parse($date->format('Y-m-d').' 23:59:59'),
+                    ])
+                    ->where('user_id', '=', $user->id);
+
+                $eventList = $events->get();
+
+                if (count($events->get()) >= 1){
+                    $worked_min = collect($events)->sum('worked_min');
+                }else{
+                    $worked_min = null;
+                }
+
+                $days[] = [
+                    'day' => $date->format('Y-m-d'),
+                    'today' => $today,
+                    'events' => $eventList,
+                    'worked_min' => $worked_min,
+                ];
+            }
+
+            $usersList[] = [
+                'user' => $user,
+                'week' => $days,
+                'week_worked_min' => $weekWorkedMin,
+            ];
+        }
 
         return view('admin.schedule.week')
-            ->with('users', $users);
+            ->with('header', $header)
+            ->with('usersList', $usersList)
+            ->with('weekRange', $weekRange)
+            ->with('startDate', $startDate)
+            ->with('endDate', $endDate)
+            ->with('dateRange', $dateRange)
+            ->with('weekNr', $weekNr)
+            ->with('users', $users)
+            ->with('selectedableUsers', $selectedableUsers)
+            ->with('user', $selectedUser)
+            ->with('function', $selectedFunction)
+            ->with('functions', $functions);
     }
 
     public function month()
