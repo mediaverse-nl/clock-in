@@ -3,9 +3,11 @@
 @section('content')
 
     <div class="col-md-12">
-        <a href="{!! route('admin.schedule.week') !!}" class="btn btn-primary">week</a>
-        <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>
-        <a href="{!! route('admin.schedule.availability') !!}" class="active btn btn-primary">team beschikbaarheid</a>
+        <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
+        <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default">week</a>
+        <a href="{!! route('admin.schedule.month') !!}" class="btn btn-default">month</a>
+        {{--<a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>--}}
+        <a href="{!! route('admin.schedule.availability') !!}" class="btn btn-primary active">team beschikbaarheid</a>
     </div>
 
     <br>

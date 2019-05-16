@@ -57,12 +57,12 @@
                 <th>time card</th>
                 {{--<th>rooster</th>--}}
                 <th>gewerkt</th>
-
+                {{--<th>tussen</th>--}}
                 <th class="">locatie</th>
                  <th class=""></th>
              </tr>
             @foreach($clocked as $c)
-                <tr>
+                <tr class="{!! $c->active == 0 ? '' : 'success'!!}">
                     <td class="">
                         {{--{!! $c !!}--}}
                         {!! $c->started_at->format('d M') !!}
@@ -75,7 +75,7 @@
                     </td>
                     <td class="">
                         @if($c->active)
-                            <b>{!! $c->started_at->format('H:i') !!} - /</b>
+                            <b>{!! $c->started_at->format('H:i') !!} - {!! \Carbon\Carbon::now()->format('H:i') !!}</b>
                         @else
                             <b>{!! $c->started_at->format('H:i') !!} - {!! $c->stopped_at->format('H:i') !!}</b>
                         @endif
@@ -88,12 +88,18 @@
                         {{--@endif--}}
                     {{--</td>--}}
                     <td class="">
-                        @if(!$c->active)
-                            {!! $c->worked_min !!} <small>min</small>
-                        @else
-                            0 <small>min</small>
-                        @endif
+                        {!!  floor($c->diffInMin() / 60) !!} <small>uur</small> {!! ($c->diffInMin() % 60) !!} <small>min</small>
+
                     </td>
+                    {{--<td class="">--}}
+                        {{--@if(!$c->active)--}}
+                            {{--{!! $c->worked_min !!}<br>--}}
+                            {{--{!! $c->diffInMin() !!}<br>--}}
+                            {{--{!! $c->started_at->diffInMinutes($c->stopped_at) !!} <small>min</small>--}}
+                        {{--@else--}}
+                            {{--{!! $c->diffInMin() !!} <small>min</small>--}}
+                        {{--@endif--}}
+                    {{--</td>--}}
                     {{--<td class="">--}}
                         {{--<span class="label label-danger">2+</span>--}}
                     {{--</td>--}}

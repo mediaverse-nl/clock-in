@@ -57,6 +57,9 @@ class TimeTrackingController extends Controller
                         $q->where('location_id', '=', $this->getSessionKey('location'));
                     }
                 })
+//                ->where('active', '=', 0)
+//                ->orWhere('active', '=', 1)
+//                ->groupBy('id')
                 ->get();
         }
 
@@ -94,7 +97,7 @@ class TimeTrackingController extends Controller
 
         $clocked = collect($clocks)
             ->collapse()
-            ->sortByDesc('active')
+             ->sortByDesc('active')
             ->sortByDesc('created_at');
 
         return view('admin.timeTracking.index')

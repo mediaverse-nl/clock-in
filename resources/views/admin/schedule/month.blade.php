@@ -2,17 +2,15 @@
 
 @section('content')
 
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin-bottom: 15px;">
         <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
         <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default">week</a>
         <a href="{!! route('admin.schedule.month') !!}" class="active btn btn-default">month</a>
-        <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>
+{{--        <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>--}}
         <a href="{!! route('admin.schedule.availability') !!}" class="btn btn-primary">team beschikbaarheid</a>
     </div>
 
-    <hr>
-
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin-bottom: 15px;">
         <div class="btn-group pull-left">
             @component('components.filter', [
                 'items' => $date,
@@ -55,8 +53,6 @@
             <a href="" class="btn btn-success"><i class="fas fa-upload"></i></a>
         </div>
     </div>
-
-    <hr>
 
     <div class="col-md-12">
         <table class="table table-responsive" >

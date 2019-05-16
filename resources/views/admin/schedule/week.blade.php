@@ -13,17 +13,15 @@
         }
     @endphp
 
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin-bottom: 15px;">
         <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
         <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default active">week</a>
         <a href="{!! route('admin.schedule.month') !!}" class="btn btn-default">month</a>
-        <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>
+{{--        <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>--}}
         <a href="{!! route('admin.schedule.availability') !!}" class="btn btn-primary">team beschikbaarheid</a>
     </div>
 
-    <hr>
-
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin-bottom: 15px;">
 
         <div class="btn-group pull-left">
             @component('components.filter', [
@@ -64,8 +62,6 @@
         </div>
     </div>
 
-    <hr>
-
     <div class="col-md-12">
         <table class="table table-responsive" >
             <tr>
@@ -87,6 +83,23 @@
                                 </div>
                                 <div class="modal-body">
 
+                                    {{--rooster maken--}}
+                                    <div class="col-lg-6">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Beschikbaarheid van week {!! \Carbon\Carbon::now()->weekOfYear !!}
+                                            </div>
+                                            <div class="panel-body">
+
+                                                @component('components.admin.planner')
+
+                                                @endcomponent
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{--einde rooster maken--}}
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -102,7 +115,8 @@
                             {!! $date['day'] !!}
                              <br>
                             {!! convertToHoursMins($date['total_worked_min'], '%02d uur %02d min') !!}
-                            / &euro; --
+                            <br>
+                            &euro; --
                         </small>
                     </th>
                 @endforeach

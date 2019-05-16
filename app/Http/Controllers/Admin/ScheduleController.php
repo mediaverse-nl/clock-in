@@ -28,6 +28,7 @@ class ScheduleController extends Controller
 
     public function day()
     {
+
         $date = Carbon::now();
 
         $users = $this->getBusinessFromUser()->users()->get();
@@ -38,13 +39,14 @@ class ScheduleController extends Controller
             if ($selectedDate == 'Invalid date'){
                 $this->setItem('date', $date->format('d-m-Y'));
                 $setDate = $this->getSessionKey('date');
-            }elseif (!checkdate(Carbon::parse($selectedDate)->month,
-                Carbon::parse($selectedDate)->day,
-                Carbon::parse($selectedDate)->year))
+            }elseif (Carbon::createFromFormat('d-m-Y', $selectedDate) == false)
             {
+//                dd(1);
                 $this->setItem('date', $date->format('d-m-Y'));
                 $setDate = $this->getSessionKey('date');
             }else{
+//                dd(1);
+//                dd(Carbon::parse($selectedDate));
                 $setDate = $this->getSessionKey('date');
             }
         }else{
@@ -54,6 +56,7 @@ class ScheduleController extends Controller
 
         $userList = [];
         foreach ($users as $user){
+//            dd(1);
              $clocks = $user->clocked()
                  ->whereBetween('started_at', [Carbon::parse($date->format('Y-m-d')), Carbon::parse($date->format('Y-m-d').'23:59:59')])
                  ->where('user_id', '=', $user->id)
@@ -64,7 +67,13 @@ class ScheduleController extends Controller
                     $q->where('stopped_at', '>', Carbon::parse($date->format('Y-m-d')));
                  })
                  ->where('user_id', '=', $user->id)
+                 ->orWhere(function ($q) use ($date){
+                    $q->where('stopped_at', '=', null);
+                 })
+                 ->where('user_id', '=', $user->id)
                  ->get();
+
+//             dd($clocks);
 
              $times = [];
              foreach ($clocks as $c){
@@ -73,7 +82,22 @@ class ScheduleController extends Controller
                  $dayInMinutes = 86400;
                  $width = null;
 
-                 if($c->started_at->format('Y-m-d') < $date->format('Y-m-d')
+//                 dd(1);
+                 if($c->active == 1)
+                 {
+//                     dd(2);
+//                     dd($c->started_at->format('Y-m-d'), $startOfDay->format('Y-m-d'));
+                     if($c->started_at->format('Y-m-d') == $startOfDay->format('Y-m-d')){
+                         $diffTime = $c->started_at->diffInSeconds($c->stopped_at);
+                         $leftStartPosition = number_format(($c->started_at->diffInSeconds($startOfDay) / $dayInMinutes)*100, 2);
+                         $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
+                     }elseif($startOfDay > $c->started_at->format('Y-m-d')){
+                        $diffTime = $c->started_at->diffInSeconds(Carbon::now())
+                            - $c->started_at->diffInSeconds($startOfDay);
+                        $leftStartPosition = 0;
+                        $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
+                     }
+                 }elseif($c->started_at->format('Y-m-d') < $date->format('Y-m-d')
                     && $c->stopped_at->format('Y-m-d') > $date->format('Y-m-d'))
                  {
                      //started before this day and ended after this day
@@ -108,7 +132,7 @@ class ScheduleController extends Controller
                         'user_id' => $c->user_id,
                         'leftStartPosition' => $leftStartPosition,
                         'started' => $c->started_at->format('Y-m-d H:i'),
-                        'stopped' => $c->stopped_at->format('Y-m-d H:i'),
+                        'stopped' => $c->stopped_at == null ? Carbon::now()->format('Y-m-d H:i') : $c->stopped_at->format('Y-m-d H:i'),
                         'worked_min' => (int)$c->worked_min,
                         'diff_time' => (int)number_format((int)$diffTime / 60, 0, '', ''),
                      ];

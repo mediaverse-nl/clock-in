@@ -3,34 +3,36 @@
 @section('content')
 
     <div class="col-md-12">
-        <a href="{!! route('admin.team.index') !!}" class="active btn btn-primary">Personeel</a>
-        <a href="{!! route('admin.team.roles') !!}" class="btn btn-primary">Roles</a>
-    </div>
-
-    <hr>
-
-    <div class="col-md-12">
         <div class="row">
-            <div class="col-md-12">
-                <div class="btn-group pull-left" role="group" aria-label="">
-                    <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Voeg een gebruiker toe">
-                        <i class="fas fa-plus"></i>
-                    </a>
-                    <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Groepsbericht maken">
-                        <i class="fas fa-comment"></i>
-                    </a>
-                    <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Klok in codes">
-                        <i class="fas fa-user-lock"></i>
-                    </a>
-                </div>
+            <div class="col-md-6">
+                <a href="{!! route('admin.team.index') !!}" class="active btn btn-primary">Personeel</a>
+                <a href="{!! route('admin.team.roles') !!}" class="btn btn-primary">Roles</a>
+            </div>
 
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="btn-group pull-right" role="group" aria-label="">
+                            <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Voeg een gebruiker toe">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                            <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Groepsbericht maken">
+                                <i class="fas fa-comment"></i>
+                            </a>
+                            <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Klok in codes">
+                                <i class="fas fa-user-lock"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <hr>
 
-    <div class="col-md-6">
+    <div class="col-md-6 col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Gebruiker aanmelden
@@ -120,26 +122,227 @@
         </div>
     </div>
 
+    <div class="col-md-6 col-lg-8">
+        <div class="row">
+            @for($x = 0; $x <= 4; $x++)
+
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Beschikbaarheid van week {!! \Carbon\Carbon::now()->addWeeks($x)->weekOfYear !!}
+                    </div>
+                    <div class="panel-body">
+
+                        <table style="width:100%">
+                            <tr>
+                                <th width="100px;">dag</th>
+                                <th colspan="">van</th>
+                                <th colspan="">tot</th>
+                            </tr>
+                            <tr class="time-chart">
+                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(0)->format('D d M') !!}</td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="time-chart">
+                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(1)->format('D d M') !!}</td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="time-chart">
+                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(2)->format('D d M') !!}</td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="time-chart">
+                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(3)->format('D d M') !!}</td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="time-chart">
+                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(4)->format('D d M') !!}</td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="time-chart">
+                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(5)->format('D d M') !!}</td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="time-chart">
+                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(6)->format('D d M') !!}</td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input type="text" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        @endfor
+    </div>
 
 @endsection
 
 @push('css')
+    <style href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.css"></style>
+    <style href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css"></style>
+    <style href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css.map"></style>
+    <style href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css"></style>
+    {{--<style href=""></style>--}}
     <style>
+        .time-chart td{
+            padding: 0px 3px;
+        }
+        .time-chart .form-group{
+            margin-bottom: 5px;
+        }
         .table-bordered>tbody>tr>th{
             border-right-width: 0px !important;
         }
         .table > tbody > tr > td {
             vertical-align: middle;
             padding: 20px 10px;
-
         }
     </style>
 @endpush
 
 @push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script>
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        $(function () {
+            $('.datetimepicker').datetimepicker({
+                format: 'LT'
+            });
         });
     </script>
 @endpush
