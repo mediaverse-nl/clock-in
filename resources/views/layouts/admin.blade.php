@@ -107,7 +107,7 @@
             <ul class="nav navbar-nav">
                 <li class="{!! \Request::is('admin') ? 'active' : '' !!}"><a href="{!! route('admin.dashboard') !!}">Dashboard</a></li>
                 <li class="{!! \Request::is('admin/rooster*') ? 'active' : '' !!}"><a href="{!! route('admin.schedule.week') !!}">Rooster</a></li>
-                <li class="{!! \Request::is('admin/tijdregistratie*') ? 'active' : '' !!}"><a href="{!! route('admin.time-tracking.index') !!}">Time Tracking</a></li>
+                <li class="{!! \Request::is('admin/tijdregistratie*') ? 'active' : '' !!}"><a href="{!! route('admin.time-tracking.index') !!}">Prikklok</a></li>
                 <li class="{!! \Request::is('admin/team*') ? 'active' : '' !!}"><a href="{!! route('admin.team.index') !!}">Team</a></li>
                 <li class="{!! \Request::is('admin/report*') ? 'active' : '' !!}"><a href="{!! route('admin.report.index') !!}">Reports</a></li>
                 <li class="{!! \Request::is('admin/settings*') ? 'active' : '' !!}"><a href="{!! route('admin.settings.index') !!}">Settings</a></li>
@@ -115,11 +115,11 @@
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <div class="form-group">
-                         <select class="form-control" id="sel1">
-                            @foreach($menuUserLocations as $i)
-                                <option>{!! $i !!}</option>
-                            @endforeach
-                        </select>
+                         {{--<select class="form-control" id="sel1">--}}
+{{--                            @foreach($menuUserLocations as $i)--}}
+                                {{--<option>{!! $i !!}</option>--}}
+                            {{--@endforeach--}}
+                        {{--</select>--}}
                     </div>
                 </li>
                 {{--<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>--}}

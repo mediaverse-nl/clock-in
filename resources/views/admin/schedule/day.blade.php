@@ -17,44 +17,28 @@
     //echo random_color()
     @endphp
 
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin-bottom: 15px;">
         <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default active">day</a>
         <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default">week</a>
         <a href="{!! route('admin.schedule.month') !!}" class="btn btn-default">month</a>
-        <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>
+        {{--<a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>--}}
         <a href="{!! route('admin.schedule.availability') !!}" class="btn btn-primary">team beschikbaarheid</a>
     </div>
 
-    <hr>
-
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                @component('components.filter', [
-                    'items' => $date->format('Y-m-d'),
-                    'setValue' => $setDate,
-                    'name' => 'date',
-                ])
-                @endcomponent
-                {{--<div class="btn-group pull-left" role="group" aria-label="">--}}
-                    {{--<input class="btn btn-default" type="text" name="birthday" value="{!! $date->format('Y-m-d') !!}" />--}}
-
-                    {{--<a class="btn btn-default"><</a>--}}
-                    {{--<a class="btn btn-default disabled">{!! $date->format('d M') !!}</a>--}}
-                    {{--<a class="btn btn-default">></a>--}}
-                {{--</div>--}}
-
-                <div class="btn-group pull-right" role="group" style="">
-                    <a href="" class="btn btn-default"><i class="fas fa-print"></i></a>
-                    <a href="" class="btn btn-success"><i class="fas fa-upload"></i></a>
-                </div>
-            </div>
+    <div class="col-md-12" style="margin-bottom: 15px;">
+        <div class="btn-group pull-left">
+            @component('components.filter', [
+                'items' => $date->format('Y-m-d'),
+                'setValue' => \Carbon\Carbon::parse($setDate)->format('d-m-Y'),
+                'name' => 'date',
+            ])
+            @endcomponent
+        </div>
+        <div class="btn-group pull-right" role="group" style="">
+            <a href="" class="btn btn-default"><i class="fas fa-print"></i></a>
+            <a href="" class="btn btn-success"><i class="fas fa-upload"></i></a>
         </div>
     </div>
-
-    <hr>
-
-
 
     <div class="col-md-12">
         <table class="table table-responsive table-striped" >
@@ -127,6 +111,7 @@
                         <div style="display: inline-block; margin-left: 10px;">
                             {!! $user['user']->name !!} <br>
                             <small class="mute">
+{{--                                {!! dd(collect($user['clocks'])) !!}--}}
                                 {!! random_int(5, 20) !!} hrs
                             </small>
                         </div>
@@ -174,8 +159,8 @@
         $(function() {
             $('#daterange').daterangepicker({
                 singleDatePicker: true,
-//                showDropdowns: true,
-                startDate: "{!! $setDate !!}",
+                maxDate: "{!! \Carbon\Carbon::now()->format('d-m-Y') !!}",
+                {{--startDate: "{!! \Carbon\Carbon::now()->format('d-m-Y') !!}",--}}
                 minYear: 2019,
                 maxYear: parseInt(moment().format('YYYY'),10)
             }, function(start, end, label) {

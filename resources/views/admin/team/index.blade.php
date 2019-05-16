@@ -3,23 +3,25 @@
 @section('content')
 
     <div class="col-md-12">
-        <a href="{!! route('admin.team.index') !!}" class="active btn btn-primary">Personeel</a>
-        <a href="{!! route('admin.team.roles') !!}" class="btn btn-primary">Roles</a>
-    </div>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="{!! route('admin.team.index') !!}" class="active btn btn-primary">Personeel</a>
+                <a href="{!! route('admin.team.roles') !!}" class="btn btn-primary">Roles</a>
+            </div>
 
-    <hr>
-
-    <div class="col-md-12">
-        <div style="margin-left: 10px;" class="btn-group pull-left" href="{!! route('admin.team.create') !!}" role="group" aria-label="">
-            <a href="{!! route('admin.team.create') !!}" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Voeg een gebruiker toe">
-                <i class="fas fa-plus"></i>
-            </a>
-            <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Groepsbericht maken">
-                <i class="fas fa-comment"></i>
-            </a>
-            <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Klok in codes">
-                <i class="fas fa-user-lock"></i>
-            </a>
+            <div class="col-md-6">
+                <div style="margin-left: 10px;" class="btn-group pull-right" href="{!! route('admin.team.create') !!}" role="group" aria-label="">
+                    <a href="{!! route('admin.team.create') !!}" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Voeg een gebruiker toe">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                    <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Groepsbericht maken">
+                        <i class="fas fa-comment"></i>
+                    </a>
+                    <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Klok in codes">
+                        <i class="fas fa-user-lock"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 

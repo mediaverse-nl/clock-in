@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\ClockIn;
 use App\Traits\getLocationTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Input;
 
 class Clocked extends Model
 {
-    use getLocationTrait;
+    use getLocationTrait, ClockIn;
 
     protected $table = 'clocked';
 
@@ -119,6 +120,15 @@ class Clocked extends Model
             ->first();
     }
 
+
+    public function diffInMin()
+    {
+        if ($this->active){
+            return $this->time()->diffInMinutes($this->started_at);
+        }else{
+            return $this->stopped_at->diffInMinutes($this->started_at);
+        }
+    }
 
     public function timeToPercentage(){
         $position = ($this->timePosition($this->started_at->format('H:i')) * 100);
