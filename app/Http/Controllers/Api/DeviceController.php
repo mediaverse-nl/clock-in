@@ -35,6 +35,13 @@ class DeviceController extends Controller
             $user_id = $card->first()->user_id;
 
             if ($user_id === null){
+                $card->delete();
+
+                $card = (new Card());
+                $card->user_id = null;
+                $card->value = $request->rfid_tag;
+                $card->save();
+
                 return response()
                     ->json([
                         'message' => 'kaart niet gekoppeld aan gebruiker',
@@ -95,7 +102,6 @@ class DeviceController extends Controller
     {
         $errors = $this->checkForErrors($request, [
             'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
-//            'ip_adress' => 'required|ip',
             'clock_in_code' => 'required',
         ]);
 
@@ -158,7 +164,6 @@ class DeviceController extends Controller
         $errors = $this->checkForErrors($request, [
             'mac_address' => 'required|regex:/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/',
             'version' => 'required',
-//            'ip_adress' => 'required|ip'
         ]);
 
         if (!empty($errors)){
