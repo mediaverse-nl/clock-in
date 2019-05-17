@@ -28,7 +28,6 @@ class ScheduleController extends Controller
 
     public function day()
     {
-
         $date = Carbon::now();
 
         $users = $this->getBusinessFromUser()->users()->get();
@@ -41,30 +40,28 @@ class ScheduleController extends Controller
                 $setDate = $this->getSessionKey('date');
             }elseif (Carbon::createFromFormat('d-m-Y', $selectedDate) == false)
             {
-//                dd(1);
                 $this->setItem('date', $date->format('d-m-Y'));
                 $setDate = $this->getSessionKey('date');
             }else{
-//                dd(1);
-//                dd(Carbon::parse($selectedDate));
                 $setDate = $this->getSessionKey('date');
             }
+            $date = Carbon::parse($setDate);
+
         }else{
             $setDate = $date;
         }
-        $date = Carbon::parse($setDate);
 
         $userList = [];
         foreach ($users as $user){
 //            dd(1);
              $clocks = $user->clocked()
-                 ->whereBetween('started_at', [Carbon::parse($date->format('Y-m-d')), Carbon::parse($date->format('Y-m-d').'23:59:59')])
+                 ->whereBetween('started_at', [Carbon::parse($date->format('d-m-Y')), Carbon::parse($date->format('Y-m-d').'23:59:59')])
                  ->where('user_id', '=', $user->id)
-                 ->orWhereBetween('stopped_at', [Carbon::parse($date->format('Y-m-d')), Carbon::parse($date->format('Y-m-d').'23:59:59')])
+                 ->orWhereBetween('stopped_at', [Carbon::parse($date->format('d-m-Y')), Carbon::parse($date->format('Y-m-d').'23:59:59')])
                  ->where('user_id', '=', $user->id)
                  ->orWhere(function ($q) use ($date){
-                    $q->where('started_at', '<', Carbon::parse($date->format('Y-m-d')));
-                    $q->where('stopped_at', '>', Carbon::parse($date->format('Y-m-d')));
+                    $q->where('started_at', '<', Carbon::parse($date->format('d-m-Y')));
+                    $q->where('stopped_at', '>', Carbon::parse($date->format('d-m-Y')));
                  })
                  ->where('user_id', '=', $user->id)
                  ->orWhere(function ($q) use ($date){
@@ -73,21 +70,16 @@ class ScheduleController extends Controller
                  ->where('user_id', '=', $user->id)
                  ->get();
 
-//             dd($clocks);
-
              $times = [];
              foreach ($clocks as $c){
-                 $startOfDay = Carbon::parse($date->format('Y-m-d'));
-                 $endOfDay = Carbon::parse($date->format('Y-m-d').'23:59:59');
+                 $startOfDay = Carbon::parse($date->format('d-m-Y'));
+                 $endOfDay = Carbon::parse($date->format('d-m-Y').'23:59:59');
                  $dayInMinutes = 86400;
                  $width = null;
 
-//                 dd(1);
                  if($c->active == 1)
                  {
-//                     dd(2);
-//                     dd($c->started_at->format('Y-m-d'), $startOfDay->format('Y-m-d'));
-                     if($c->started_at->format('Y-m-d') == $startOfDay->format('Y-m-d')){
+                     if($c->started_at->format('Y-m-d') == $startOfDay->format('d-m-Y')){
                          $diffTime = $c->started_at->diffInSeconds($c->stopped_at);
                          $leftStartPosition = number_format(($c->started_at->diffInSeconds($startOfDay) / $dayInMinutes)*100, 2);
                          $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
@@ -96,29 +88,34 @@ class ScheduleController extends Controller
                             - $c->started_at->diffInSeconds($startOfDay);
                         $leftStartPosition = 0;
                         $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
+                     }elseif($startOfDay < $c->started_at->format('d-m-Y')){
+//                        $diffTime = $c->started_at->diffInSeconds(Carbon::now())
+//                            - $c->started_at->diffInSeconds($startOfDay);
+//                        $leftStartPosition = 0;
+//                        $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
                      }
-                 }elseif($c->started_at->format('Y-m-d') < $date->format('Y-m-d')
-                    && $c->stopped_at->format('Y-m-d') > $date->format('Y-m-d'))
+                 }elseif($c->started_at->format('d-m-Y') < $date->format('d-m-Y')
+                    && $c->stopped_at->format('d-m-Y') > $date->format('d-m-Y'))
                  {
                      //started before this day and ended after this day
                      $diffTime = $c->started_at->diffInSeconds($endOfDay);
                      $leftStartPosition = 0;
                      $width = 100;
-                 }elseif ($c->stopped_at->format('Y-m-d') > $date->format('Y-m-d')
-                    && $date->format('Y-m-d') == $c->started_at->format('Y-m-d'))
+                 }elseif ($c->stopped_at->format('d-m-Y') > $date->format('d-m-Y')
+                    && $date->format('d-m-Y') == $c->started_at->format('d-m-Y'))
                  {
                      //started this day worked boyond that day
                      $diffTime = $c->started_at->diffInSeconds($endOfDay);
                      $leftStartPosition = number_format(($c->started_at->diffInSeconds($startOfDay) / $dayInMinutes)*100, 2);
                      $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
-                 }elseif ($c->started_at->format('Y-m-d') < $date->format('Y-m-d')
-                     && $date->format('Y-m-d') == $c->stopped_at->format('Y-m-d'))
+                 }elseif ($c->started_at->format('d-m-Y') < $date->format('d-m-Y')
+                     && $date->format('d-m-Y') == $c->stopped_at->format('d-m-Y'))
                  {
                     //started before this day ended this day
                      $diffTime = $c->stopped_at->diffInSeconds($startOfDay);
                      $leftStartPosition = 0;
                      $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
-                 }elseif($c->started_at->format('Y-m-d') == $c->stopped_at->format('Y-m-d'))
+                 }elseif($c->started_at->format('d-m-Y') == $c->stopped_at->format('d-m-Y'))
                  {
                     //started this day ended this day
                      $diffTime = $c->started_at->diffInSeconds($c->stopped_at);
