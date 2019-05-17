@@ -53,11 +53,16 @@ class ScheduleController extends Controller
 
         $userList = [];
         foreach ($users as $user){
-//            dd(1);
-             $clocks = $user->clocked()
-                 ->whereBetween('started_at', [Carbon::parse($date->format('d-m-Y')), Carbon::parse($date->format('Y-m-d').'23:59:59')])
+            $clocks = $user->clocked()
+                 ->whereBetween('started_at', [
+                     Carbon::parse($date->format('d-m-Y')),
+                     Carbon::parse($date->format('Y-m-d').'23:59:59')
+                 ])
                  ->where('user_id', '=', $user->id)
-                 ->orWhereBetween('stopped_at', [Carbon::parse($date->format('d-m-Y')), Carbon::parse($date->format('Y-m-d').'23:59:59')])
+                 ->orWhereBetween('stopped_at', [
+                     Carbon::parse($date->format('d-m-Y')),
+                     Carbon::parse($date->format('Y-m-d').'23:59:59')
+                 ])
                  ->where('user_id', '=', $user->id)
                  ->orWhere(function ($q) use ($date){
                     $q->where('started_at', '<', Carbon::parse($date->format('d-m-Y')));
@@ -70,8 +75,8 @@ class ScheduleController extends Controller
                  ->where('user_id', '=', $user->id)
                  ->get();
 
-             $times = [];
-             foreach ($clocks as $c){
+            $times = [];
+            foreach ($clocks as $c){
                  $startOfDay = Carbon::parse($date->format('d-m-Y'));
                  $endOfDay = Carbon::parse($date->format('d-m-Y').'23:59:59');
                  $dayInMinutes = 86400;

@@ -22,8 +22,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    200: OK
 
 Route::get('test', function (){
-    return 'test';
-});
+//    return 201;
+
+    $response= response()
+        ->json([
+            'message' => 'test het werkt',
+            'status' => 201,
+        ], 201);
+    $response->header('Content-Type', 'application/json');
+    return $response;
+
+ });
 Route::post('device-service-touch', 'Api\DeviceController@touch')->middleware('ipCheck');
 Route::post('device-rfid', 'Api\DeviceController@rfid')->middleware('ipCheck');
 Route::post('device-numpad', 'Api\DeviceController@numpad')->middleware('ipCheck');

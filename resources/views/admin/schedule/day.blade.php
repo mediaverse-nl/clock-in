@@ -166,7 +166,7 @@
         $(function() {
             $('#daterange').daterangepicker({
                 singleDatePicker: true,
-                maxDate: "{!! \Carbon\Carbon::now()->format('d-m-Y') !!}",
+{{--                maxDate: "{!! \Carbon\Carbon::now()->format('d-m-Y') !!}",--}}
                 {{--startDate: "{!! \Carbon\Carbon::now()->format('d-m-Y') !!}",--}}
                 minYear: 2019,
                 maxYear: parseInt(moment().format('YYYY'),10)
