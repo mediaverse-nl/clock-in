@@ -105,7 +105,7 @@
                         <div class="row" style="padding: 0px 10px">
                             @for ($x = 0; $x <= 23; $x++)
                                 <div class="text-center bg-{!! $x%2 ? 'warning':'default' !!} col-md-1" style="padding: 0px; width: 4.16% !important;  display: inline-block;">
-                                    <p style="transform: rotate(-45deg);">{!! $x  !!}</p>
+                                    <p style="transform: rotate(-45deg); padding-top: 4px; margin-bottom: 2px;">{!! $x  !!}</p>
                                 </div>
                             @endfor
                         </div>
