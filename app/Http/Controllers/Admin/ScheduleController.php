@@ -30,7 +30,20 @@ class ScheduleController extends Controller
     {
         $date = Carbon::now();
 
-        $users = $this->getBusinessFromUser()->users()->get();
+        $users = $this->getBusinessFromUser()
+            ->users()
+            ->where(function ($q){
+                if ($this->hasSession('users')){
+                    $q->where('id', '=', $this->getSessionKey('users'));
+                }
+            })
+            ->get();
+        $selectedableUsers = $this->getBusinessFromUser()->users()->pluck('name', 'id');
+
+        $selectedUser = null;
+        if ($this->hasSession('users')){
+            $selectedUser = $this->getSessionKey('users');
+        }
 
         if($this->hasSession('date')){
             $selectedDate = $this->getSessionKey('date');
@@ -53,105 +66,27 @@ class ScheduleController extends Controller
 
         $userList = [];
         foreach ($users as $user){
-            $clocks = $user->clocked()
-                 ->whereBetween('started_at', [
-                     Carbon::parse($date->format('d-m-Y')),
-                     Carbon::parse($date->format('Y-m-d').'23:59:59')
-                 ])
-                 ->where('user_id', '=', $user->id)
-                 ->orWhereBetween('stopped_at', [
-                     Carbon::parse($date->format('d-m-Y')),
-                     Carbon::parse($date->format('Y-m-d').'23:59:59')
-                 ])
-                 ->where('user_id', '=', $user->id)
-                 ->orWhere(function ($q) use ($date){
-                    $q->where('started_at', '<', Carbon::parse($date->format('d-m-Y')));
-                    $q->where('stopped_at', '>', Carbon::parse($date->format('d-m-Y')));
-                 })
-                 ->where('user_id', '=', $user->id)
-                 ->orWhere(function ($q) use ($date){
-                    $q->where('stopped_at', '=', null);
-                 })
-                 ->where('user_id', '=', $user->id)
-                 ->get();
+            $clocks = $user->workedToDay($date);
 
             $times = [];
             foreach ($clocks as $c){
-                 $startOfDay = Carbon::parse($date->format('d-m-Y'));
-                 $endOfDay = Carbon::parse($date->format('d-m-Y').'23:59:59');
-                 $dayInMinutes = 86400;
-                 $width = null;
+                $times[] = $c->getClockedPosition($date);
+            }
 
-                 if($c->active == 1)
-                 {
-                     if($c->started_at->format('Y-m-d') == $startOfDay->format('d-m-Y')){
-                         $diffTime = $c->started_at->diffInSeconds($c->stopped_at);
-                         $leftStartPosition = number_format(($c->started_at->diffInSeconds($startOfDay) / $dayInMinutes)*100, 2);
-                         $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
-                     }elseif($startOfDay > $c->started_at->format('Y-m-d')){
-                        $diffTime = $c->started_at->diffInSeconds(Carbon::now())
-                            - $c->started_at->diffInSeconds($startOfDay);
-                        $leftStartPosition = 0;
-                        $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
-                     }elseif($startOfDay < $c->started_at->format('d-m-Y')){
-//                        $diffTime = $c->started_at->diffInSeconds(Carbon::now())
-//                            - $c->started_at->diffInSeconds($startOfDay);
-//                        $leftStartPosition = 0;
-//                        $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
-                     }
-                 }elseif($c->started_at->format('d-m-Y') < $date->format('d-m-Y')
-                    && $c->stopped_at->format('d-m-Y') > $date->format('d-m-Y'))
-                 {
-                     //started before this day and ended after this day
-                     $diffTime = $c->started_at->diffInSeconds($endOfDay);
-                     $leftStartPosition = 0;
-                     $width = 100;
-                 }elseif ($c->stopped_at->format('d-m-Y') > $date->format('d-m-Y')
-                    && $date->format('d-m-Y') == $c->started_at->format('d-m-Y'))
-                 {
-                     //started this day worked boyond that day
-                     $diffTime = $c->started_at->diffInSeconds($endOfDay);
-                     $leftStartPosition = number_format(($c->started_at->diffInSeconds($startOfDay) / $dayInMinutes)*100, 2);
-                     $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
-                 }elseif ($c->started_at->format('d-m-Y') < $date->format('d-m-Y')
-                     && $date->format('d-m-Y') == $c->stopped_at->format('d-m-Y'))
-                 {
-                    //started before this day ended this day
-                     $diffTime = $c->stopped_at->diffInSeconds($startOfDay);
-                     $leftStartPosition = 0;
-                     $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
-                 }elseif($c->started_at->format('d-m-Y') == $c->stopped_at->format('d-m-Y'))
-                 {
-                    //started this day ended this day
-                     $diffTime = $c->started_at->diffInSeconds($c->stopped_at);
-                     $leftStartPosition = number_format(($c->started_at->diffInSeconds($startOfDay) / $dayInMinutes)*100, 2);
-                     $width = number_format(($diffTime * 100) / $dayInMinutes, 2);
-                 }
-
-                 if ($width != null){
-                     $times[] = [
-                        'width' => $width,
-                        'user_id' => $c->user_id,
-                        'leftStartPosition' => $leftStartPosition,
-                        'started' => $c->started_at->format('Y-m-d H:i'),
-                        'stopped' => $c->stopped_at == null ? Carbon::now()->format('Y-m-d H:i') : $c->stopped_at->format('Y-m-d H:i'),
-                        'worked_min' => (int)$c->worked_min,
-                        'diff_time' => (int)number_format((int)$diffTime / 60, 0, '', ''),
-                     ];
-                 }
-
-             }
-
-             $userList[] = [
+            $userList[] = [
                 'user' => $user,
-                'clocks' => $times,
-             ];
+                'clocks' => (object)array_filter($times),
+                'total_worked_min' => collect($times)->pluck('diff_time')->sum(),
+            ];
         }
 
         return view('admin.schedule.day')
             ->with('users', $users)
             ->with('date', $date)
             ->with('setDate', $setDate)
+            ->with('selectedableUsers', $selectedableUsers)
+            ->with('user', $selectedUser)
+            ->with('dayWorkedTime', collect($userList)->pluck('total_worked_min')->sum())
             ->with('userList', $userList);
     }
 
@@ -228,18 +163,17 @@ class ScheduleController extends Controller
             $today = Carbon::now()->format('Y-m-d')
                 == $date->format('Y-m-d');
 
-            $totalWorkedDay = $this->clock
-                ->myBusiness()
-                ->whereBetween('started_at', [
-                    Carbon::parse($date),
-                    Carbon::parse($date->format('Y-m-d').' 23:59:59'),
-                ])
-                ->sum('worked_min');
+            $clocks = $this->clock->workedToDay($date);
+
+            $items = [];
+            foreach ($clocks as $c){
+                $items[] = $c->getClockedPosition($date);
+            }
 
             $header[] = [
                 'day' => $date->format('D d'),
                 'today' => $today,
-                'total_worked_min' => $totalWorkedDay,
+                'total_worked_min' => collect($items)->pluck('diff_time')->sum(),
             ];
         }
 
@@ -249,43 +183,28 @@ class ScheduleController extends Controller
         {
             $days = [];
 
-            $weekWorkedMin = $this->clock
-                ->myBusiness()
-                ->whereBetween('started_at', [
-                    Carbon::parse($startDate),
-                    Carbon::parse($endDate.' 23:59:59'),
-                ])
-                ->where('user_id', '=', $user->id)
-                ->sum('worked_min');
-
             foreach($dateRange as $date)
             {
                 $today = Carbon::now()->format('Y-m-d')
                     == $date->format('Y-m-d');
 
-                $events = $this->clock
-                    ->myBusiness()
-                    ->whereBetween('started_at', [
-                        Carbon::parse($date),
-                        Carbon::parse($date->format('Y-m-d').' 23:59:59'),
-                    ])
-                    ->where('user_id', '=', $user->id);
+                $clocks = $user->workedToDay($date, $user->id);
 
-                $eventList = $events->get();
-
-                if (count($events->get()) >= 1){
-                    $worked_min = collect($events)->sum('worked_min');
-                }else{
-                    $worked_min = null;
+                $times = [];
+                foreach ($clocks as $c){
+                    $times[] = $c->getClockedPosition($date);
                 }
 
                 $days[] = [
                     'day' => $date->format('Y-m-d'),
                     'today' => $today,
-                    'events' => $eventList,
-                    'worked_min' => $worked_min,
+                    'events' => array_filter($times),
+                    'worked_today' => collect($times)->pluck('diff_time')->sum(),
                 ];
             }
+
+
+            $weekWorkedMin = collect($days)->pluck('worked_today')->sum();
 
             $usersList[] = [
                 'user' => $user,
@@ -316,8 +235,8 @@ class ScheduleController extends Controller
         $users = $this->getBusinessFromUser()->users->pluck('name', 'id');
 
         $user = null;
-        if ($this->hasSession('users')){
-            $user = $this->getSessionKey('users');
+        if ($this->hasSession('user')){
+            $user = $this->getSessionKey('user');
         }
 
         $monthRange = [];
@@ -375,26 +294,17 @@ class ScheduleController extends Controller
                 $today = Carbon::now()->format('Y-m-d')
                     == $date->format('Y-m-d');
 
-                $events = $this->clock
-                    ->myBusiness()
-                    ->whereBetween('started_at', [
-                        Carbon::parse($date),
-                        Carbon::parse($date->format('Y-m-d').' 23:59:59'),
-                    ])
-                    ->where(function ($q){
-                        if($this->hasSession('users')){
-                            $q->where('user_id', '=', $this->getSessionKey('users'));
-                        }
-                    })
-                    ->groupBy('user_id')
-                    ->selectRaw('*, sum(worked_min) as total_worked_min')
-                    ->get();
+                $events = $this->clock->workedToDay($date, $this->getSessionKey('user'));
+                $e = [];
+                foreach ($events as $event){
+                    $e[] = $event->getClockedPosition($date);
+                }
 
                 $days[] = [
                     'day' => $date->format('Y-m-d'),
                     'disabled' => $status,
                     'today' => $today,
-                    'event' => $events,
+                    'event' => array_filter($e),
                 ];
             }
             $calendar[] = [

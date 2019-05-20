@@ -41,7 +41,7 @@
                 @component('components.filter', [
                     'items' => $users,
                     'setValue' => $user,
-                    'name' => 'users',
+                    'name' => 'user',
                     'placeholder' => 'alle gebruikers',
                 ])
                 @endcomponent
@@ -56,9 +56,6 @@
 
     <div class="col-md-12">
         <table class="table table-responsive" >
-            {{--<tr style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;" >--}}
-                {{--<th colspan="8" class="text-center">{!! $startDate->format('M') !!}</th>--}}
-            {{--</tr>--}}
             <tr style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;" >
                 @for($w = 0; $w < 7; $w++)
                     <th class="text-center {!! \App\Calendar::day() == \App\Calendar::startOfWeek()->addDays($w)->format('d') ? 'success' : '' !!}">
@@ -78,44 +75,14 @@
                             {{--{!! dd($d['event']) !!}--}}
                             <ul class="calendar-list">
                                 @foreach($d['event'] as $e)
-                                    <li> {!! $e->user->name !!} - {!! $e->total_worked_min !!}</li>
+                                    <li> {!! $e->name !!} - {!! $e->diff_time !!}</li>
                                 @endforeach
                             </ul>
-
-                            {!! $d['today'] !!}
                         </td>
                     @endforeach
                 </tr>
             @endforeach
 
-
-            {{--@for($u = 0; $u < $addWeeks; $u++)--}}
-                {{--<tr class="">--}}
-                    {{--<th style="width: 200px;">--}}
-                        {{--<img class="img-circle" style="vertical-align: top; height: 35px; width: 35px;" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">--}}
-                        {{--<div style="display: inline-block; margin-left: 10px;">--}}
-                            {{--willem <br>--}}
-                            {{--<small class="mute">--}}
-                                {{--{!! random_int(5, 20) !!} hrs--}}
-                            {{--</small>--}}
-                        {{--</div>--}}
-                    {{--</th>--}}
-                    {{--@foreach($dateRange as $date)--}}
-                        {{--<td style="padding: 5px 1px; border: 1px solid; height: 100px;">--}}
-                            {{--{!! $date !!}--}}
-
-                            {{--@if(random_int(0,6) == $s)--}}
-                                {{--<div class="panel panel-default" style="margin-bottom: 0px;">--}}
-                                    {{--<div class="text-center pane l-body  bg-warning" style="padding: 5px 10px;">--}}
-                                        {{--<small><b>12:45-18:25</b></small> <br>--}}
-                                        {{--counter--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--@endif--}}
-                        {{--</td>--}}
-                    {{--@endforeach--}}
-                {{--</tr>--}}
-            {{--@endfor--}}
         </table>
     </div>
 

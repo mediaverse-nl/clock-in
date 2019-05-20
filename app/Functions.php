@@ -25,4 +25,19 @@ class Functions extends Model
     {
         return $this->hasMany('App\UserFunctions', 'function_id', 'id');
     }
+
+    public function shortNames(){
+        $words = explode(' ', $this->value);
+        $acronym = "";
+
+        if (count($words) > 1){
+            foreach ($words as $w) {
+                $acronym .= $w[0];
+            }
+        }else{
+            $acronym = substr($this->value, 0, 3);
+        }
+
+        return strtoupper($acronym);
+    }
 }

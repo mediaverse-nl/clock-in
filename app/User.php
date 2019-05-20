@@ -87,6 +87,42 @@ class User extends Authenticatable
         }
     }
 
+    public function workedToDay($date)
+    {
+        $clocks = $this
+            ->clocked()
+            ->whereBetween('started_at', [
+                Carbon::parse($date->format('d-m-Y')),
+                Carbon::parse($date->format('Y-m-d').'23:59:59')
+            ])
+            ->where('user_id', '=', $this->id)
+            ->orWhereBetween('stopped_at', [
+                Carbon::parse($date->format('d-m-Y')),
+                Carbon::parse($date->format('Y-m-d').'23:59:59')
+            ])
+            ->where('user_id', '=', $this->id)
+            ->orWhere(function ($q) use ($date){
+                $q->where('started_at', '<', Carbon::parse($date->format('d-m-Y')));
+                $q->where('stopped_at', '>', Carbon::parse($date->format('d-m-Y')));
+            })
+            ->where('user_id', '=', $this->id)
+            ->orWhere(function ($q) use ($date){
+                $q->where('started_at', '<', Carbon::parse($date->format('d-m-Y')));
+                $q->where('stopped_at', '=', null);
+            })
+            ->where('user_id', '=', $this->id)
+            ->orWhere(function ($q) use ($date){
+                $q->where('started_at', '=', Carbon::parse($date->format('d-m-Y')));
+                $q->where('stopped_at', '=', null);
+            })
+            ->where('user_id', '=', $this->id)
+            ->get();
+
+        return $clocks;
+
+//        return $times;
+    }
+
     public function workingTime()
     {
         $workedMin = $this->clocked()->where('active', '=', 0)->sum('worked_min');

@@ -5,7 +5,7 @@
     @php
         function convertToHoursMins($time, $format = '%02d:%02d') {
             if ($time < 1) {
-                return '-';
+                return '0 min';
             }
             $hours = floor($time / 60);
             $minutes = ($time % 60);
@@ -156,26 +156,30 @@
                             </div>
                             <br>
                             @foreach($user['user']->userFunctions as $f)
-                                <span class="badge badge-success small">{!! $f->functions->value !!}</span>
+                                <span class="badge badge-success small">{!! $f->functions->shortNames() !!}</span>
                             @endforeach
                         </div>
                     </th>
                     @foreach($user['week'] as $date)
                         <td style="padding: 5px 1px; width: 14.28%">
                             @if(count($date['events']))
-                                <div class="panel panel-default" style="margin-bottom: 0px;">
-                                    <div class="text-center panel-body  bg-warning" style="padding: 5px 10px;">
+                                <div class="panel panel-default " style="margin-bottom: 0px;">
+                                    <div class="text-center panel-body bg-{!! $date['today'] ? 'success' : 'warning'!!}" style="padding: 5px 10px;">
                                         <span rel="tooltip"
                                               data-toggle="tooltip"
                                               data-html="true"
                                               data-title="
+                                              {{--{!! dd($date['day']) !!}--}}
+{{--                                              @if($date['day'] == '2019-05-01')--}}
+                                                      {{--{!! dd($date) !!}--}}
                                                  @foreach($date['events'] as $clock)
-                                                    @if(!$clock->active)
-                                                         <small><b>{!! $clock->started_at->format('H:i').' - '.$clock->stopped_at->format('H:i')  !!}</b></small> <br>
-                                                    @endif
+                                                      {{--{!! $clock !!}--}}
+                                                     <small><b>{!! $clock->started.' - '.$clock->stopped !!}</b></small> <br>
                                                  @endforeach
+                                              {{--@endif--}}
                                               ">
-                                            {!! convertToHoursMins($clock->worked_min, '%02d uur %02d min') !!}
+
+                                            {!! convertToHoursMins($date['worked_today'], '%02d uur %02d min') !!}
                                         </span>
                                     </div>
                                 </div>

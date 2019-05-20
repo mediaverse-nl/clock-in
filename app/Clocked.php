@@ -120,6 +120,148 @@ class Clocked extends Model
             ->first();
     }
 
+    public function getClockedPosition($date)
+    {
+        $startOfDay = Carbon::parse($date->format('d-m-Y'));
+        $endOfDay = Carbon::parse($date->format('d-m-Y').'23:59:59');
+        $dayInSeconds = 86400;
+        $width = null;
+        $worked_min = null;
+
+        if($this->active == 1)
+        {
+            if ($startOfDay->format('Y-m-d') <= Carbon::now()->format('Y-m-d')){
+                if($this->started_at->format('Y-m-d') == $startOfDay->format('Y-m-d'))
+                {
+                    //started today
+                    $diffTime = $this->started_at->diffInSeconds(Carbon::now())
+                        -  Carbon::now()->diffInSeconds($endOfDay);
+                    $leftStartPosition = number_format(($this->started_at->diffInSeconds($startOfDay) / $dayInSeconds)*100, 2);
+                    $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
+                } elseif($this->started_at->format('Y-m-d') < $startOfDay->format('Y-m-d')
+                    && Carbon::now()->format('Y-m-d') > $startOfDay->format('Y-m-d'))
+                {
+                    //started before yesterday
+                    $diffTime = $dayInSeconds;
+                    $leftStartPosition = 0;
+                    $width = number_format(100, 2);
+                } elseif($this->started_at->format('Y-m-d') < $startOfDay->format('Y-m-d')
+                     && Carbon::now()->format('Y-m-d') == $startOfDay->format('Y-m-d'))
+                {
+                    //started yesterday
+                    $diffTime = $this->started_at->diffInSeconds(Carbon::now())
+                        - $this->started_at->diffInSeconds($startOfDay);
+                    $leftStartPosition = 0;
+                    $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
+                }
+            }
+        }elseif($this->started_at->format('d-m-Y') < $date->format('d-m-Y')
+            && $this->stopped_at->format('d-m-Y') > $date->format('d-m-Y'))
+        {
+            //started before this day and ended after this day
+            $diffTime = $dayInSeconds;
+            $leftStartPosition = 0;
+            $width = 100;
+        }elseif ($this->stopped_at->format('d-m-Y') > $date->format('d-m-Y')
+            && $date->format('d-m-Y') == $this->started_at->format('d-m-Y'))
+        {
+            //started this day worked boyond that day
+            $diffTime = $this->started_at->diffInSeconds($endOfDay);
+            $leftStartPosition = number_format(($this->started_at->diffInSeconds($startOfDay) / $dayInSeconds)*100, 2);
+            $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
+        }elseif ($this->stopped_at->format('d-m-Y') == $date->format('d-m-Y')
+            && $date->format('d-m-Y') < $this->started_at->format('d-m-Y'))
+        {
+            //started yesterday ended this day
+            $diffTime = $this->stopped_at->diffInSeconds($startOfDay);
+            $leftStartPosition = 0;
+            $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
+        }elseif ($this->started_at->format('d-m-Y') == $date->format('d-m-Y')
+            && $this->stopped_at->format('d-m-Y') < $date->format('d-m-Y'))
+        {
+//            dd(1);
+            //started before this day ended this day
+            $diffTime = $this->started_at->diffInSeconds($endOfDay);
+            $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
+
+            $leftStartPosition = 100 - $width;
+//            dd($diffTime, $leftStartPosition, $width);
+        }elseif($this->started_at->format('d-m-Y') == $this->stopped_at->format('d-m-Y'))
+        {
+            //started this day ended this day
+            $diffTime = $this->started_at->diffInSeconds($this->stopped_at);
+            $leftStartPosition = number_format(($this->started_at->diffInSeconds($startOfDay) / $dayInSeconds)*100, 2);
+            $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
+        }
+
+        if ($width != null){
+            $times = (object) [
+                'width' => $width,
+                'user_id' => $this->user_id,
+                'name' => $this->user->name,
+                'leftStartPosition' => $leftStartPosition,
+                'started' => $this->started_at->format('Y-m-d H:i'),
+                'stopped' => $this->stopped_at == null ? Carbon::now()->format('Y-m-d H:i') : $this->stopped_at->format('Y-m-d H:i'),
+                'worked_min' => (int)$worked_min,
+                'diff_time' => (int)number_format((int)$diffTime / 60, 0, '', ''),
+            ];
+            return $times;
+        }
+    }
+
+    public function workedToDay($date, $user_id = null)
+    {
+        $clocks = $this
+            ->whereBetween('started_at', [
+                Carbon::parse($date->format('d-m-Y')),
+                Carbon::parse($date->format('Y-m-d').'23:59:59')
+            ])
+            ->where(function ($q) use ($user_id){
+                if ($user_id != null){
+                    $q->where('user_id', '=', $user_id);
+                }
+            })
+            ->orWhereBetween('stopped_at', [
+                Carbon::parse($date->format('d-m-Y')),
+                Carbon::parse($date->format('Y-m-d').'23:59:59')
+            ])
+            ->where(function ($q) use ($user_id){
+                if ($user_id != null){
+                    $q->where('user_id', '=', $user_id);
+                }
+            })
+            ->orWhere(function ($q) use ($date){
+                $q->where('started_at', '<', Carbon::parse($date->format('d-m-Y')));
+                $q->where('stopped_at', '>', Carbon::parse($date->format('d-m-Y')));
+            })
+            ->where(function ($q) use ($user_id){
+                if ($user_id != null){
+                    $q->where('user_id', '=', $user_id);
+                }
+            })
+            ->orWhere(function ($q) use ($date){
+                $q->where('started_at', '<', Carbon::parse($date->format('d-m-Y')));
+                $q->where('stopped_at', '=', null);
+            })
+            ->where(function ($q) use ($user_id){
+                if ($user_id != null){
+                    $q->where('user_id', '=', $user_id);
+                }
+            })
+            ->orWhere(function ($q) use ($date){
+                $q->where('started_at', '=', Carbon::parse($date->format('d-m-Y')));
+                $q->where('stopped_at', '=', null);
+            })
+            ->where(function ($q) use ($user_id){
+                if ($user_id != null){
+                    $q->where('user_id', '=', $user_id);
+                }
+            })
+            ->get()
+         ;
+
+        return $clocks;
+    }
 
     public function diffInMin()
     {
