@@ -186,8 +186,6 @@ Route::prefix('panel')->middleware(['auth'])->namespace('Panel')->group(function
     });
 });
 
-
-
 //Route::get('/dashboard', 'DashboardController@index')->middleware(['checkForUser', 'auth']);
 Route::post('/clocked', 'ClockedController@check')->name('clocked.check')->middleware('checkForUser');
 Route::get('/check-status', function (){

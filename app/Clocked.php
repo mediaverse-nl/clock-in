@@ -179,17 +179,20 @@ class Clocked extends Model
         }elseif ($this->started_at->format('d-m-Y') == $date->format('d-m-Y')
             && $this->stopped_at->format('d-m-Y') < $date->format('d-m-Y'))
         {
-//            dd(1);
             //started before this day ended this day
             $diffTime = $this->started_at->diffInSeconds($endOfDay);
             $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
-
             $leftStartPosition = 100 - $width;
-//            dd($diffTime, $leftStartPosition, $width);
         }elseif($this->started_at->format('d-m-Y') == $this->stopped_at->format('d-m-Y'))
         {
             //started this day ended this day
             $diffTime = $this->started_at->diffInSeconds($this->stopped_at);
+            $leftStartPosition = number_format(($this->started_at->diffInSeconds($startOfDay) / $dayInSeconds)*100, 2);
+            $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
+        }elseif($this->stopped_at->format('d-m-Y') == $date->format('d-m-Y'))
+        {
+            //started before this day ended this day
+            $diffTime = $this->stopped_at->diffInSeconds($startOfDay);
             $leftStartPosition = number_format(($this->started_at->diffInSeconds($startOfDay) / $dayInSeconds)*100, 2);
             $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
         }

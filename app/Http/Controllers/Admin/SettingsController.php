@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Location;
+use App\Traits\getLocationTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SettingsController extends Controller
 {
+    use getLocationTrait;
+
+    protected $location;
+    protected $business;
+
+    public function __construct(Location $location)
+    {
+        $this->location = $location;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,14 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        return view('admin.settings.index');
+        $businessFromUser = $this->getBusinessFromUser();
+        $business = $businessFromUser->get();
+
+        $locations = $businessFromUser->locations;
+
+        return view('admin.settings.index')
+            ->with('business', $business)
+            ->with('locations', $locations);
     }
 
     /**
@@ -23,17 +42,6 @@ class SettingsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
     {
         //
     }
@@ -68,17 +76,6 @@ class SettingsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
     {
         //
     }

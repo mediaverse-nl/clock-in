@@ -72,10 +72,12 @@
                     @foreach($i['days'] as $d)
                         <td class="{!! $d['disabled'] ? 'active' : ''!!} {!! $d['today'] ? 'success' : ''!!}" style="padding: 0px; border: 1px solid #ddd; height: 150px;width: 100px;">
                             <div class="text-center small" style="background: #dddddd">{!!  ($d['day']) !!}</div>
-                            {{--{!! dd($d['event']) !!}--}}
                             <ul class="calendar-list">
                                 @foreach($d['event'] as $e)
-                                    <li> {!! $e->name !!} - {!! $e->diff_time !!}</li>
+                                    <li style="padding: 5px;">
+                                        {!! $e->name !!}
+                                        <span class="pull-right">{!! MinToHumanHours($e->diff_time) !!}</span>
+                                    </li>
                                 @endforeach
                             </ul>
                         </td>

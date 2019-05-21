@@ -2,17 +2,6 @@
 
 @section('content')
 
-    @php
-        function convertToHoursMins($time, $format = '%02d:%02d') {
-            if ($time < 1) {
-                return '0 min';
-            }
-            $hours = floor($time / 60);
-            $minutes = ($time % 60);
-            return sprintf($format, $hours, $minutes);
-        }
-    @endphp
-
     <div class="col-md-12" style="margin-bottom: 15px;">
         <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
         <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default active">week</a>
@@ -114,7 +103,7 @@
                         <small>
                             {!! $date['day'] !!}
                              <br>
-                            {!! convertToHoursMins($date['total_worked_min'], '%02d uur %02d min') !!}
+                            {!! MinToHumanHours($date['total_worked_min'], '%02d uur %02d min') !!}
                             <br>
                             &euro; --
                         </small>
@@ -151,7 +140,7 @@
                             <div style="display: inline-block; margin-left: 10px;">
                                  {!! $user['user']->name !!} <br>
                                  <small class="mute">
-                                    {!! convertToHoursMins($user['week_worked_min'], '%02d uur %02d min') !!}
+                                    {!! MinToHumanHours($user['week_worked_min'], '%02d uur %02d min') !!}
                                  </small>
                             </div>
                             <br>
@@ -169,17 +158,12 @@
                                               data-toggle="tooltip"
                                               data-html="true"
                                               data-title="
-                                              {{--{!! dd($date['day']) !!}--}}
-{{--                                              @if($date['day'] == '2019-05-01')--}}
-                                                      {{--{!! dd($date) !!}--}}
                                                  @foreach($date['events'] as $clock)
                                                       {{--{!! $clock !!}--}}
                                                      <small><b>{!! $clock->started.' - '.$clock->stopped !!}</b></small> <br>
                                                  @endforeach
-                                              {{--@endif--}}
                                               ">
-
-                                            {!! convertToHoursMins($date['worked_today'], '%02d uur %02d min') !!}
+                                            {!! MinToHumanHours($date['worked_today'], '%02d uur %02d min') !!}
                                         </span>
                                     </div>
                                 </div>

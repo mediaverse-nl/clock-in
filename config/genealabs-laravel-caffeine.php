@@ -2,6 +2,6 @@
 
 return [
     'dripIntervalInMilliSeconds' => 300000,
-    'domain' => 'clock-on.nl',
+    'domain' => env('APP_URL'),
     'route' => 'genealabs/laravel-caffeine/drip',
 ];

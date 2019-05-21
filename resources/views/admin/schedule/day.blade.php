@@ -3,24 +3,6 @@
 @section('content')
 
     @php
-        function convertToHoursMins($time, $format = '%02d:%02d') {
-            if ($time < 1) {
-                return '0 min';
-            }
-            $hours = floor($time / 60);
-            $minutes = ($time % 60);
-            return sprintf($format, $hours, $minutes);
-        }
-        //$date = \Carbon\Carbon::parse('2019-04-26')->addDays(0);
-        //$formattedDate = $date->format('Y-m-d');
-
-         //$model = new \App\Location();
-
-         //$arry = $model->first();
-
-           //dd($arry->fulAddress);
-
-
         function random_color_part() {
             return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
         }
@@ -99,7 +81,7 @@
                 @for($w = 0; $w < 1; $w++)
                     <th class="{!! $date->format('Y-m-d') == \Carbon\Carbon::now()->addDays($w)->format('Y-m-d') ? 'success' : ''  !!}" style="padding: 2px 5px;">
                         <p class="text-center">
-                            {!! convertToHoursMins($dayWorkedTime, '%02d uur %02d min') !!}
+                            {!! MinToHumanHours($dayWorkedTime, '%02d uur %02d min') !!}
                             / &euro; --
                         </p>
                         <div class="row" style="padding: 0px 10px">
@@ -122,7 +104,7 @@
                         <div style="display: inline-block; margin-left: 10px;">
                             {!! $user['user']->name !!} <br>
                              <small class="mute">
-                                 {!! convertToHoursMins($user['total_worked_min'], '%02d uur %02d min') !!}
+                                 {!! MinToHumanHours($user['total_worked_min'], '%02d uur %02d min') !!}
                             </small>
                         </div>
                     </th>
@@ -140,7 +122,7 @@
                                              <small>{!! $clocked->stopped !!}</small>
                                              <br> <br>
                                              vandaag <br>
-                                                {!! convertToHoursMins($clocked->diff_time, '%02d uur %02d min') !!}
+                                                {!! MinToHumanHours($clocked->diff_time, '%02d uur %02d min') !!}
                                          </div>
                                      "
                                      data-html="true"
