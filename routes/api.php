@@ -22,13 +22,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    200: OK
 
 Route::get('test', function (){
-    $response= response()
-        ->json([
-            'message' => 'je gaat slagen als je dit leest!... let me know.   p.s. bokinopico was awesome  ',
-            'status' => 201,
-        ], 201);
-    $response->header('Content-Type', 'application/json');
-    return $response;
+//    return 201;
+
+    $responseCode = 201;
+    $responseData = [
+        'message' => 'test het werkt',
+        'status' => $responseCode,
+    ];
+
+    $header = [
+        'Content-Type' => 'application/json; charset=UTF-8',
+        'charset' => 'utf-8'
+    ];
+
+    return response()
+        ->json($responseData, $responseCode, $header, JSON_UNESCAPED_UNICODE);
  });
 Route::post('device-service-touch', 'Api\DeviceController@touch')->middleware('ipCheck');
 Route::post('device-rfid', 'Api\DeviceController@rfid')->middleware('ipCheck');
