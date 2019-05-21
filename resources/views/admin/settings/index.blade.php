@@ -21,16 +21,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($locations as $location)
-                        <tr>
-                            <td>{!! $location->id !!}</td>
-                            <td>{!! $location->devices->count() !!}</td>
-                            <td>{!! $location->postal_code !!}</td>
-                            <td> {!! $location->fulAddress !!}</td>
-                        </tr>
-
-                    @endforeach
-
+                        @foreach($locations as $location)
+                            <tr>
+                                <td>{!! $location->id !!}</td>
+                                <td>
+                                    {!! $location->devices->count() !!}
+                                    <table class="table" style="width: 100%;">
+                                        <tr>
+                                            <td>Version</td>
+                                            <td>Mac Adres</td>
+                                            <td>Serial nr</td>
+                                        </tr>
+                                        @foreach($location->devices as $device)
+                                            <tr>
+                                                <td>{!! $device->version !!}</td>
+                                                <td>{!! $device->mac_address !!}</td>
+                                                <td>{!! $device->serial_nr !!}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </td>
+                                <td>{!! $location->postal_code !!}</td>
+                                <td>{!! $location->fulAddress !!}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
 
