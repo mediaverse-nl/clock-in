@@ -40,7 +40,7 @@ trait getLocationTrait
 
     public function getBusinessFromUser()
     {
-        return auth()->user()->business;
+        return auth()->user()->load('business.users.clocked')->business;
     }
 
     public function getLocationIds()

@@ -27,6 +27,16 @@ class DeviceController extends Controller
             return $errors;
         }
 
+        $mac = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+
+        if ($mac == null){
+            return response()
+                ->json([
+                    'message' => 'apparaat niet bekend in systeem',
+                    'status' => 403
+                ], 403);
+        }
+
         $card = (new Card())
             ->where('value','=', $request->rfid_tag);
 
@@ -73,7 +83,7 @@ class DeviceController extends Controller
                     ], 200);
             }else{
                 $clocked = $this->clocked();
-                $clocked->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+                $clocked->device_id = $mac;
                 $clocked->started_at = $this->time()->toDateTimeString();
                 $clocked->user_id = $user_id;
                 $clocked->save();
@@ -109,6 +119,16 @@ class DeviceController extends Controller
             return $errors;
         }
 
+        $mac = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+
+        if ($mac == null){
+            return response()
+                ->json([
+                    'message' => 'apparaat niet bekend in systeem',
+                    'status' => 403
+                ], 403);
+        }
+
         $user = (new User())
             ->where('clock_in_code', '=', $request->clock_in_code);
 
@@ -125,7 +145,7 @@ class DeviceController extends Controller
                 $worked_min = $this->time()->diffInMinutes($entry->started_at);
                 $entry->stopped_at = Carbon::now();
                 $entry->worked_min = $worked_min;
-                $entry->device_id = $this->clocked()->getDeviceFromMacAddress($request->mac_address);
+                $entry->device_id = $mac;
                 $entry->active = 0;
                 $entry->save();
 

@@ -84,10 +84,10 @@
                             {!! MinToHumanHours($dayWorkedTime, '%02d uur %02d min') !!}
                             / &euro; --
                         </p>
-                        <div class="row" style="padding: 0px 10px">
+                        <div class="row hidden-xs hidden-md  hidden-sm" style="padding: 0px 10px">
                             @for ($x = 0; $x <= 23; $x++)
-                                <div class="text-center bg-{!! $x%2 ? 'warning':'default' !!} col-md-1" style="padding: 0px; width: 4.16% !important;  display: inline-block;">
-                                    <p style="transform: rotate(-45deg); padding-top: 4px; margin-bottom: 2px;">{!! $x  !!}</p>
+                                <div class="text-center bg-{!! $x%2 ? 'warning':'default' !!} col-md-1" style="max-width:4.166%; padding: 0px; width: 4.16% !important;  display: inline-block;">
+                                    <span style="transform: rotate(-45deg); padding-top: 4px; margin-bottom: 2px; font-size: 10px;">{!! $x  !!}</span>
                                 </div>
                             @endfor
                         </div>
@@ -113,6 +113,7 @@
 
                         <div class="panel panel-default" style="width: 100%; position: relative;">
                             @foreach($user['clocks'] as $clocked)
+                                {{--{!! dd($clocked) !!}--}}
                                 <div data-toggle="tooltip"
                                      title="
                                         <div style='font-size:18px;'>
@@ -122,7 +123,10 @@
                                              <small>{!! $clocked->stopped !!}</small>
                                              <br> <br>
                                              vandaag <br>
-                                                {!! MinToHumanHours($clocked->diff_time, '%02d uur %02d min') !!}
+                                            <small>{!! MinToHumanHours($clocked->diff_time, '%02d uur %02d min') !!}</small>
+                                            <br>
+                                            totaal <br>
+                                            <small>{!! MinToHumanHours($clocked->worked_min, '%02d uur %02d min') !!}</small>
                                          </div>
                                      "
                                      data-html="true"
@@ -153,6 +157,9 @@
         .table > tbody > tr > td {
             vertical-align: middle;
         }
+        td.ui-datepicker-today {border:1px solid #f00;}
+
+
     </style>
 @endpush
 
@@ -160,11 +167,13 @@
     <script>
         $(function() {
             $('#daterange').daterangepicker({
+                singleMonth: true,
                 singleDatePicker: true,
 {{--                maxDate: "{!! \Carbon\Carbon::now()->format('d-m-Y') !!}",--}}
                 {{--startDate: "{!! \Carbon\Carbon::now()->format('d-m-Y') !!}",--}}
                 minYear: 2019,
-                maxYear: parseInt(moment().format('YYYY'),10)
+                maxYear: parseInt(moment().format('YYYY'),10),
+                // maxDate: '+2M'
             }, function(start, end, label) {
 //                var years = moment().diff(start, 'years');
 //                alert("You are " + years + " years old!");

@@ -29,15 +29,22 @@ class TimeTrackingController extends Controller
     {
         $business = $this->getBusinessFromUser();
 
-        $users = $business->users;
+        $users = $business
+            ->load('users.clocked')
+            ->users;
 
         $clocks = [];
         $baseClocks = [];
 
         foreach ($users as $user) {
-            $baseClocks[] = $user->clocked()->get();
+            $baseClocks[] = $user
+                ->load('clocked.device.location')
+                ->clocked()
+                ->get();
 
-            $clocks[] = $user->clocked()
+            $clocks[] = $user
+                ->load('clocked.device.location')
+                ->clocked()
                 ->where(function ($q){
                     if($this->hasSession('user')){
                         $q->where('user_id', '=', $this->getSessionKey('user'));

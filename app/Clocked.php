@@ -128,6 +128,12 @@ class Clocked extends Model
         $width = null;
         $worked_min = null;
 
+        if ($this->active == 1){
+            $worked_min = $this->started_at->diffInSeconds(Carbon::now());
+        }else{
+            $worked_min = $this->started_at->diffInSeconds($this->stopped_at);
+        }
+
         if($this->active == 1)
         {
             if ($startOfDay->format('Y-m-d') <= Carbon::now()->format('Y-m-d')){
@@ -193,7 +199,7 @@ class Clocked extends Model
         {
             //started before this day ended this day
             $diffTime = $this->stopped_at->diffInSeconds($startOfDay);
-            $leftStartPosition = number_format(($this->started_at->diffInSeconds($startOfDay) / $dayInSeconds)*100, 2);
+            $leftStartPosition = 0;
             $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
         }
 
@@ -205,7 +211,7 @@ class Clocked extends Model
                 'leftStartPosition' => $leftStartPosition,
                 'started' => $this->started_at->format('Y-m-d H:i'),
                 'stopped' => $this->stopped_at == null ? Carbon::now()->format('Y-m-d H:i') : $this->stopped_at->format('Y-m-d H:i'),
-                'worked_min' => (int)$worked_min,
+                'worked_min' => (int)$worked_min / 60,
                 'diff_time' => (int)number_format((int)$diffTime / 60, 0, '', ''),
             ];
             return $times;

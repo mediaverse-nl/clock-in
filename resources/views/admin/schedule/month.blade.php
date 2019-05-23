@@ -75,8 +75,14 @@
                             <ul class="calendar-list">
                                 @foreach($d['event'] as $e)
                                     <li style="padding: 5px;">
-                                        {!! $e->name !!}
-                                        <span class="pull-right">{!! MinToHumanHours($e->diff_time) !!}</span>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <small>{!! $e->name !!}</small>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <small class="">{!! MinToHumanHours($e->diff_time) !!}</small>
+                                            </div>
+                                        </div>
                                     </li>
                                 @endforeach
                             </ul>

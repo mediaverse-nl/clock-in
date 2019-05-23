@@ -8,6 +8,7 @@ use App\Traits\getLocationTrait;
 use App\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Carbon\Exceptions\InvalidDateException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -48,17 +49,21 @@ class ScheduleController extends Controller
         if($this->hasSession('date')){
             $selectedDate = $this->getSessionKey('date');
 
-            if ($selectedDate == 'Invalid date'){
+            try{
+                $selectedYear = Carbon::createFromFormat('d-m-Y', $selectedDate)->year;
+
+                if ($selectedYear < $date->year){
+
+//                    dd(
+//                        $selectedYear,
+//                        $setDate = $this->getSessionKey('date')
+//                    );
+                }
+
+            }catch (\Exception $e){
                 $this->setItem('date', $date->format('d-m-Y'));
-                $setDate = $this->getSessionKey('date');
-            }elseif (Carbon::createFromFormat('d-m-Y', $selectedDate) == false)
-            {
-                $this->setItem('date', $date->format('d-m-Y'));
-                $setDate = $this->getSessionKey('date');
-            }else{
                 $setDate = $this->getSessionKey('date');
             }
-            $date = Carbon::parse($setDate);
 
         }else{
             $setDate = $date;
