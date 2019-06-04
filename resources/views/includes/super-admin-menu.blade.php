@@ -89,6 +89,12 @@
                         business
                     </a>
                 </li>
+                <li class="">
+                    <a href="{{route('super.device.index')}}" class="{{\Request::is('super-admin/devices*') ? 'active' : ''  }}">
+                        <i class="fas fa-tablet-alt"></i>
+                        devices
+                    </a>
+                </li>
 
                 <li class="">
                     <a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">

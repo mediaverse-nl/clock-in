@@ -32,13 +32,14 @@
 
     <hr>
 
+    {!! Form::model($user,['route' => ['admin.team.update', $user->id], 'method' => 'PATCH']) !!}
+
     <div class="col-md-6 col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Gebruiker aanmelden
             </div>
             <div class="panel-body">
-                 {!! Form::model($user,['route' => ['admin.team.update', $user->id], 'method' => 'PATCH']) !!}
 
                 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
                     {!! Form::label('name', 'Volledige Naam') !!}
@@ -114,9 +115,7 @@
 
                 <br>
 
-                {!! Form::submit('Aanpassen', ['class' => 'btn btn-success']) !!}
 
-                {!! Form::close() !!}
 
             </div>
         </div>
@@ -124,188 +123,108 @@
 
     <div class="col-md-6 col-lg-8">
         <div class="row">
-            @for($x = 0; $x <= 4; $x++)
 
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Beschikbaarheid van week {!! \Carbon\Carbon::now()->addWeeks($x)->weekOfYear !!}
-                    </div>
-                    <div class="panel-body">
+            <ul class="nav nav-tabs">
+                @for($x = 1; $x <= 5; $x++)
+                    <li {!! $x == 1 ? 'class="active"' : null !!}>
+                        <a data-toggle="tab" href="#week{!! $x !!}">Week {!! \Carbon\Carbon::now()->addWeeks($x)->weekOfYear !!}</a>
+                    </li>
+                @endfor
+            </ul>
 
-                        <table style="width:100%">
-                            <tr>
-                                <th width="100px;">dag</th>
-                                <th colspan="">van</th>
-                                <th colspan="">tot</th>
-                            </tr>
-                            <tr class="time-chart">
-                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(0)->format('D d M') !!}</td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="time-chart">
-                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(1)->format('D d M') !!}</td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="time-chart">
-                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(2)->format('D d M') !!}</td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="time-chart">
-                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(3)->format('D d M') !!}</td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="time-chart">
-                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(4)->format('D d M') !!}</td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="time-chart">
-                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(5)->format('D d M') !!}</td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="time-chart">
-                                <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(6)->format('D d M') !!}</td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="input-group date datetimepicker">
-                                            <input type="text" class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+            <div class="tab-content">
+                @for($x = 1; $x <= 5; $x++)
+                    <div id="week{!! $x !!}" class="tab-pane fade {!! $x == 1 ? 'in active' : null !!}">
+                        <div class="panel panel-default" style="border-top: none !important;">
+                            <div class="panel-heading">
+                                Beschikbaarheid van week {!! \Carbon\Carbon::now()->addWeeks($x)->weekOfYear !!}
+                            </div>
+                            <div class="panel-body">
+                                @php
+                                    $schedule = $user->availability->where('week_nr', '=', \Carbon\Carbon::now()->addWeeks($x)->weekOfYear)->first()
+                                @endphp
+
+                                <table style="width:100%">
+                                    <tr>
+                                        <th width="100px;">dag</th>
+                                        <th colspan="">van</th>
+                                        <th colspan="">tot</th>
+                                    </tr>
+                                    <tr class="time-chart">
+                                        <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(0)->format('D d M') !!}</td>
+                                        <td>
+                                             @include('components.admin.time-input', ['value' => $schedule->start_monday, 'name' => 'availabilty['.$x.'][ma][van]'])
+                                        </td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->end_monday, 'name' => 'availabilty['.$x.'][ma][tot]'])
+                                        </td>
+                                    </tr>
+                                    <tr class="time-chart">
+                                        <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(1)->format('D d M') !!}</td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->start_tuesday, 'name' => 'availabilty['.$x.'][di][van]'])
+                                        </td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->end_tuesday, 'name' => 'availabilty['.$x.'][di][tot]'])
+                                        </td>
+                                    </tr>
+                                    <tr class="time-chart">
+                                        <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(2)->format('D d M') !!}</td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->start_wednesday, 'name' => 'availabilty['.$x.'][wo][van]'])
+                                        </td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->end_wednesday, 'name' => 'availabilty['.$x.'][wo][tot]'])
+                                        </td>
+                                    </tr>
+                                    <tr class="time-chart">
+                                        <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(3)->format('D d M') !!}</td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->start_thursday, 'name' => 'availabilty['.$x.'][do][van]'])
+                                        </td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->end_thursday, 'name' => 'availabilty['.$x.'][do][tot]'])
+                                        </td>
+                                    </tr>
+                                    <tr class="time-chart">
+                                        <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(4)->format('D d M') !!}</td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->start_friday, 'name' => 'availabilty['.$x.'][vr][van]'])
+                                        </td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->end_friday, 'name' => 'availabilty['.$x.'][vr][tot]'])
+                                        </td>
+                                    </tr>
+                                    <tr class="time-chart">
+                                        <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(5)->format('D d M') !!}</td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->start_saturday, 'name' => 'availabilty['.$x.'][za][van]'])
+                                        </td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->end_saturday, 'name' => 'availabilty['.$x.'][za][tot]'])
+                                        </td>
+                                    </tr>
+                                    <tr class="time-chart">
+                                        <td>{!! \Carbon\Carbon::now()->addWeeks($x)->startOfWeek()->addDays(6)->format('D d M') !!}</td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->start_sunday, 'name' => 'availabilty['.$x.'][zo][van]'])
+                                        </td>
+                                        <td>
+                                            @include('components.admin.time-input', ['value' => $schedule->end_sunday,'name' => 'availabilty['.$x.'][zo][tot]'])
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                @endfor
             </div>
-        @endfor
+        </div>
     </div>
+
+    {!! Form::submit('Aanpassen', ['class' => 'btn btn-success']) !!}
+
+    {!! Form::close() !!}
 
 @endsection
 

@@ -11,6 +11,26 @@
 |
 */
 use App\User;
+//use Storage;
+
+Route::get('/firmware-wemos', function (){
+
+    return Storage::disk('public')->url('/firmware/httpUpdateSPIFFSv0.1.ino.d1_mini.bin');
+    // $file = File::get("../resources/logs/$id");
+    $headers = array(
+        'Content-Type: application/octet-stream',
+    );
+
+    return response()->download($url);
+
+//    return 'a';
+//    return \Storage::download('/firmware/httpUpdateSPIFFSv0.1.ino.d1_mini.bin', 'blink.bin', $headers);
+
+    #return Response::download($file, $id. '.' .$type, $headers);
+    return response()->download("../storage/app/public/firmware/httpUpdateSPIFFSv0.1.ino.d1_mini.bin", 'httpUpdateSPIFFSv0.1.ino.d1_mini.bin', $headers);
+})->name('system.index');
+
+
 
 Route::get('/', 'WelcomeController')->name('home');
 Route::get('/contact', 'ContactController@index')->name('contact.index');
@@ -61,6 +81,7 @@ Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('S
     Route::get('/', 'DashboardController');
     Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::resource('business', 'BusinessController');
+    Route::resource('device', 'DeviceController');
     Route::resource('package', 'PackagesController');
     Route::get('/l-{id}/device/create', 'DeviceController@create')->name('device.create');
     Route::resource('device', 'DevicesController', ['only' => [

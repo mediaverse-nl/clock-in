@@ -122,8 +122,9 @@ class Clocked extends Model
 
     public function getClockedPosition($date)
     {
-        $startOfDay = Carbon::parse($date->format('d-m-Y'));
-        $endOfDay = Carbon::parse($date->format('d-m-Y').'23:59:59');
+        $date = Carbon::parse($date);
+        $endOfDay = Carbon::parse($date)->endOfDay();
+        $startOfDay = Carbon::parse($date)->startOfDay();
         $dayInSeconds = 86400;
         $width = null;
         $worked_min = null;
@@ -161,22 +162,22 @@ class Clocked extends Model
                     $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
                 }
             }
-        }elseif($this->started_at->format('d-m-Y') < $date->format('d-m-Y')
-            && $this->stopped_at->format('d-m-Y') > $date->format('d-m-Y'))
+        }elseif($this->started_at->format('d-m-Y') < $date
+            && $this->stopped_at->format('d-m-Y') > $date)
         {
             //started before this day and ended after this day
             $diffTime = $dayInSeconds;
             $leftStartPosition = 0;
             $width = 100;
-        }elseif ($this->stopped_at->format('d-m-Y') > $date->format('d-m-Y')
-            && $date->format('d-m-Y') == $this->started_at->format('d-m-Y'))
+        }elseif ($this->stopped_at->format('d-m-Y') > $date
+            && $this->started_at->format('d-m-Y') == $date)
         {
             //started this day worked boyond that day
             $diffTime = $this->started_at->diffInSeconds($endOfDay);
             $leftStartPosition = number_format(($this->started_at->diffInSeconds($startOfDay) / $dayInSeconds)*100, 2);
             $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
-        }elseif ($this->stopped_at->format('d-m-Y') == $date->format('d-m-Y')
-            && $date->format('d-m-Y') < $this->started_at->format('d-m-Y'))
+        }elseif ($this->stopped_at->format('d-m-Y') == $date
+            && $date < $this->started_at->format('d-m-Y'))
         {
             //started yesterday ended this day
             $diffTime = $this->stopped_at->diffInSeconds($startOfDay);
@@ -195,6 +196,7 @@ class Clocked extends Model
             $diffTime = $this->started_at->diffInSeconds($this->stopped_at);
             $leftStartPosition = number_format(($this->started_at->diffInSeconds($startOfDay) / $dayInSeconds)*100, 2);
             $width = number_format(($diffTime * 100) / $dayInSeconds, 2);
+
         }elseif($this->stopped_at->format('d-m-Y') == $date->format('d-m-Y'))
         {
             //started before this day ended this day

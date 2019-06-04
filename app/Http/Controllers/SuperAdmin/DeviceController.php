@@ -25,7 +25,10 @@ class DeviceController extends Controller
      */
     public function index()
     {
-        //
+        $devices = $this->device->get();
+
+        return view('super-admin.devices.index')
+            ->with('devices', $devices);
     }
 
     /**

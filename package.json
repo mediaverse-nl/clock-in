@@ -21,6 +21,7 @@
   "dependencies": {
     "@coreui/coreui": "^2.0.1",
     "hoodie-admin-dashboard-uikit": "^3.0.0",
-    "node": "^10.3.0"
+    "node": "^10.3.0",
+    "startbootstrap-sb-admin-2": "^4.0.4"
   }
 }

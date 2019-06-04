@@ -15,7 +15,24 @@ class Availability extends Model
         'updated_at'
     ];
 
-    protected $fillable = [];
+    protected $fillable = [
+        'start_monday',
+        'end_monday',
+        'start_tuesday',
+        'end_tuesday',
+        'start_wednesday',
+        'end_wednesday',
+        'start_thursday',
+        'end_thursday',
+        'start_friday',
+        'end_friday',
+        'start_saterday',
+        'end_saterday',
+        'start_sunday',
+        'end_sunday',
+        'user_id',
+        'week_nr',
+    ];
 
     protected $dateFormat = 'Y-m-d H:i:s';
 

@@ -2,13 +2,20 @@
 
 @section('content')
 
-    <div class="col-md-12" style="margin-bottom: 15px;">
-        <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
-        <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default active">week</a>
-        <a href="{!! route('admin.schedule.month') !!}" class="btn btn-default">month</a>
-{{--        <a href="{!! route('admin.schedule.departments') !!}" class="btn btn-primary">afdelingen</a>--}}
-        <a href="{!! route('admin.schedule.availability') !!}" class="btn btn-primary">team beschikbaarheid</a>
-    </div>
+    <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+        <li style="margin-left: 15px;">
+            <a href="{!! route('admin.schedule.day') !!}" class="btn btn-default">day</a>
+        </li>
+        <li class="active">
+            <a href="{!! route('admin.schedule.week') !!}" class="btn btn-default">week</a>
+        </li>
+        <li>
+            <a href="{!! route('admin.schedule.month') !!}" class="btn btn-default">month</a>
+        </li>
+        <li>
+            <a href="{!! route('admin.schedule.availability') !!}" class="btn btn-primary">team beschikbaarheid</a>
+        </li>
+    </ul>
 
     <div class="col-md-12" style="margin-bottom: 15px;">
 
@@ -73,7 +80,7 @@
                                 <div class="modal-body">
 
                                     {{--rooster maken--}}
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 Beschikbaarheid van week {!! \Carbon\Carbon::now()->weekOfYear !!}
@@ -165,6 +172,7 @@
                                               ">
                                             {!! MinToHumanHours($date['worked_today'], '%02d uur %02d min') !!}
                                         </span>
+                                        <i class="fas fa-ellipsis-v"></i>
                                     </div>
                                 </div>
                             @endif
@@ -180,6 +188,14 @@
 
 @push('css')
     <style>
+        .nav-tabs>li {
+            float: left;
+            margin-bottom: -2px !important;
+        }
+        .nav-tabs>li>a{
+            border: #ddd ;
+        }
+
         .table > tbody > tr > td {
             vertical-align: middle;
         }

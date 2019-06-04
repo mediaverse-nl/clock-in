@@ -40,7 +40,7 @@ class User extends Authenticatable
 
     public function availability()
     {
-        return $this->hasOne('App\Availability');
+        return $this->hasMany('App\Availability');
     }
 
     public function calendar()
@@ -89,30 +89,33 @@ class User extends Authenticatable
 
     public function workedToDay($date)
     {
+//        dd(1);
+        $date = Carbon::parse($date)->format('Y-m-d');
         $clocks = $this
+            ->load('clocked')
             ->clocked()
             ->whereBetween('started_at', [
-                Carbon::parse($date->format('d-m-Y')),
-                Carbon::parse($date->format('Y-m-d').'23:59:59')
+                Carbon::parse($date),
+                Carbon::parse($date.'23:59:59')
             ])
             ->where('user_id', '=', $this->id)
             ->orWhereBetween('stopped_at', [
-                Carbon::parse($date->format('d-m-Y')),
-                Carbon::parse($date->format('Y-m-d').'23:59:59')
+                Carbon::parse($date),
+                Carbon::parse($date.'23:59:59')
             ])
             ->where('user_id', '=', $this->id)
             ->orWhere(function ($q) use ($date){
-                $q->where('started_at', '<', Carbon::parse($date->format('d-m-Y')));
-                $q->where('stopped_at', '>', Carbon::parse($date->format('d-m-Y')));
+                $q->where('started_at', '<', Carbon::parse($date));
+                $q->where('stopped_at', '>', Carbon::parse($date));
             })
             ->where('user_id', '=', $this->id)
             ->orWhere(function ($q) use ($date){
-                $q->where('started_at', '<', Carbon::parse($date->format('d-m-Y')));
+                $q->where('started_at', '<', Carbon::parse($date));
                 $q->where('stopped_at', '=', null);
             })
             ->where('user_id', '=', $this->id)
             ->orWhere(function ($q) use ($date){
-                $q->where('started_at', '=', Carbon::parse($date->format('d-m-Y')));
+                $q->where('started_at', '=', Carbon::parse($date));
                 $q->where('stopped_at', '=', null);
             })
             ->where('user_id', '=', $this->id)

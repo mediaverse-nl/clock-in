@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Business;
 use App\Clocked;
 use App\Traits\FilterSessionTrait;
 use App\Traits\getLocationTrait;
@@ -29,16 +30,9 @@ class ScheduleController extends Controller
 
     public function day()
     {
+
         $date = Carbon::now();
 
-        $users = $this->getBusinessFromUser()
-            ->users()
-            ->where(function ($q){
-                if ($this->hasSession('users')){
-                    $q->where('id', '=', $this->getSessionKey('users'));
-                }
-            })
-            ->get();
         $selectedableUsers = $this->getBusinessFromUser()->users()->pluck('name', 'id');
 
         $selectedUser = null;
@@ -48,34 +42,37 @@ class ScheduleController extends Controller
 
         if($this->hasSession('date')){
             $selectedDate = $this->getSessionKey('date');
-
             try{
                 $selectedYear = Carbon::createFromFormat('d-m-Y', $selectedDate)->year;
-
                 if ($selectedYear < $date->year){
-
-//                    dd(
-//                        $selectedYear,
-//                        $setDate = $this->getSessionKey('date')
-//                    );
+                    $this->setItem('date', $date->format('d-m-Y'));
                 }
-
             }catch (\Exception $e){
                 $this->setItem('date', $date->format('d-m-Y'));
-                $setDate = $this->getSessionKey('date');
             }
-
+            $date = Carbon::parse($this->getSessionKey('date'));
+            $setDate = $this->getSessionKey('date');
         }else{
-            $setDate = $date;
+
+            $setDate = $date->format('d-m-Y');
         }
+
+        $users = $this->getBusinessFromUser()
+            ->users()
+            ->where(function ($q){
+                if ($this->hasSession('users')){
+                    $q->where('id', '=', $this->getSessionKey('users'));
+                }
+            })
+            ->get();
 
         $userList = [];
         foreach ($users as $user){
-            $clocks = $user->workedToDay($date);
+            $clocks = $user->load(['clocked'])->workedToDay($date);
 
             $times = [];
             foreach ($clocks as $c){
-                $times[] = $c->getClockedPosition($date);
+                $times[] = $c->getClockedPosition($date->format('d-m-Y'));
             }
 
             $userList[] = [
@@ -97,6 +94,27 @@ class ScheduleController extends Controller
 
     public function week()
     {
+//        $business = new Business();
+//
+//        $b = $business->find($this->getBusinessFromUser()->id)
+//            ->load(['users.clocked']);
+//
+//        foreach ($b->users as $u){
+//            $u;
+//            foreach ($u->clocked as $c){
+//                $c;
+//            }
+////            dd($i->clocked);
+//        }
+
+//            ->load(['author' => function ($q) {
+//                $q->orderBy('created_at', 'asc');
+//            }]);
+
+//        return view('admin.dashboard');
+
+
+
         $selectedableUsers = $this->getBusinessFromUser()->users()->pluck('name', 'id');
         $oldestFirst = $this->clock->myBusiness()->oldest('started_at');
         $newestFirst = $this->clock->myBusiness()->latest('started_at');

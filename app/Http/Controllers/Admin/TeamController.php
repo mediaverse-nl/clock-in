@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Traits\FilterSessionTrait;
 use App\Traits\getLocationTrait;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -125,6 +126,32 @@ class TeamController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();
+
+        $weekArray = [];
+        foreach ($request->availabilty as $k => $v){
+            $weekArray[] = [
+                'user_id' => $id,
+                'start_monday' => $v['ma']['van'],
+                'start_tuesday' => $v['di']['van'],
+                'start_wednesday' => $v['wo']['van'],
+                'start_thursday' => $v['do']['van'],
+                'start_friday' => $v['vr']['van'],
+                'start_saturday' => $v['za']['van'],
+                'start_sunday' => $v['zo']['van'],
+                'end_monday' => $v['ma']['tot'],
+                'end_tuesday' => $v['di']['tot'],
+                'end_wednesday' => $v['wo']['tot'],
+                'end_thursday' => $v['do']['tot'],
+                'end_friday' => $v['vr']['tot'],
+                'end_saturday' => $v['za']['tot'],
+                'end_sunday' => $v['zo']['tot'],
+                'week_nr' => Carbon::now()->addWeeks($k)->weekOfYear,
+            ];
+        }
+
+//        dd($weekArray);
+        $user->availability()->delete();
+        $user->availability()->insert($weekArray);
 
         $user->userFunctions()->delete();
         foreach ($request->functions as $function)

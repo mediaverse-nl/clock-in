@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Business;
 use App\Card;
 use App\Clocked;
 use App\Location;
@@ -40,7 +41,9 @@ trait getLocationTrait
 
     public function getBusinessFromUser()
     {
-        return auth()->user()->load('business.users.clocked')->business;
+//        $business = new Business;
+
+        return auth()->user()->load('business.users')->business;
     }
 
     public function getLocationIds()
