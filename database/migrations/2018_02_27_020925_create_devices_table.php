@@ -17,6 +17,8 @@ class CreateDevicesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('location_id')->nullable()->unsigned();
             $table->foreign('location_id')->references('id')->on('location');
+            $table->unsignedInteger('firmware_id')->unsigned();
+            $table->foreign('firmware_id')->references('id')->on('firmware');
             $table->string('version');
             $table->string('mac_address')->unique();
             $table->string('serial_nr')->unique();

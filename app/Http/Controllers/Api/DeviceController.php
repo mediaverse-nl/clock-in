@@ -212,4 +212,7 @@ class DeviceController extends Controller
             'status' => $httpStatus
         ], $httpStatus);
     }
+
+
+
 }

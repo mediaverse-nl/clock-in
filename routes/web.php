@@ -15,21 +15,18 @@ use App\User;
 
 Route::get('/firmware-wemos', function (){
 
-    return Storage::disk('public')->url('/firmware/httpUpdateSPIFFSv0.1.ino.d1_mini.bin');
-    // $file = File::get("../resources/logs/$id");
-    $headers = array(
+    $mac_address = '';
+    $ip_address = '';
+    $version = '';
+
+    $file = storage_path('app/public/firmware/httpUpdateSPIFFSv0.1.ino.d1_mini.bin');
+
+    $headers = [
         'Content-Type: application/octet-stream',
-    );
+    ];
 
-    return response()->download($url);
-
-//    return 'a';
-//    return \Storage::download('/firmware/httpUpdateSPIFFSv0.1.ino.d1_mini.bin', 'blink.bin', $headers);
-
-    #return Response::download($file, $id. '.' .$type, $headers);
-    return response()->download("../storage/app/public/firmware/httpUpdateSPIFFSv0.1.ino.d1_mini.bin", 'httpUpdateSPIFFSv0.1.ino.d1_mini.bin', $headers);
-})->name('system.index');
-
+    return response()->download($file, 'test.bin', $headers);
+});
 
 
 Route::get('/', 'WelcomeController')->name('home');
