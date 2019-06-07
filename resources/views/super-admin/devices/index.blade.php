@@ -25,7 +25,7 @@
                     @foreach($devices as $d)
                         <tr>
                             <td>{{$d->id}} <span class="hidden">{{$d}}</span></td>
-                            <td>{{$d != null ? $d->location->fulAddress : 'geen locatie'}}</td>
+                            <td>{!! $d->location != null ? $d->location->fulAddress : '<b>geen locatie</b>' !!}</td>
                             <td>{{$d->serial_nr}}</td>
                             <td>{{$d->version}}</td>
                             <td>
