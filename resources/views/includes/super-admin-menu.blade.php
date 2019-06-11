@@ -95,6 +95,12 @@
                         devices
                     </a>
                 </li>
+                <li class="">
+                    <a href="{{route('super.firmware.index')}}" class="{{\Request::is('super-admin/firmware*') ? 'active' : ''  }}">
+                        <i class="fas fa-code"></i>
+                        firmware
+                    </a>
+                </li>
 
                 <li class="">
                     <a href="{{route('clocked.index')}}" class="{{\Request::is('panel/clocked*') ? 'active' : ''  }}">

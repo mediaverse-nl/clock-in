@@ -17,6 +17,7 @@ class CreateFirmwareTable extends Migration
             $table->increments('id');
             $table->string('app_name');
             $table->string('app_version');
+            $table->string('original_name');
             $table->string('path');
             $table->string('description')->nullable();
             $table->timestamps();

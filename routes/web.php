@@ -13,19 +13,39 @@
 use App\User;
 //use Storage;
 
-Route::get('/firmware-wemos', function (){
+Route::get('/firmware-wemos/{name}.bin', function (\Illuminate\Http\Request $request){
+
+    $firmware = \App\Firmware::all()->sortByDesc('id')->first();
 
     $mac_address = '';
     $ip_address = '';
-    $version = '';
+    $currentVersion = str_replace('V', '', strtoupper($firmware->app_version));
+    $thisVersion = str_replace('V', '', strtoupper($request->request->get('v')));
 
-    $file = storage_path('app/public/firmware/httpUpdateSPIFFSv0.1.ino.d1_mini.bin');
+//    dd(
+//        $currentVersion,
+//        $thisVersion,
+//        version_compare($thisVersion, $currentVersion) >= 0
+//    );
+
+    //testing
+    //    $files = scandir(__DIR__.'/../storage/app/public/firmware/', SCANDIR_SORT_DESCENDING);
+    //    $files = array_diff($files, [".", ".."]);
+    //    $newest_file = $files[0];
+
+    $file = storage_path('app/'.$firmware->path);
+
+    if (version_compare($thisVersion, $currentVersion ) >= 0){
+        return response('', 304);
+    }
 
     $headers = [
         'Content-Type: application/octet-stream',
+        'Content-Length',
     ];
 
-    return response()->download($file, 'test.bin', $headers);
+    return response()->download($file, 'wemos.bin', $headers);
+
 });
 
 
@@ -79,6 +99,7 @@ Route::prefix('super-admin')->middleware(['auth'])->name('super.')->namespace('S
     Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::resource('business', 'BusinessController');
     Route::resource('device', 'DeviceController');
+    Route::resource('firmware', 'FirmwareController');
     Route::resource('package', 'PackagesController');
     Route::get('/l-{id}/device/create', 'DeviceController@create')->name('device.create');
     Route::resource('device', 'DevicesController', ['only' => [
