@@ -81,6 +81,9 @@
                             <div class="text-center small" style="background: #dddddd">{!!  ($d['day']) !!}</div>
                             <ul class="calendar-list">
                                 @foreach($d['event'] as $e)
+{{--                                @foreach(collect($d['event'])->groupBy('user_id')->collapse() as $e)--}}
+                                    {{--{!! dd($e) !!}--}}
+                                    @if(MinToHumanHours($e->diff_time) != '0 min')
                                     <li style="padding: 5px;">
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -91,6 +94,7 @@
                                             </div>
                                         </div>
                                     </li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </td>

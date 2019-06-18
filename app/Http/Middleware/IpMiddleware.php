@@ -18,14 +18,14 @@ class IpMiddleware
     {
         $whitelist = new Whitelist;
 
-        if (!in_array($request->ip(), $whitelist->get()->pluck('ip_address')->toArray()))
-        {
-             return response()
-                ->json([
-                    'error' => 'ip niet bekend',
-                    'status' => 404,
-                ], 404);
-        }
+//        if (!in_array($request->ip(), $whitelist->get()->pluck('ip_address')->toArray()))
+//        {
+//             return response()
+//                ->json([
+//                    'error' => 'ip niet bekend',
+//                    'status' => 404,
+//                ], 404);
+//        }
 
         return $next($request);
     }

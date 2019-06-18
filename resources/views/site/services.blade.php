@@ -29,7 +29,7 @@
 
         <div class="card shadow ">
             @component('components.site.content-box', [
-               'textLeft' => false,
+               'textLeft' => true,
                'content' => [
                    [
                        'title' => '1 terminal per locatie',
@@ -49,7 +49,7 @@
                'content' => [
                    [
                        'title' => 'NFC tags',
-                       'text' => 'Onze terminal kost 13,50 per maand. u kunt dan kiezen uit de num pad of de NFC editie. <br> <small>Als u meer dan 20 personeelsleden heeft, krijg u de 1ste terminal gratis.</small>',
+                       'text' => 'NFC tags zijn in veel soorten en maten te verkrijgen. Alles kan op maakt gemaakt worden<br> ',
                        'image' => '/img/bg-showcase-1.jpg',
                    ]
                ]

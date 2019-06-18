@@ -64,7 +64,7 @@
             @foreach($clocked as $c)
                 <tr class="{!! $c->active == 0 ? '' : 'success'!!}">
                     <td class="">
-                        {{--{!! $c !!}--}}
+{{--                        {!! $c !!}--}}
                         {!! $c->started_at->format('d M') !!}
                      </td>
                     <td style="width: 200px;">
@@ -80,17 +80,17 @@
                             <b>{!! $c->started_at->format('H:i') !!} - {!! $c->stopped_at->format('H:i') !!}</b>
                         @endif
                     </td>
-                    {{--<td class="">--}}
-                        {{--@if(!$c->active)--}}
-                            {{--{!! $c->worked_min !!} <small>min</small>--}}
-                        {{--@else--}}
-                            {{--0 <small>min</small>--}}
-                        {{--@endif--}}
-                    {{--</td>--}}
                     <td class="">
-                        {!!  floor($c->diffInMin() / 60) !!} <small>uur</small> {!! ($c->diffInMin() % 60) !!} <small>min</small>
-
+                        @if(!$c->active)
+                            {!! $c->worked_min !!} <small>min</small>
+                        @else
+                            0 <small>min</small>
+                        @endif
                     </td>
+                    {{--<td class="">--}}
+                        {{--{!!  floor($c->diffInMin() / 60) !!} <small>uur</small> {!! ($c->diffInMin() % 60) !!} <small>min</small>--}}
+
+                    {{--</td>--}}
                     {{--<td class="">--}}
                         {{--@if(!$c->active)--}}
                             {{--{!! $c->worked_min !!}<br>--}}
@@ -104,7 +104,11 @@
                         {{--<span class="label label-danger">2+</span>--}}
                     {{--</td>--}}
                     <td class="">
-                        {!! $c->device->location->fulAddress !!}
+                        @if($c->device->location == null)
+                            <b>niet bekend</b>
+                        @else
+                            {!! $c->device->location->fulAddress !!}
+                        @endif
                      </td>
                     <td>
                         <a href="" class="btn btn-warning pull-right">
