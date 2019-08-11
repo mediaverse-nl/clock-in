@@ -1,0 +1,59 @@
+version: "3.3"
+services:
+  db:
+    image: mysql:8.0.16
+    container_name: "clock-on-db"
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+      - web
+    environment:
+      MYSQL_ROOT_PASSWORD: fUi1oHd3pNiLgGPtNHvG
+    volumes:
+      - ./db_storage:/var/lib/mysql
+  adminer:
+    image: adminer
+    container_name: "adminer-clock-on"
+    networks:
+      - web
+    labels:
+      - "traefik.backend=adminer"
+      - "traefik.basic.frontend.rule=Host:adminer.clock-on.nl"
+      - "traefik.port=8080"
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+    restart: always
+    ports:
+      - "8887:8080"
+  php:
+      build: ./docker/build/php
+      volumes:
+         - ./src/:/code
+      networks:
+         - web
+      restart: always
+  nginx:
+    image: nginx:1.15.9-alpine
+    depends_on:
+         - php
+         - db
+    ports:
+         - "4321:80"
+    volumes:
+         - ./src/:/code
+         - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+         - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    labels:
+         - "traefik.frontend.rule=HostRegexp:{subdomain:[a-zA-Z0-9-_]+}.${HOST_DOMAIN}"
+         - "traefik.port=80"
+         - "traefik.enable=true"
+         - "traefik.docker.network=web"
+    restart: always
+    links:
+           - php
+           - db
+    networks:
+           - web
+networks:
+  web:
+    external: true

@@ -13,3 +13,6 @@ class WelcomeController extends Controller
         return view('site.welcome');
     }
 }
+/*
+local > sync online > static dabase
+online > multitenant > database dynamisch*/
