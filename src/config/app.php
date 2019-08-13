@@ -1,5 +1,7 @@
 <?php
 
+use App\Providers\MultiDomainServiceProvider;
+
 return [
 
     /*
@@ -13,6 +15,18 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Multitenant
+    |--------------------------------------------------------------------------
+    |
+    | Determines if clock-on runs in multitenant mode, meaning a name subdomain will be mapped to
+    | it's own database
+    */
+    'multitenant' => env('APP_MULTITENANT', false),
+    'multitenant_default_pwd' => env('APP_MULTITENANT_PWD', 'K3xDbb0K1234'),
 
     /*
     |--------------------------------------------------------------------------
@@ -179,7 +193,6 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\MultiDomainServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -187,6 +200,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\MenuServiceProvider::class,
         browner12\helpers\HelperServiceProvider::class,
+        App\Providers\MultiDomainServiceProvider::class,
 
 
     ],

@@ -54,6 +54,21 @@ return [
             'engine' => 'InnoDB ROW_FORMAT=DYNAMIC',
         ],
 
+        'mysql_root' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => null,
+            'username' => env('DB_ROOT_USERNAME', 'forge'),
+            'password' => env('DB_ROOT_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => 'InnoDB ROW_FORMAT=DYNAMIC',
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),
