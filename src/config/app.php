@@ -27,6 +27,7 @@ return [
     */
     'multitenant' => env('APP_MULTITENANT', false),
     'multitenant_default_pwd' => env('APP_MULTITENANT_PWD', 'K3xDbb0K1234'),
+    'multitenant_root_connection' => env('APP_MULTITENANT_ROOT_CONNECTION', 'mysql_root'),
 
     /*
     |--------------------------------------------------------------------------

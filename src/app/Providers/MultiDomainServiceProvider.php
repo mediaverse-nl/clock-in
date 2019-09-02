@@ -32,10 +32,12 @@ class MultiDomainServiceProvider extends ServiceProvider
                 //does not work.. create the database and user
                 try {
                     $pwd = config('app.multitenant_default_pwd');
-                    DB::connection('mysql_root')->statement("CREATE DATABASE $subDomain DEFAULT CHARACTER SET utf8;");
-                    DB::connection('mysql_root')->statement("CREATE USER '$subDomain'@'%' IDENTIFIED BY '$pwd';");
-                    DB::connection('mysql_root')->statement("GRANT ALL PRIVILEGES ON `$subDomain`. * TO '$subDomain'@'%';");
-                    DB::connection('mysql_root')->statement("FLUSH PRIVILEGES;");
+                    $root_connection = config('app.multitenant_root_connection');
+
+                    DB::connection($root_connection)->statement("CREATE DATABASE $subDomain DEFAULT CHARACTER SET utf8;");
+                    DB::connection($root_connection)->statement("CREATE USER '$subDomain'@'%' IDENTIFIED BY '$pwd';");
+                    DB::connection($root_connection)->statement("GRANT ALL PRIVILEGES ON `$subDomain`. * TO '$subDomain'@'%';");
+                    DB::connection($root_connection)->statement("FLUSH PRIVILEGES;");
 
                     Artisan::call('migrate', ['--force' => true, '--seed' => true ]);
 
@@ -46,7 +48,7 @@ class MultiDomainServiceProvider extends ServiceProvider
 
             }
 
-            //dd('gg', DB::connection('mysql_root'), $subDomain);
+            //dd('gg', DB::connection($root_connection), $subDomain);
         }
 
     }
